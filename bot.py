@@ -14,7 +14,7 @@ import asyncio
 import random
 
 TOKEN = os.environ['TOKEN']
-PREFIX = '!'
+PREFIX = '>'
 
 bot = commands.Bot(command_prefix=PREFIX, formatter=EmbedHelp())
 bot.remove_command('help')
