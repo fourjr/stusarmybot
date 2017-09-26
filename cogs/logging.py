@@ -42,8 +42,6 @@ class Logging:
 		embed.add_field(name="Stu's Army 4", value="2000 Trophies", inline=True)
 		welcome = await self.bot.send_message(member.server.get_channel('298816198349553665'), member.mention, embed=embed)
 		await self.bot.edit_message(welcome, '\u200B', embed=embed)
-			
-			
-
+		
 def setup(bot):
-bot.add_cog(Logging(bot))
+	bot.add_cog(Logging(bot))
