@@ -76,7 +76,10 @@ async def on_command_error(error, ctx):
     print(''.join(traceback.format_exception(type(error), error, error.__traceback__)))
     channel = ctx.message.channel
     if isinstance(error, commands.MissingRequiredArgument):
-        await send_cmd_help(ctx)
+        if ctx.message.content.startswith('trophy'):
+            embed=discord.Embed(title=">trophy <current amount of trophies>", description="We will suggest Clans that meet your trophy level!", color=0xe67e22)
+            await self.bot.say(embed=embed)
+        else: await send_cmd_help(ctx)
     elif isinstance(error, commands.BadArgument):
         await send_cmd_help(ctx)
     elif isinstance(error, commands.DisabledCommand):
@@ -226,7 +229,7 @@ async def _eval(ctx, *, body: str):
 @bot.command(pass_context=True)
 async def say(ctx, *, message: str):
     '''Say something as the bot.'''
-    if ctx.message.author.id == '180314310298304512':
+    if discord.utils.get(ctx.message.author.roles, id='298817057426767873') != None:
         if '{}say'.format(ctx.prefix) in message:
             await bot.say("Don't ya dare spam.")
         else:
