@@ -4,8 +4,8 @@ import asyncio
 from discord.ext import commands
 
 class Logging:
-	def __init__(self, bot):
-		self.bot = bot
+    def __init__(self, bot):
+        self.bot = bot
         self.sessions = set()
     
     @commands.command(pass_context=True)
