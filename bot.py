@@ -21,7 +21,8 @@ bot.remove_command('help')
 
 _extensions = [
 
-    'cogs.logging'
+    'cogs.logging',
+    'cogs.commands'
 
     ]
 
