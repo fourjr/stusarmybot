@@ -12,4 +12,12 @@ class Logging:
     async def trophy(self, ctx, trophy:int):
         '''We will suggest Clans that meet your trophy level!'''
         if trophy >= 3800:
-            
+            await self.bot.say("You can check out Stu's Army 1! <@277389105501831170>, help him out!")
+        elif trophy >= 2800:
+	        await self.bot.say("You can check out Stu's Army 2! <@277389105501831170>, help him out!")
+        elif trophy >= 2400:
+	        await self.bot.say("You can check out Stu's Army 3! <@277389105501831170>, help him out!")
+        elif trophy >= 2000:
+	        await self.bot.say("You can check out Stu's Army 2! <@277389105501831170>, help him out!")
+        else:
+            await self.bot.say("I'm sorry but you don't meet the criteria for any of our Clans. You can do `>visitor` if you want to stick around though!")
