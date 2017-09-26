@@ -11,7 +11,7 @@ class Logging:
     @commands.command(pass_context=True)
     async def trophy(self, ctx, trophy:int):
         '''We will suggest Clans that meet your trophy level!'''
-        if ctx.message.channel != '298816198349553665' and ctx.message.chaannel != '362172188301852672': return
+        if ctx.message.channel != '298816198349553665' and ctx.message.channel != '362172188301852672': return
         if trophy >= 3800:
             await self.bot.say("You can check out Stu's Army 1! <@277389105501831170>, help him out!")
         elif trophy >= 2800:
