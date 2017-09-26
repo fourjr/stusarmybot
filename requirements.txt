@@ -1,0 +1,12 @@
+discord.py
+requests
+PythonGists
+bs4
+lxml
+Pillow
+mtranslate
+pyfiglet
+sqlalchemy
+pymysql
+gspread 
+oauth2client
