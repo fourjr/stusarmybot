@@ -21,14 +21,7 @@ bot.remove_command('help')
 
 _extensions = [
 
-    'cogs.info',
-    'cogs.utils',
-    'cogs.custom',
-    'cogs.logging',
-    'cogs.background',
-    'cogs.economy',
-    'cogs.mod',
-    'cogs.user'
+    'cogs.logging'
 
     ]
 
