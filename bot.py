@@ -35,10 +35,7 @@ async def on_ready():
           'User ID: {}\n'
           '------------------------------------------'
     	  .format(bot.user, bot.user.id))
-    
-    server = discord.utils.get(bot.servers, id='312957036092588032')
-
-    await bot.change_presence(game=discord.Game(name='for Stu's Army!"))
+    await bot.change_presence(game=discord.Game(name="for Stu's Army!"))
     
         
 @bot.command(pass_context=True)
