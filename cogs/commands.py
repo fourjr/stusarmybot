@@ -8,17 +8,23 @@ class Commands:
         self.bot = bot
         self.sessions = set()
     
-    @commands.command(pass_context=True)
-    async def visitor(self, ctx):
-        '''Get the Visitor and Member Role!'''
-        if ctx.message.channel.id != '298816198349553665' and ctx.message.channel.id != '362172188301852672': return
-        await self.bot.add_roles(ctx.message.author, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298815975980138496'))
-        await self.bot.say('I have given {} the Visitor and Member Roles!'.format(ctx.message.author.name))
+    def welcomechannel(ctx):
+        return ctx.message.channel.id == '298816198349553665'
     
     @commands.command(pass_context=True)
+    @commands.check(welcomechannel)
+    async def visitor(self, ctx, member = None):
+        '''Get the Visitor and Member Role!'''
+        if member == None:
+            member = ctx.message.author
+        if ctx.message.channel.id != '298816198349553665' and ctx.message.channel.id != '362172188301852672': return
+        await self.bot.add_roles(ctx.message.author, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298815975980138496'))
+        await self.bot.say("I have given {} the **Visitor** and **Member** Roles!".format(member.name))
+    
+    @commands.command(pass_context=True)
+    @commands.check(welcomechannel)
     async def trophy(self, ctx, trophy:int):
         '''We will suggest Clans that meet your trophy level!'''
-        if ctx.message.channel.id != '298816198349553665' and ctx.message.channel.id != '362172188301852672': return
         if trophy >= 3800:
             await self.bot.say("You can check out Stu's Army 1! <@277389105501831170>, help him out!")
         elif trophy >= 2800:
@@ -31,32 +37,40 @@ class Commands:
             await self.bot.say("I'm sorry but you don't meet the criteria for any of our Clans. You can do `>visitor` if you want to stick around though!")
 
     @commands.command(pass_context=True, aliases=['SA1'])
-    @commands.has_role("Welcome Assistant") 
-    async def sa1(self, ctx, member:discord.Member):
+    @commands.check(welcomechannel)
+    async def sa1(self, ctx, member:discord.Member = None = None):
         '''Gives the SA1 role and Member role to the specified member'''
+        if member == None:
+            member = ctx.message.author
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298816849968234496'))
-        await self.bot.say('Given the SA1 Roles!')
+        await self.bot.say("I have given {} the **SA1** and **Member** Roles!".format(member.name))
             
     @commands.command(pass_context=True, aliases=['SA2'])
-    @commands.has_role("Welcome Assistant") 
-    async def sa2(self, ctx, member:discord.Member):
+    @commands.check(welcomechannel)
+    async def sa2(self, ctx, member:discord.Member = None):
         '''Gives the SA2 role and Member role to the specified member'''
+        if member == None:
+            member = ctx.message.author
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298816905504882698'))
-        await self.bot.say('Given the SA2 Roles!')
+        await self.bot.say("I have given {} the **SA2** and **Member** Roles!".format(member.name))
             
     @commands.command(pass_context=True, aliases=['SA3'])
-    @commands.has_role("Welcome Assistant") 
-    async def sa3(self, ctx, member:discord.Member):
+    @commands.check(welcomechannel)
+    async def sa3(self, ctx, member:discord.Member = None):
         '''Gives the SA3 role and Member role to the specified member'''
+        if member == None:
+            member = ctx.message.author
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='299912276008501248'))
-        await self.bot.say('Given the SA3 Roles!')
+        await self.bot.say("I have given {} the **SA3** and **Member** Roles!".format(member.name))
    
     @commands.command(pass_context=True, aliases=['SA4'])
-    @commands.has_role("Welcome Assistant") 
-    async def sa4(self, ctx, member:discord.Member):
+    @commands.check(welcomechannel)
+    async def sa4(self, ctx, member:discord.Member = None):
         '''Gives the SA4 role and Member role to the specified member'''
+        if member == None:
+            member = ctx.message.author
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='329922314747641859'))
-        await self.bot.say('Given the SA4 Roles!')
+        await self.bot.say("I have given {} the **SA4** and **Member** Roles!".format(member.name))
         
 def setup(bot):
     bot.add_cog(Commands(bot))
