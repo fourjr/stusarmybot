@@ -11,7 +11,7 @@ class Commands:
     def welcomechannel(ctx):
         return ctx.message.channel.id == '298816198349553665' or ctx.message.channel.id == '362172188301852672'
     
-        @commands.command(pass_context=True)
+    @commands.command(pass_context=True)
     @commands.check(welcomechannel)
     async def trophy(self, ctx, trophy:int):
         '''We will suggest Clans that meet your trophy level!'''
