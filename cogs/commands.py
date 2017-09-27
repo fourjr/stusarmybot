@@ -28,7 +28,7 @@ class Commands:
     
     @commands.command(pass_context=True)
     @commands.check(welcomechannel)
-    async def visitor(self, ctx, member = None):
+    async def visitor(self, ctx, member:discord.Member = None):
         '''Get the Visitor and Member Role!'''
         if member == None:
             member = ctx.message.author
