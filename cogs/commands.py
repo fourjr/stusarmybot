@@ -3,7 +3,7 @@ import random
 import asyncio
 from discord.ext import commands
 
-class Logging:
+class Commands:
     def __init__(self, bot):
         self.bot = bot
         self.sessions = set()
@@ -57,4 +57,4 @@ class Logging:
         await self.bot.say('Given the SA4 Roles!')
         
 def setup(bot):
-    bot.add_cog(Logging(bot))
+    bot.add_cog(Commands(bot))
