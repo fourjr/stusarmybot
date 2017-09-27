@@ -17,8 +17,8 @@ def role_or_permissions(ctx, check, **perms):
     role = discord.utils.find(check, author.roles)
     return role is not None
 
-def mod_or_permissions(**perms):
+def welcomeassistant():
     def predicate(ctx):
-        return role_or_permissions(ctx, lambda r: r.name in ('Welcome Assistant'), **perms)
+        return role_or_permissions(ctx, lambda r: r.name in ('Welcome Assistant'))
 
 return commands.check(predicate)
