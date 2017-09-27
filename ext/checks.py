@@ -20,5 +20,4 @@ def role_or_permissions(ctx, check, **perms):
 def welcomeassistant():
     def predicate(ctx):
         return role_or_permissions(ctx, lambda r: r.name in ('Welcome Assistant'))
-
-return commands.check(predicate)
+    return commands.check(predicate)
