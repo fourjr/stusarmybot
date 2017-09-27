@@ -32,7 +32,7 @@ class Commands:
         '''Get the Visitor and Member Role!'''
         if member == None:
             member = ctx.message.author
-        await self.bot.add_roles(ctx.message.author, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298815975980138496'))
+        await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298815975980138496'))
         await self.bot.say("I have given {} the **Visitor** and **Member** Roles!".format(member.name))
 
     @commands.command(pass_context=True, aliases=['SA1'])
