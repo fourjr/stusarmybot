@@ -40,7 +40,10 @@ class Logging:
 		embed.add_field(name="[Stu's Army 3](https://statsroyale.com/clan/28JU8P0Y?ref=discord)", value="2400 Trophies", inline=True)
 		embed.add_field(name="[Stu's Army 4](https://statsroyale.com/clan/8PUUGRYG)", value="2000 Trophies", inline=True)
 		welcome = await self.bot.send_message(member.server.get_channel('298816198349553665'), '{} <@&334250664870019073> <@277389105501831170>'.format(member.mention), embed=embed)
-		await self.bot.edit_message(welcome, '\u200B', embed=embed)
+		#await self.bot.edit_message(welcome, '\u200B', embed=embed)
+	
+	async def on_member_remove(self, member):
+        await self.bot.send_message(member.server.get_channel('298816198349553665'), '{} has left us. :('.format(member.name))
 		
 def setup(bot):
 	bot.add_cog(Logging(bot))
