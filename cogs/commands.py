@@ -38,7 +38,7 @@ class Commands:
 
     @commands.command(pass_context=True, aliases=['SA1'])
     @commands.check(welcomechannel)
-    async def sa1(self, ctx, member:discord.Member = None = None):
+    async def sa1(self, ctx, member:discord.Member = None):
         '''Gives the SA1 role and Member role to the specified member'''
         if member == None:
             member = ctx.message.author
