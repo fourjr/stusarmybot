@@ -30,7 +30,7 @@ class Commands:
     @commands.check(welcomechannel)
     async def visitor(self, ctx, member:discord.Member = None):
         '''Get the Visitor and Member Role!'''
-        if member == None:
+        if member == None or discord.utils.get(ctx.message.author.roles, id='334250664870019073') == None:
             member = ctx.message.author
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298815975980138496'))
         await self.bot.say("I have given {} the **Visitor** and **Member** Roles!".format(member.name))
@@ -39,7 +39,7 @@ class Commands:
     @commands.check(welcomechannel)
     async def sa1(self, ctx, member:discord.Member = None):
         '''Gives the SA1 role and Member role to the specified member'''
-        if member == None:
+        if member == None or discord.utils.get(ctx.message.author.roles, id='334250664870019073') == None:
             member = ctx.message.author
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298816849968234496'))
         await self.bot.say("I have given {} the **SA1** and **Member** Roles!".format(member.name))
@@ -48,7 +48,7 @@ class Commands:
     @commands.check(welcomechannel)
     async def sa2(self, ctx, member:discord.Member = None):
         '''Gives the SA2 role and Member role to the specified member'''
-        if member == None:
+        if member == None or discord.utils.get(ctx.message.author.roles, id='334250664870019073') == None:
             member = ctx.message.author
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298816905504882698'))
         await self.bot.say("I have given {} the **SA2** and **Member** Roles!".format(member.name))
@@ -57,7 +57,7 @@ class Commands:
     @commands.check(welcomechannel)
     async def sa3(self, ctx, member:discord.Member = None):
         '''Gives the SA3 role and Member role to the specified member'''
-        if member == None:
+        if member == None or discord.utils.get(ctx.message.author.roles, id='334250664870019073') == None:
             member = ctx.message.author
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='299912276008501248'))
         await self.bot.say("I have given {} the **SA3** and **Member** Roles!".format(member.name))
@@ -66,7 +66,7 @@ class Commands:
     @commands.check(welcomechannel)
     async def sa4(self, ctx, member:discord.Member = None):
         '''Gives the SA4 role and Member role to the specified member'''
-        if member == None:
+        if member == None or discord.utils.get(ctx.message.author.roles, id='334250664870019073') == None:
             member = ctx.message.author
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='329922314747641859'))
         await self.bot.say("I have given {} the **SA4** and **Member** Roles!".format(member.name))
