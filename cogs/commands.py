@@ -9,6 +9,10 @@ class Logging:
         self.bot = bot
         self.sessions = set()
     
+    @commands.command(pass_context=True)
+    async def visitor(self, ctx)
+        '''Get the Visitor and Member Role!'''
+        await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298816849968234496'))
     
     @commands.command(pass_context=True)
     async def trophy(self, ctx, trophy:int):
@@ -29,10 +33,9 @@ class Logging:
     @checks.welcomeassistant()
     async def sa1(self, ctx, member:discord.Member):
         '''Gives the SA1 role and Member role to the specified Member'''
-        try:
             await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298816849968234496'))
-        except:
-            await self.bot.say("I don't have permissions to `Manage Roles`")
+            #await self.bot.say("I don't have permissions to `Manage Roles`")
+            await self.bot.say('Roles given!')
         
 def setup(bot):
     bot.add_cog(Logging(bot))
