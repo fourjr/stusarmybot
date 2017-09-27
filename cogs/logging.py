@@ -35,12 +35,12 @@ class Logging:
 	async def on_member_join(self, member):
 		colors = (0xff0f7f, 0xff0f1a, 0x2ef65c, 0xf5f404, 0x0da1e8, 0xffa200, 0xd96af2)
 		embed=discord.Embed(title="Hello {}!".format(member.name), description="Welcome To {}! Below listed are our Clans!".format(member.server.name), color = random.choice(colors[0:6]))
-		embed.add_field(name="[Stu's Army 1](https://statsroyale.com/clan/88PYQV)", value="3800 Trophies", inline=True)
-		embed.add_field(name="[Stu's Army 2](https://statsroyale.com/clan/29UQQ282)", value="2800 Trophies", inline=True)
-		embed.add_field(name="[Stu's Army 3](https://statsroyale.com/clan/28JU8P0Y?ref=discord)", value="2400 Trophies", inline=True)
-		embed.add_field(name="[Stu's Army 4](https://statsroyale.com/clan/8PUUGRYG)", value="2000 Trophies", inline=True)
+		embed.add_field(name="Stu's Army 1", value="3800 Trophies [Read more](https://statsroyale.com/clan/88PYQV)", inline=True)
+		embed.add_field(name="Stu's Army 2", value="2800 Trophies [Read More](https://statsroyale.com/clan/29UQQ282)", inline=True)
+		embed.add_field(name="Stu's Army 3", value="2400 Trophies [Read More](https://statsroyale.com/clan/28JU8P0Y)", inline=True)
+		embed.add_field(name="Stu's Army 4", value="2000 Trophies [Read More](https://statsroyale.com/clan/8PUUGRYG)", inline=True)
 		welcome = await self.bot.send_message(member.server.get_channel('298816198349553665'), '{} <@&334250664870019073> <@277389105501831170>'.format(member.mention), embed=embed)
-		#await self.bot.edit_message(welcome, '\u200B', embed=embed)
+		await self.bot.edit_message(welcome, '\u200B', embed=embed)
 	
 	async def on_member_remove(self, member):
 		await self.bot.send_message(member.server.get_channel('298816198349553665'), '{} has left us. :('.format(member.name))
