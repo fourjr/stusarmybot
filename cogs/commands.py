@@ -30,7 +30,7 @@ class Logging:
             await self.bot.say("I'm sorry but you don't meet the criteria for any of our Clans. You can do `>visitor` if you want to stick around though!")
 
     @commands.command(pass_context=True, aliases=['SA1'])
-    @checks.welcomeassistant()
+    @commands.has_role("Welcome Assistant") 
     async def sa1(self, ctx, member:discord.Member):
         '''Gives the SA1 role and Member role to the specified Member'''
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298816849968234496'))
