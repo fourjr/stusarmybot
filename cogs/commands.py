@@ -2,7 +2,6 @@ import discord
 import random
 import asyncio
 from discord.ext import commands
-from ext import checks
 
 class Logging:
     def __init__(self, bot):
@@ -37,21 +36,21 @@ class Logging:
         await self.bot.say('Given the SA1 Roles!')
             
     @commands.command(pass_context=True, aliases=['SA2'])
-    @checks.welcomeassistant()
+    @commands.has_role("Welcome Assistant") 
     async def sa2(self, ctx, member:discord.Member):
         '''Gives the SA2 role and Member role to the specified Member'''
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298816905504882698'))
         await self.bot.say('Given the SA2 Roles!')
             
     @commands.command(pass_context=True, aliases=['SA3'])
-    @checks.welcomeassistant()
+    @commands.has_role("Welcome Assistant") 
     async def sa3(self, ctx, member:discord.Member):
         '''Gives the SA3 role and Member role to the specified Member'''
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='299912276008501248'))
         await self.bot.say('Given the SA3 Roles!')
    
     @commands.command(pass_context=True, aliases=['SA4'])
-    @checks.welcomeassistant()
+    @commands.has_role("Welcome Assistant") 
     async def sa4(self, ctx, member:discord.Member):
         '''Gives the SA4 role and Member role to the specified Member'''
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='329922314747641859'))
