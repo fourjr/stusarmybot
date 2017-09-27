@@ -3,7 +3,17 @@ import discord.utils
 
 def is_owner_check(message):
     return message.author.id == '180314310298304512'
-  
+
+def check_permissions(ctx, perms):
+    msg = ctx.message
+    if is_owner_check(msg):
+        return True
+
+    ch = msg.channel
+    author = msg.author
+    resolved = ch.permissions_for(author)
+    return all(getattr(resolved, name, None) == value for name, value in perms.items())  
+
 
 def role_or_permissions(ctx, check, **perms):
     if check_permissions(ctx, perms):
