@@ -76,7 +76,7 @@ async def on_command_error(error, ctx):
     print(''.join(traceback.format_exception(type(error), error, error.__traceback__)))
     channel = ctx.message.channel
     if isinstance(error, commands.MissingRequiredArgument):
-        if ctx.message.content.startswith('trophy'):
+        if ctx.message.content.startswith('>trophy'):
             embed=discord.Embed(title=">trophy <current amount of trophies>", description="We will suggest Clans that meet your trophy level!", color=0xe67e22)
             await self.bot.say(embed=embed)
         else: await send_cmd_help(ctx)
