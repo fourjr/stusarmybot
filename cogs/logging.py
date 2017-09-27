@@ -43,7 +43,7 @@ class Logging:
 		await self.bot.edit_message(welcome, '\u200B', embed=embed)
 	
 	async def on_member_remove(self, member):
-		await self.bot.send_message(member.server.get_channel('298816198349553665'), '{} has left us. :('.format(member.name))
+		await self.bot.send_message(member.server.get_channel('298816198349553665'), '{} has left us :('.format(member.name))
 		
 def setup(bot):
 	bot.add_cog(Logging(bot))
