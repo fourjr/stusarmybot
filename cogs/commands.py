@@ -9,19 +9,9 @@ class Commands:
         self.sessions = set()
     
     def welcomechannel(ctx):
-        return ctx.message.channel.id == '298816198349553665'
+        return ctx.message.channel.id == '298816198349553665' or ctx.message.channel.id == '362172188301852672'
     
-    @commands.command(pass_context=True)
-    @commands.check(welcomechannel)
-    async def visitor(self, ctx, member = None):
-        '''Get the Visitor and Member Role!'''
-        if member == None:
-            member = ctx.message.author
-        if ctx.message.channel.id != '298816198349553665' and ctx.message.channel.id != '362172188301852672': return
-        await self.bot.add_roles(ctx.message.author, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298815975980138496'))
-        await self.bot.say("I have given {} the **Visitor** and **Member** Roles!".format(member.name))
-    
-    @commands.command(pass_context=True)
+        @commands.command(pass_context=True)
     @commands.check(welcomechannel)
     async def trophy(self, ctx, trophy:int):
         '''We will suggest Clans that meet your trophy level!'''
@@ -35,6 +25,15 @@ class Commands:
             await self.bot.say("You can check out Stu's Army 2! <@277389105501831170>, help him out!")
         else:
             await self.bot.say("I'm sorry but you don't meet the criteria for any of our Clans. You can do `>visitor` if you want to stick around though!")
+    
+    @commands.command(pass_context=True)
+    @commands.check(welcomechannel)
+    async def visitor(self, ctx, member = None):
+        '''Get the Visitor and Member Role!'''
+        if member == None:
+            member = ctx.message.author
+        await self.bot.add_roles(ctx.message.author, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298815975980138496'))
+        await self.bot.say("I have given {} the **Visitor** and **Member** Roles!".format(member.name))
 
     @commands.command(pass_context=True, aliases=['SA1'])
     @commands.check(welcomechannel)
