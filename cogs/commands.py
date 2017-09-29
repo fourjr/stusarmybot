@@ -34,6 +34,7 @@ class Commands:
             member = ctx.message.author
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298815975980138496'))
         await self.bot.say("I have given {} the **Visitor** and **Member** Roles!".format(member.name))
+        await self.bot.send_message(discord.utils.get(ctx.message.server.channels, id='298812318903566337'), "Welcome {} to Stu's Army! He is a visitor!".format(member.mention))
 
     @commands.command(pass_context=True, aliases=['SA1'])
     @commands.check(welcomechannel)
@@ -43,7 +44,7 @@ class Commands:
             member = ctx.message.author
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298816849968234496'))
         await self.bot.say("I have given {} the **SA1** and **Member** Roles!".format(member.name))
-        await self.bot.send_message(discord.utils.get(ctx.message.server.channels, id='298812318903566337'), "Welcome {} to Stu's Army! He is a visitor!".format(ctx.message.author.mention))
+        await self.bot.send_message(discord.utils.get(ctx.message.server.channels, id='298812318903566337'), "Welcome {} to Stu's Army 1!".format(member.mention))
             
     @commands.command(pass_context=True, aliases=['SA2'])
     @commands.check(welcomechannel)
@@ -53,7 +54,7 @@ class Commands:
             member = ctx.message.author
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='298816905504882698'))
         await self.bot.say("I have given {} the **SA2** and **Member** Roles!".format(member.name))
-        await self.bot.send_message(discord.utils.get(ctx.message.server.channels, id='298812318903566337'), "Welcome {} to Stu's Army 2!".format(ctx.message.author.mention))
+        await self.bot.send_message(discord.utils.get(ctx.message.server.channels, id='298812318903566337'), "Welcome {} to Stu's Army 2!".format(member.mention))
             
     @commands.command(pass_context=True, aliases=['SA3'])
     @commands.check(welcomechannel)
@@ -63,7 +64,7 @@ class Commands:
             member = ctx.message.author
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='299912276008501248'))
         await self.bot.say("I have given {} the **SA3** and **Member** Roles!".format(member.name))
-        await self.bot.send_message(discord.utils.get(ctx.message.server.channels, id='298812318903566337'), "Welcome {} to Stu's Army 3!".format(ctx.message.author.mention))
+        await self.bot.send_message(discord.utils.get(ctx.message.server.channels, id='298812318903566337'), "Welcome {} to Stu's Army 3!".format(member.mention))
    
     @commands.command(pass_context=True, aliases=['SA4'])
     @commands.check(welcomechannel)
@@ -73,7 +74,7 @@ class Commands:
             member = ctx.message.author
         await self.bot.add_roles(member, discord.utils.get(ctx.message.server.roles, id='298817009372889088'), discord.utils.get(ctx.message.server.roles, id='329922314747641859'))
         await self.bot.say("I have given {} the **SA4** and **Member** Roles!".format(member.name))
-        await self.bot.send_message(discord.utils.get(ctx.message.server.channels, id='298812318903566337'), "Welcome {} to Stu's Army 4!".format(ctx.message.author.mention))
+        await self.bot.send_message(discord.utils.get(ctx.message.server.channels, id='298812318903566337'), "Welcome {} to Stu's Army 4!".format(member.mention))
         
 def setup(bot):
     bot.add_cog(Commands(bot))
