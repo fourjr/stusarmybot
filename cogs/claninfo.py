@@ -159,7 +159,7 @@ class claninfo:
             await self.bot.edit_message(await self.bot.get_message(discord.utils.get(ctx.message.server.channels, id='365870449915330560'), '365888079665299457'), message)
             await asyncio.sleep(3600)
         
-    self.bot.loop.create_task(clanupdate())
+    bot.loop.create_task(clanupdate())
             
 def setup(bot):
     bot.add_cog(claninfo(bot))
