@@ -7,7 +7,7 @@ import json
 import aiohttp
 import io
 
-class Commands:
+class claninfo:
     def __init__(self, bot):
         self.bot = bot
         self.sessions = set()
