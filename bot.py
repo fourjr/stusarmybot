@@ -12,6 +12,7 @@ import textwrap
 import traceback
 import asyncio
 import random
+import aiohttp
 
 TOKEN = os.environ['TOKEN']
 PREFIX = '>'
@@ -54,7 +55,7 @@ async def ping(ctx):
 
 @bot.command(pass_context=True)
 async def restart(ctx):
-    """Restarts the selfbot."""
+    """Restarts the bot."""
     if ctx.message.author.id == '180314310298304512':
         channel = ctx.message.channel
         await bot.say("Restarting...")
@@ -304,6 +305,31 @@ async def unload(ctx, *, module):
             await bot.say('Successfully Unloaded `{}`'.format(module))
         except:
             pass
+        
+async def clanupdate():
+    await bot.wait_until_ready()
+    while not bot.is_closed:
+        async with aiohttp.ClientSession() as session:
+            async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
+                sa1 = await d.json() 
+
+        async with aiohttp.ClientSession() as session:
+            async with session.get('http://api.cr-api.com/clan/29UQQ282') as d:
+                sa2 = await d.json()
+
+        async with aiohttp.ClientSession() as session:
+            async with session.get('http://api.cr-api.com/clan/28JU8P0Y') as d:
+                sa3 = await d.json()
+
+        async with aiohttp.ClientSession() as session:
+            async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d:
+                sa4 = await d.json()
+
+        message = '**SA1** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n--------------------- \n**SA2** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n--------------------- \n**SA3** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n--------------------- \n**SA4** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n---------------------'.format(sa1['memberCount'], sa1['requiredScore'], sa1['score'], sa2['memberCount'], sa2['requiredScore'], sa2['score'], sa3['memberCount'], sa3['requiredScore'], sa3['score'], sa4['memberCount'], sa4['requiredScore'], sa4['score'])
+        await bot.edit_message(await bot.get_message(discord.utils.get(ctx.message.server.channels, id='365870449915330560'), '365888079665299457'), message)
+        await asyncio.sleep(3600)
+ 
+bot.loop.create_task(clanupdate())
 
 for extension in _extensions:
     try:
