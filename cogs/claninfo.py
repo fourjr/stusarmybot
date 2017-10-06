@@ -5,7 +5,6 @@ import os
 import asyncio
 import json
 import aiohttp
-import embedtobox
 import io
 
 class Commands:
