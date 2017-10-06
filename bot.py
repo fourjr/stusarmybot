@@ -61,8 +61,7 @@ async def help(ctx):
 `!sa1` to `!sa4` - Give appropriate roles
 `!visitor` - Give appropriate roles
 \n**Non-Welcome Channel**
-`>update` - Don't even know if this is working, updates <#365870449915330560>
-\n*P.S. I have no idea why there are spaces there lol*''')
+`>update` - Don't even know if this is working, updates <#365870449915330560>)
                   
 @bot.command(pass_context=True)
 async def restart(ctx):
