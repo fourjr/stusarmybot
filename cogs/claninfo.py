@@ -135,6 +135,15 @@ class claninfo:
         em.add_field(name="Top CC Contributors", value='\n\n'.join(players), inline=True)
         em.set_footer(text="Powered by cr-api", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
         await self.bot.say(embed=em)
-        
+    
+    @commands.command(pass_context=True)
+    async def clanupdate(self, ctx):
+        sa1tag = '8PUUGRYG'
+        async with aiohttp.ClientSession() as session:
+            async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d:
+                sa1 = await d.json() 
+        message = '**SA1** \n:shield: {} \n:trophy: - trophies req \n:medal: {}'.format(sa1['memberCount'], sa1['requiredScore'], sa1['score'])
+        await self.bot.say(message)
+            
 def setup(bot):
     bot.add_cog(claninfo(bot))
