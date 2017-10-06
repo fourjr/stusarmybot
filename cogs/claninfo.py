@@ -14,7 +14,7 @@ class claninfo:
     
     @commands.command(pass_context=True, aliases=['SA1info', 'SA1-info', 'sa1-info'])
     async def sa1info(self, ctx):
-        tag = data['clan']['tag']
+        tag = '88PYQV'
         url = 'http://api.cr-api.com/clan/88PYQV'
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as d:
