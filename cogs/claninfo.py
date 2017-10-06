@@ -43,3 +43,6 @@ class Commands:
         em.add_field(name="Top CC Contributors", value='\n\n'.join(players), inline=True)
         em.set_footer(text="Selfbot made by kwugfighter | Powered by cr-api", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
         await self.bot.say(embed=em)
+
+def setup(bot):
+    bot.add_cog(claninfo(bot))
