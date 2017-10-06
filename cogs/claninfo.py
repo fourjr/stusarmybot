@@ -136,7 +136,7 @@ class claninfo:
         em.set_footer(text="Powered by cr-api", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
         await self.bot.say(embed=em)
     
-    async def clanupdate():
+    async def clanupdate(self, ctx):
         await self.bot.wait_until_ready()
         while not client.is_closed:
             async with aiohttp.ClientSession() as session:
