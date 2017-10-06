@@ -138,11 +138,11 @@ class claninfo:
     
     @commands.command(pass_context=True)
     async def clanupdate(self, ctx):
-        sa1tag = '8PUUGRYG'
+        sa1tag = '88PYQV'
         async with aiohttp.ClientSession() as session:
-            async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d:
+            async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
                 sa1 = await d.json() 
-        message = '**SA1** \n:shield: {} \n:trophy: - trophies req \n:medal: {}'.format(sa1['memberCount'], sa1['requiredScore'], sa1['score'])
+        message = '**SA1** \n:shield: {}/50 \n:trophy: {} \n:medal: {}'.format(sa1['memberCount'], sa1['requiredScore'], sa1['score'])
         await self.bot.say(message)
             
 def setup(bot):
