@@ -61,7 +61,7 @@ async def help(ctx):
 `!sa1` to `!sa4` - Give appropriate roles
 `!visitor` - Give appropriate roles
 \n**Non-Welcome Channel**
-`>update` - Don't even know if this is working, updates <#365870449915330560>)
+`>update` - Updates <#365870449915330560>''')
                   
 @bot.command(pass_context=True)
 async def restart(ctx):
@@ -336,7 +336,7 @@ async def clanupdate():
 @bot.command(pass_context=True)
 async def update(ctx):
     await clanupdate()
-    await bot.add_reaction(ctx.message, '<:league7:335746873753075714>')
+    await bot.add_reaction(ctx.message, ':league7:335746873753075714')
     
 bot.loop.create_task(clanupdate())
 
