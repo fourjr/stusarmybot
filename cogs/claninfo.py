@@ -164,4 +164,4 @@ class claninfo:
     
 def setup(bot):
     bot.add_cog(claninfo(bot))
-    bot.loop.create_task(self.bot.clanupdate())
+    bot.loop.create_task(bot.clanupdate())
