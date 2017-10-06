@@ -336,7 +336,7 @@ async def clanupdate():
 @bot.command(pass_context=True)
 async def update(ctx):
     await clanupdate()
-    await bot.add_reaction(ctx.message, ':league7:335746873753075714')
+    await bot.add_reaction(ctx.message, 'league7:335746873753075714')
     
 bot.loop.create_task(clanupdate())
 
