@@ -15,23 +15,12 @@ class Commands:
     
     @commands.command(pass_context=True, aliases=['SA1info', 'SA1-info', 'sa1-info'])
     async def sa1info(self, ctx):
-            tag = data['clan']['tag']
-            url = 'http://api.cr-api.com/clan/88PYQV'
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url) as d:
-                    data = await d.json()
-        elif tag_type == "clan":
-            url = f"http://api.cr-api.com/clan/{tag}"
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url) as d:
-                    data = await d.json()      
-            if data.get("error"):
-                em = discord.Embed(color=discord.Color(value=0x33ff30), title="Clan", description="Invalid Clan ID.")
-                return await self.bot.say(embed=em) 
-        else:
-            em = discord.Embed(color=discord.Color(value=0x33ff30), title="Clan", description="Please only enter `player` for the tag type if necessary.")
-            return await self.bot.say(embed=em)
-
+        tag = data['clan']['tag']
+        url = 'http://api.cr-api.com/clan/88PYQV'
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as d:
+                data = await d.json()  
+                
         em = discord.Embed(color=discord.Color(value=0x33ff30), title=f"{data['name']} (#{tag})", description=f"{data['description']}")
         em.set_author(name="Clan", url=f"http://cr-api.com/clan/{tag}", icon_url=f"http://api.cr-api.com{data['badge']['url']}")
         em.set_thumbnail(url=f"http://api.cr-api.com{data['badge']['url']}")
