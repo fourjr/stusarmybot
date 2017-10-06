@@ -312,16 +312,10 @@ async def clanupdate():
         async with aiohttp.ClientSession() as session:
             async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
                 sa1 = await d.json() 
-
-        async with aiohttp.ClientSession() as session:
             async with session.get('http://api.cr-api.com/clan/29UQQ282') as d:
                 sa2 = await d.json()
-
-        async with aiohttp.ClientSession() as session:
             async with session.get('http://api.cr-api.com/clan/28JU8P0Y') as d:
                 sa3 = await d.json()
-
-        async with aiohttp.ClientSession() as session:
             async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d:
                 sa4 = await d.json()
 
