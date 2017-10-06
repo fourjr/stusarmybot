@@ -322,7 +322,12 @@ async def clanupdate():
         message = '**SA1** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n--------------------- \n**SA2** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n--------------------- \n**SA3** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n--------------------- \n**SA4** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n---------------------'.format(sa1['memberCount'], sa1['requiredScore'], sa1['score'], sa1['typeName'], sa2['memberCount'], sa2['requiredScore'], sa2['score'], sa2['typeName'], sa3['memberCount'], sa3['requiredScore'], sa3['score'], sa3['typeName'], sa4['memberCount'], sa4['requiredScore'], sa4['score'], sa4['typeName'])
         await bot.edit_message(await bot.get_message(discord.utils.get(discord.utils.get(bot.servers, id='298812318903566337').channels, id='365870449915330560'), '365888079665299457'), message)
         await asyncio.sleep(3600)
- 
+
+@bot.command(pass_context=True)
+async def update(ctx):
+    clanupdate()
+    await bot.add_reaction(ctx.message, '<:league7:335746873753075714>')
+    
 bot.loop.create_task(clanupdate())
 
 for extension in _extensions:
