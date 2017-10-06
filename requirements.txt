@@ -10,4 +10,3 @@ sqlalchemy
 pymysql
 gspread 
 oauth2client
-embedtobox
