@@ -14,6 +14,7 @@ class claninfo:
     
     @commands.command(pass_context=True, aliases=['SA1info', 'SA1-info', 'sa1-info'])
     async def sa1info(self, ctx):
+        tag = '88PYQV'
         async with aiohttp.ClientSession() as session:
             async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
                 data = await d.json()  
@@ -44,6 +45,7 @@ class claninfo:
         
     @commands.command(pass_context=True, aliases=['SA2info', 'SA2-info', 'sa2-info'])
     async def sa2info(self, ctx):
+        tag = '29UQQ282'
         async with aiohttp.ClientSession() as session:
             async with session.get('http://api.cr-api.com/clan/29UQQ282') as d:
                 data = await d.json()  
@@ -74,6 +76,7 @@ class claninfo:
 
     @commands.command(pass_context=True, aliases=['SA3info', 'SA3-info', 'sa3-info'])
     async def sa3info(self, ctx):
+        tag = '28JU8P0Y'
         async with aiohttp.ClientSession() as session:
             async with session.get('http://api.cr-api.com/clan/28JU8P0Y') as d:
                 data = await d.json()  
@@ -104,6 +107,7 @@ class claninfo:
 
     @commands.command(pass_context=True, aliases=['SA4info', 'SA4-info', 'sa4-info'])
     async def sa4info(self, ctx):
+        tag - '8PUUGRYG'
         async with aiohttp.ClientSession() as session:
             async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d:
                 data = await d.json()  
