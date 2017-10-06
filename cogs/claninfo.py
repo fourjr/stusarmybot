@@ -138,12 +138,24 @@ class claninfo:
     
     @commands.command(pass_context=True)
     async def clanupdate(self,ctx):
-        sa1tag = '88PYQV'
         async with aiohttp.ClientSession() as session:
-            async with session.get('http://api.cr-api.com/clan/{}'.format(sa1tag)) as d:
+            async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
                 sa1 = await d.json() 
-        message = '**SA1** \n:shield: {}/50 \n:trophy: {} \n:medal: {}'.format(sa1['memberCount'], sa1['requiredScore'], sa1['score'])
-        await self.bot.edit_message(await self.bot.get_message(discord.utils.get(ctx.message.server.channels, id='365870449915330560'), '365871816050212865'), message)
+                
+        async with aiohttp.ClientSession() as session:
+            async with session.get('http://api.cr-api.com/clan/29UQQ282') as d:
+                sa2 = await d.json()
+                
+        async with aiohttp.ClientSession() as session:
+            async with session.get('http://api.cr-api.com/clan/28JU8P0Y') as d:
+                sa3 = await d.json()
+          
+        async with aiohttp.ClientSession() as session:
+            async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d:
+                sa4 = await d.json()
+                
+        message = '**SA1** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n--------------------- \n**SA2** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n--------------------- \n**SA3** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n--------------------- \n**SA4** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n---------------------'.format(sa1['memberCount'], sa1['requiredScore'], sa1['score'], sa2['memberCount'], sa2['requiredScore'], sa2['score'], sa3['memberCount'], sa3['requiredScore'], sa3['score'], sa4['memberCount'], sa4['requiredScore'], sa4['score'])
+        await self.bot.edit_message(await self.bot.get_message(discord.utils.get(ctx.message.server.channels, id='365888079665299457'), '365871816050212865'), message)
             
 def setup(bot):
     bot.add_cog(claninfo(bot))
