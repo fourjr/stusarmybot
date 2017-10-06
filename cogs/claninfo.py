@@ -137,13 +137,13 @@ class claninfo:
         await self.bot.say(embed=em)
     
     @commands.command(pass_context=True)
-    async def clanupdate(self, ctx):
+    async def clanupdate(self,ctx):
         sa1tag = '88PYQV'
         async with aiohttp.ClientSession() as session:
-            async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
+            async with session.get('http://api.cr-api.com/clan/{}'.format(sa1tag)) as d:
                 sa1 = await d.json() 
         message = '**SA1** \n:shield: {}/50 \n:trophy: {} \n:medal: {}'.format(sa1['memberCount'], sa1['requiredScore'], sa1['score'])
-        await self.bot.say(message)
+        await self.bot.edit_message(self.bot.get_message(discord.utils.get(ctx.message.server.channels, id='365870449915330560'), '365871816050212865'), message)
             
 def setup(bot):
     bot.add_cog(claninfo(bot))
