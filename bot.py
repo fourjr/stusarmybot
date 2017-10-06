@@ -18,7 +18,7 @@ TOKEN = os.environ['TOKEN']
 PREFIX = '>'
 
 bot = commands.Bot(command_prefix=PREFIX, formatter=EmbedHelp())
-#bot.remove_command('help')
+bot.remove_command('help')
 
 _extensions = [
 
@@ -53,6 +53,17 @@ async def ping(ctx):
                          color=0x00ffff)
     await bot.say(embed=pong)
 
+@bot.command(pass_context=True)
+async def help(ctx):
+    """Shows.. help?"""
+    await bot.say('''This isn't kept up to date 100% because I'm lazy :)
+**Welcome Channel**
+`!sa1` to `!sa4` - Give appropriate roles
+`!visitor` - Give appropriate roles
+\n**Non-Welcome Channel**
+`>update` - Don't even know if this is working, updates <#365870449915330560>
+\n*P.S. I have no idea why there are spaces there lol*''')
+                  
 @bot.command(pass_context=True)
 async def restart(ctx):
     """Restarts the bot."""
