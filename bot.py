@@ -18,7 +18,7 @@ TOKEN = os.environ['TOKEN']
 PREFIX = '>'
 
 bot = commands.Bot(command_prefix=PREFIX, formatter=EmbedHelp())
-bot.remove_command('help')
+#bot.remove_command('help')
 
 _extensions = [
 
@@ -325,7 +325,7 @@ async def clanupdate():
 
 @bot.command(pass_context=True)
 async def update(ctx):
-    clanupdate()
+    await clanupdate()
     await bot.add_reaction(ctx.message, '<:league7:335746873753075714>')
     
 bot.loop.create_task(clanupdate())
