@@ -27,39 +27,38 @@ class claninfo():
             async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d: #to add
                 sa5 = await d.json()
 
-        tiers = [70, 160, 270, 400, 550, 720, 910, 1120, 1350, 1600]
-        sa1cc = (tiers.index(max([n for n in tiers if (sa1['clanChest']['clanChestCrowns'] > n)])) + 1)
-        sa2cc = (tiers.index(max([n for n in tiers if (sa2['clanChest']['clanChestCrowns'] > n)])) + 1)
-        sa3cc = (tiers.index(max([n for n in tiers if (sa3['clanChest']['clanChestCrowns'] > n)])) + 1)
-        sa4cc = (tiers.index(max([n for n in tiers if (sa4['clanChest']['clanChestCrowns'] > n)])) + 1)
-        sa5cc = (tiers.index(max([n for n in tiers if (sa5['clanChest']['clanChestCrowns'] > n)])) + 1)
+        tiers = [70, 160, 270, 400, 550, 720, 910, 1120, 1350, 1600] 
 
         message = f'''**SA1** 
 :shield: {sa1['memberCount']}/50 
 :trophy: {sa1['requiredScore']} 
 :medal: {sa1['score']} 
-<:clanchest:366182009124421633> Tier {sa1cc} 
+<:soon:337920093532979200> {sa1['donations']}/week
+<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa1['clanChest']['clanChestCrowns'] > n)])) + 1)} 
 :globe_with_meridians: {sa1['typeName']} 
 --------------------- 
 **SA2** 
 :shield: {sa2['memberCount']}/50 
-:trophy: {sa2['requiredScore']} 
-:medal: {sa2['score']} 
-<:clanchest:366182009124421633> Tier {sa2cc} 
+:trophy: {sa2['requiredScore']}
+:medal: {sa2['score']}
+<:soon:337920093532979200> {sa2['donations']}/week
+<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa2['clanChest']['clanChestCrowns'] > n)])) + 1)} 
 :globe_with_meridians: {sa2['typeName']} 
 --------------------- 
 **SA3** 
 :shield: {sa3['memberCount']}/50 
 :trophy: {sa3['requiredScore']} 
 :medal: {sa3['score']} 
-<:clanchest:366182009124421633> Tier {sa3cc} 
+<:soon:337920093532979200> {sa3['donations']}/week
+<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa3['clanChest']['clanChestCrowns'] > n)])) + 1)} 
 :globe_with_meridians: {sa3['typeName']} 
 --------------------- 
 **SA4** 
 :shield: {sa4['memberCount']}/50 
 :trophy: {sa4['requiredScore']} 
 :medal: {sa4['score']} 
-<:clanchest:366182009124421633> Tier {sa4cc} 
+<:soon:337920093532979200> {sa4['donations']}/week
+<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa4['clanChest']['clanChestCrowns'] > n)])) + 1)} 
 :globe_with_meridians: {sa4['typeName']} 
 ---------------------
 **SA5**
@@ -67,11 +66,12 @@ Coming soon! :)
 ---------------------
 :busts_in_silhouette: {(((int(sa1['memberCount']) + int(sa2['memberCount'])) + int(sa3['memberCount'])) + int(sa4['memberCount']))}/200'''
 
-#:shield: {sa5['memberCount']}/50 
-#:trophy: {sa5['requiredScore']} 
-#:medal: {sa5['score']} 
-#<:clanchest:366182009124421633> Tier {sa5cc} 
-#:globe_with_meridians: {sa5['typeName']} 
+#:shield: {sa5['memberCount']}/50
+#:trophy: {sa5['requiredScore']}
+#:medal: {sa5['score']}
+#<:soon:337920093532979200> {sa5['donations']}/week
+#<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa5['clanChest']['clanChestCrowns'] > n)])) + 1)}
+#:globe_with_meridians: {sa5['typeName']}
 
         await (await discord.utils.get(discord.utils.get(self.bot.guilds, id=298812318903566337).channels, id=365870449915330560).get_message(365888079665299457)).edit(content=message)
 
