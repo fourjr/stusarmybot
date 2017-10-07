@@ -137,7 +137,7 @@ class claninfo:
         em.set_footer(text="Powered by cr-api", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
         await self.bot.say(embed=em)
 
-    async def self.clanupdate():
+    async def clanupdate():
         async with aiohttp.ClientSession() as session:
             async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
                 sa1 = await d.json() 
@@ -160,12 +160,16 @@ class claninfo:
 :busts_in_silhouette: {int(sa1['memberCount']) + int(sa2['memberCount']) + int(sa3['memberCount']) + int(sa4['memberCount'])}/200'''
         await self.bot.edit_message(await self.bot.get_message(discord.utils.get(discord.utils.get(self.bot.servers, id='298812318903566337').channels, id='365870449915330560'), '365888079665299457'), message)
     
-    async def self.clanupdateloop():
+    self.clanupdate = clanupdate
+
+    async def clanupdateloop():
         await self.bot.wait_until_ready()
         while not self.bot.is_closed:
             await self.clanupdate()
             await asyncio.sleep(3600)
 
+    self.clanupdateloop = clanupdateloop
+    
     @commands.command(pass_context=True)
     async def update(ctx):
         await self.clanupdate()
