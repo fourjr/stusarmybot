@@ -339,7 +339,7 @@ async def clanupdate():
 async def clanupdateloop():
     await bot.wait_until_ready()
     while not bot.is_closed:
-      await clanupdate()
+        await clanupdate()
         await asyncio.sleep(3600)
 
 @bot.command(pass_context=True)
