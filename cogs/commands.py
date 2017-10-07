@@ -1,4 +1,3 @@
-
 import discord
 import random
 import asyncio
@@ -62,7 +61,7 @@ class Commands():
     @commands.check(welcomechannel)
     async def sa3(self, ctx, member: discord.Member=None):
         'Gives the SA3 role and Member role to the specified member'
-        if ((member == None) or (discord.utils.get(ctx.author.roles, id=334250664870019073) == None)):
+        if member == None or discord.utils.get(ctx.author.roles, id=334250664870019073) == None:
             member = ctx.author
         await member.add_roles(discord.utils.get(ctx.guild.roles, id=298817009372889088), discord.utils.get(ctx.guild.roles, id=299912276008501248))
         await ctx.send('I have given {} the **SA3** and **Member** Roles!'.format(member.name))
@@ -72,11 +71,21 @@ class Commands():
     @commands.check(welcomechannel)
     async def sa4(self, ctx, member: discord.Member=None):
         'Gives the SA4 role and Member role to the specified member'
-        if ((member == None) or (discord.utils.get(ctx.author.roles, id=334250664870019073) == None)):
+        if member == None or discord.utils.get(ctx.author.roles, id=334250664870019073) == None:
             member = ctx.author
         await member.add_roles(discord.utils.get(ctx.guild.roles, id=298817009372889088), discord.utils.get(ctx.guild.roles, id=329922314747641859))
         await ctx.send('I have given {} the **SA4** and **Member** Roles!'.format(member.name))
         await discord.utils.get(ctx.guild.channels, id=298812318903566337).send("Welcome {} to Stu's Army 4!".format(member.mention))
 
+    @commands.command(aliases=['SA5'])
+    @commands.check(welcomechannel)
+    async def sa5(self, ctx, member: discord.Member=None):
+        'Gives the SA5 role and Member role to the specified member'
+        if member == None or discord.utils.get(ctx.author.roles, id=334250664870019073) == None:
+            member = ctx.author
+        await member.add_roles(discord.utils.get(ctx.guild.roles, id=366215438142537738), discord.utils.get(ctx.guild.roles, id=329922314747641859))
+        await ctx.send('I have given {} the **SA4** and **Member** Roles!'.format(member.name))
+        await discord.utils.get(ctx.guild.channels, id=298812318903566337).send("Welcome {} to Stu's Army 5!".format(member.mention))
+        
 def setup(bot):
     bot.add_cog(Commands(bot))

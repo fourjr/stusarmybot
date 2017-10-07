@@ -1,23 +1,21 @@
-
-import discord
-from ext.formatter import EmbedHelp
-from discord.ext import commands
-from contextlib import redirect_stdout
 import datetime
-import inspect
-import os
 import glob
-import random
+import inspect
 import io
+import os
+import random
 import textwrap
 import traceback
-import asyncio
-import random
-import aiohttp
+from contextlib import redirect_stdout
+import discord
+from discord.ext import commands
+from ext.formatter import EmbedHelp
+
 TOKEN = os.environ['TOKEN']
 PREFIX = '>'
 bot = commands.Bot(command_prefix=PREFIX, formatter=EmbedHelp())
 bot.remove_command('help')
+
 _extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo']
 
 @bot.event
@@ -29,7 +27,7 @@ async def on_ready():
 @bot.command()
 async def ping(ctx):
     'Pong!'
-    msgtime = ctx.message.timestamp.now()
+    msgtime = ctx.message.created_at
     await (await bot.ws.ping())
     now = datetime.datetime.now()
     ping = (now - msgtime)

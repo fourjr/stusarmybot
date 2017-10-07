@@ -1,4 +1,3 @@
-
 import discord
 import random
 import asyncio
@@ -44,6 +43,7 @@ class Logging():
         embed.add_field(name="Stu's Army 2", value='2800 Trophies [Read More](https://statsroyale.com/clan/29UQQ282)', inline=True)
         embed.add_field(name="Stu's Army 3", value='2400 Trophies [Read More](https://statsroyale.com/clan/28JU8P0Y)', inline=True)
         embed.add_field(name="Stu's Army 4", value='2000 Trophies [Read More](https://statsroyale.com/clan/8PUUGRYG)', inline=True)
+        embed.add_field(name="Stu's Army 5", value='Coming real soon! [Soon!](https://statsroyale.com/clan/SOON)', inline=True)
         welcome = await member.guild.get_channel(298816198349553665).send('{} <@&334250664870019073> <@277389105501831170>'.format(member.mention), embed=embed)
         await welcome.edit(embed=embed, content='\u200b')
 
