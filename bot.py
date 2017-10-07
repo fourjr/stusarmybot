@@ -328,10 +328,11 @@ async def clanupdate():
             sa4 = await d.json()
 
         tiers = [70, 160, 270, 400, 550, 720, 910, 1120, 1350, 1600]
-        sa1cc = max([n for n in tiers if sa1['clanChest']['clanChestCrowns'] > n])
-        sa2cc = max([n for n in tiers if sa2['clanChest']['clanChestCrowns'] > n])
-        sa3cc = max([n for n in tiers if sa3['clanChest']['clanChestCrowns'] > n])
-        sa4cc = max([n for n in tiers if sa4['clanChest']['clanChestCrowns'] > n])
+        valtotier = {70: 1, 160: 2, 270: 3, 400: 4, 550: 5, 720: 6, 910: 7,1120: 8, 1350: 9, 1600: 10}
+        sa1cc = valtotier.get(max([n for n in tiers if sa1['clanChest']['clanChestCrowns'] > n]))
+        sa2cc = valtotier.get(max([n for n in tiers if sa2['clanChest']['clanChestCrowns'] > n]))
+        sa3cc = valtotier.get(max([n for n in tiers if sa3['clanChest']['clanChestCrowns'] > n]))
+        sa4cc = valtotier.get(max([n for n in tiers if sa4['clanChest']['clanChestCrowns'] > n]))
         
     message = '**SA1** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n<:clanchest:366182009124421633> Tier {} \n--------------------- \n**SA2** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n<:clanchest:366182009124421633> Tier {}  \n--------------------- \n**SA3** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n<:clanchest:366182009124421633> Tier {}  \n--------------------- \n**SA4** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n<:clanchest:366182009124421633> Tier {}  \n--------------------- \n :busts_in_silhouette: {}/200'.format(sa1['memberCount'], sa1['requiredScore'], sa1['score'], sa1['typeName'], sa1cc, sa2['memberCount'], sa2['requiredScore'], sa2['score'], sa2['typeName'], sa2cc, sa3['memberCount'], sa3['requiredScore'], sa3['score'], sa3['typeName'], sa3cc, sa4['memberCount'], sa4['requiredScore'], sa4['score'], sa4['typeName'], sa4cc, int(sa1['memberCount']) + int(sa2['memberCount']) + int(sa3['memberCount']) + int(sa4['memberCount']))
     await bot.edit_message(await bot.get_message(discord.utils.get(discord.utils.get(bot.servers, id='298812318903566337').channels, id='365870449915330560'), '365888079665299457'), message)
