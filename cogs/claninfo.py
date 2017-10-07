@@ -13,16 +13,6 @@ class claninfo:
         self.sessions = set()
         self.clanupdateloopthing = self.bot.loop.create_task(self.clanupdateloop())
 
-    async with aiohttp.ClientSession() as session:
-        async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
-            sa1 = await d.json() 
-        async with session.get('http://api.cr-api.com/clan/29UQQ282') as d:
-            sa2 = await d.json()
-        async with session.get('http://api.cr-api.com/clan/28JU8P0Y') as d:
-            sa3 = await d.json()
-        async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d:
-            sa4 = await d.json()
-
     @commands.command(pass_context=True, aliases=['SA1info', 'SA1-info', 'sa1-info'])
     async def sa1info(self, ctx):
         tag = '88PYQV'
@@ -148,11 +138,20 @@ class claninfo:
         await self.bot.say(embed=em)
 
     async def self.clanupdate():
-            tiers = [70, 160, 270, 400, 550, 720, 910, 1120, 1350, 1600]
-            sa1cc = tiers.index(max([n for n in tiers if sa1['clanChest']['clanChestCrowns'] > n])) + 1
-            sa2cc = tiers.index(max([n for n in tiers if sa2['clanChest']['clanChestCrowns'] > n])) + 1
-            sa3cc = tiers.index(max([n for n in tiers if sa3['clanChest']['clanChestCrowns'] > n])) + 1
-            sa4cc = tiers.index(max([n for n in tiers if sa4['clanChest']['clanChestCrowns'] > n])) + 1
+        async with aiohttp.ClientSession() as session:
+            async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
+                sa1 = await d.json() 
+            async with session.get('http://api.cr-api.com/clan/29UQQ282') as d:
+                sa2 = await d.json()
+            async with session.get('http://api.cr-api.com/clan/28JU8P0Y') as d:
+                sa3 = await d.json()
+            async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d:
+                sa4 = await d.json()
+        tiers = [70, 160, 270, 400, 550, 720, 910, 1120, 1350, 1600]
+        sa1cc = tiers.index(max([n for n in tiers if sa1['clanChest']['clanChestCrowns'] > n])) + 1
+        sa2cc = tiers.index(max([n for n in tiers if sa2['clanChest']['clanChestCrowns'] > n])) + 1
+        sa3cc = tiers.index(max([n for n in tiers if sa3['clanChest']['clanChestCrowns'] > n])) + 1
+        sa4cc = tiers.index(max([n for n in tiers if sa4['clanChest']['clanChestCrowns'] > n])) + 1
             
         message = f'''**SA1** \n:shield: {sa1['memberCount']}/50 \n:trophy: {sa1['requiredScore']} \n:medal: {sa1['score']} \n<:clanchest:366182009124421633> Tier {sa1cc} \n:globe_with_meridians: {sa1['typeName']} \n--------------------- 
 **SA2** \n:shield: {sa2['memberCount']}/50 \n:trophy: {sa2['requiredScore']} \n:medal: {sa2['score']} \n<:clanchest:366182009124421633> Tier {sa2cc} \n:globe_with_meridians: {sa2['typeName']} \n--------------------- 
