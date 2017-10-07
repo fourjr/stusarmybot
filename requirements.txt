@@ -1,4 +1,4 @@
-discord.py
+git+https://github.com/Rapptz/discord.py@rewrite
 requests
 PythonGists
 bs4
@@ -8,5 +8,3 @@ mtranslate
 pyfiglet
 sqlalchemy
 pymysql
-gspread 
-oauth2client
