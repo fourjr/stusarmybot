@@ -1,3 +1,4 @@
+
 import discord
 from ext.formatter import EmbedHelp
 from discord.ext import commands
@@ -13,62 +14,39 @@ import traceback
 import asyncio
 import random
 import aiohttp
-
 TOKEN = os.environ['TOKEN']
 PREFIX = '>'
-
 bot = commands.Bot(command_prefix=PREFIX, formatter=EmbedHelp())
 bot.remove_command('help')
-
-_extensions = [
-
-    'cogs.logging',
-    'cogs.commands',
-    'cogs.claninfo'
-
-    ]
+_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo']
 
 @bot.event
 async def on_ready():
     bot.uptime = datetime.datetime.now()
-    print('------------------------------------------\n'
-    	  'Bot Ready!\n'
-    	  '------------------------------------------\n'
-    	  'Username: {}\n'
-          'User ID: {}\n'
-          '------------------------------------------'
-    	  .format(bot.user, bot.user.id))
+    print('------------------------------------------\nBot Ready!\n------------------------------------------\nUsername: {}\nUser ID: {}\n------------------------------------------'.format(bot.user, bot.user.id))
     await bot.change_presence(game=discord.Game(name="for Stu's Army!"))
-    
-        
-@bot.command(pass_context=True)
+
+@bot.command()
 async def ping(ctx):
-    """Pong!"""
+    'Pong!'
     msgtime = ctx.message.timestamp.now()
     await (await bot.ws.ping())
     now = datetime.datetime.now()
-    ping = now - msgtime
-    pong = discord.Embed(title='Pong!',
-    					 description=str(ping.microseconds / 1000.0) + ' ms',
-                         color=0x00ffff)
-    await bot.say(embed=pong)
+    ping = (now - msgtime)
+    pong = discord.Embed(title='Pong!', description=(str((ping.microseconds / 1000.0)) + ' ms'), color=65535)
+    await ctx.send(embed=pong)
 
-@bot.command(pass_context=True)
+@bot.command()
 async def help(ctx):
-    """Shows.. help?"""
-    await bot.say('''This isn't kept up to date 100% because I'm lazy :)
-**Welcome Channel**
-`!sa1` to `!sa4` - Give appropriate roles
-`!visitor` - Give appropriate roles
-\n**Non-Welcome Channel**
-`>update` - Updates <#365870449915330560>''')
-                  
-@bot.command(pass_context=True)
+    'Shows.. help?'
+    await ctx.send("This isn't kept up to date 100% because I'm lazy :)\n**Welcome Channel**\n`!sa1` to `!sa4` - Give appropriate roles\n`!visitor` - Give appropriate roles\n\n**Non-Welcome Channel**\n`>update` - Updates <#365870449915330560>")
+
+@bot.command()
 async def restart(ctx):
-    """Restarts the bot."""
-    if ctx.message.author.id == '180314310298304512':
-        channel = ctx.message.channel
-        await bot.say("Restarting...")
+    'Restarts the bot.'
+    if (ctx.author.id == 180314310298304512):
+        channel = ctx.channel
+        await ctx.send('Restarting...')
         await bot.logout()
 
 async def send_cmd_help(ctx):
@@ -76,53 +54,51 @@ async def send_cmd_help(ctx):
         pages = bot.formatter.format_help_for(ctx, ctx.invoked_subcommand)
         for page in pages:
             print(page)
-            await bot.send_message(ctx.message.channel, embed=page)
+            await ctx.channel.send(embed=page)
     else:
         pages = bot.formatter.format_help_for(ctx, ctx.command)
         for page in pages:
             print(page)
-            await bot.send_message(ctx.message.channel, embed=page)
+            await ctx.channel.send(embed=page)
 
 @bot.event
-async def on_command_error(error, ctx):
+async def on_command_error(ctx, error):
     print(''.join(traceback.format_exception(type(error), error, error.__traceback__)))
-    channel = ctx.message.channel
+    channel = ctx.channel
     if isinstance(error, commands.MissingRequiredArgument):
         if ctx.message.content.startswith('>trophy'):
-            embed=discord.Embed(title=">trophy <current amount of trophies>", description="We will suggest Clans that meet your trophy level!", color=0xe67e22)
-            await bot.send_message(channel, embed=embed)
-        else: await send_cmd_help(ctx)
+            embed = discord.Embed(title='>trophy <current amount of trophies>', description='We will suggest Clans that meet your trophy level!', color=15105570)
+            await channel.send(embed=embed)
+        else:
+            await send_cmd_help(ctx)
     elif isinstance(error, commands.BadArgument):
         await send_cmd_help(ctx)
     elif isinstance(error, commands.DisabledCommand):
-        await bot.send_message(channel, "That command is disabled.")
+        await channel.send('That command is disabled.')
     elif isinstance(error, commands.CommandInvokeError):
-        # A bit hacky, couldn't find a better way
-        no_dms = "Cannot send messages to this user"
-        is_help_cmd = ctx.command.qualified_name == "help"
+        no_dms = 'Cannot send messages to this user'
+        is_help_cmd = (ctx.command.qualified_name == 'help')
         is_forbidden = isinstance(error.original, discord.Forbidden)
-        if is_help_cmd and is_forbidden and error.original.text == no_dms:
-            msg = ("I couldn't send the help message to you in DM. Either"
-                  " you blocked me or you disabled DMs in this server.")
-            await bot.send_message(channel, msg)
+        if (is_help_cmd and is_forbidden and (error.original.text == no_dms)):
+            msg = "I couldn't send the help message to you in DM. Either you blocked me or you disabled DMs in this server."
+            await channel.send(msg)
             return
 
-@bot.command(pass_context=True)
+@bot.command()
 async def coglist(ctx):
-    '''See unloaded and loaded cogs!'''
-    if ctx.message.author.id == '180314310298304512':
-        def pagify(text, delims=["\n"], *, escape=True, shorten_by=8,
-                page_length=2000):
-            """DOES NOT RESPECT MARKDOWN BOXES OR INLINE CODE"""
+    'See unloaded and loaded cogs!'
+    if (ctx.author.id == 180314310298304512):
+
+        def pagify(text, delims=['\n'], *, escape=True, shorten_by=8, page_length=2000):
+            'DOES NOT RESPECT MARKDOWN BOXES OR INLINE CODE'
             in_text = text
             if escape:
-                num_mentions = text.count("@here") + text.count("@everyone")
+                num_mentions = (text.count('@here') + text.count('@everyone'))
                 shorten_by += num_mentions
             page_length -= shorten_by
-            while len(in_text) > page_length:
-                closest_delim = max([in_text.rfind(d, 0, page_length)
-                                    for d in delims])
-                closest_delim = closest_delim if closest_delim != -1 else page_length
+            while (len(in_text) > page_length):
+                closest_delim = max([in_text.rfind(d, 0, page_length) for d in delims])
+                closest_delim = (closest_delim if (closest_delim != (- 1)) else page_length)
                 if escape:
                     to_send = escape_mass_mentions(in_text[:closest_delim])
                 else:
@@ -131,191 +107,170 @@ async def coglist(ctx):
                 in_text = in_text[closest_delim:]
             yield in_text
 
-    def box(text, lang=""):
-        ret = "```{}\n{}\n```".format(lang, text)
+    def box(text, lang=''):
+        ret = '```{}\n{}\n```'.format(lang, text)
         return ret
-    loaded = [c.__module__.split(".")[1] for c in bot.cogs.values()]
-    # What's in the folder but not loaded is unloaded
+    loaded = [c.__module__.split('.')[1] for c in bot.cogs.values()]
+
     def _list_cogs():
-          cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
-          return ["cogs." + os.path.splitext(f)[0] for f in cogs]
-    unloaded = [c.split(".")[1] for c in _list_cogs()
-                if c.split(".")[1] not in loaded]
+        cogs = [os.path.basename(f) for f in glob.glob('cogs/*.py')]
+        return [('cogs.' + os.path.splitext(f)[0]) for f in cogs]
+    unloaded = [c.split('.')[1] for c in _list_cogs() if (c.split('.')[1] not in loaded)]
+    if (not unloaded):
+        unloaded = ['None']
+    em1 = discord.Embed(color=discord.Color.green(), title='+ Loaded', description=', '.join(sorted(loaded)))
+    em2 = discord.Embed(color=discord.Color.red(), title='- Unloaded', description=', '.join(sorted(unloaded)))
+    await ctx.send(embed=em1)
+    await ctx.send(embed=em2)
 
-    if not unloaded:
-        unloaded = ["None"]
-
-    em1 = discord.Embed(color=discord.Color.green(), title="+ Loaded", description=", ".join(sorted(loaded)))
-    em2 = discord.Embed(color=discord.Color.red(), title="- Unloaded", description=", ".join(sorted(unloaded)))
-    await bot.say(embed=em1)
-    await bot.say(embed=em2)
-
-def cleanup_code( content):
-    """Automatically removes code blocks from the code."""
-    # remove ```py\n```
-    if content.startswith('```') and content.endswith('```'):
-        return '\n'.join(content.split('\n')[1:-1])
-
-    # remove `foo`
+def cleanup_code(content):
+    'Automatically removes code blocks from the code.'
+    if (content.startswith('```') and content.endswith('```')):
+        return '\n'.join(content.split('\n')[1:(- 1)])
     return content.strip('` \n')
 
 def get_syntax_error(e):
-    if e.text is None:
+    if (e.text is None):
         return '```py\n{0.__class__.__name__}: {0}\n```'.format(e)
     return '```py\n{0.text}{1:>{0.offset}}\n{2}: {0}```'.format(e, '^', type(e).__name__)
 
 async def to_code_block(ctx, body):
-    if body.startswith('```') and body.endswith('```'):
-        content = '\n'.join(body.split('\n')[1:-1])
+    if (body.startswith('```') and body.endswith('```')):
+        content = '\n'.join(body.split('\n')[1:(- 1)])
     else:
         content = body.strip('`')
-    await bot.say('```py\n'+content+'```')
+    await ctx.send((('```py\n' + content) + '```'))
 
-@bot.command(pass_context=True, name='eval')
+@bot.command(name='eval')
 async def _eval(ctx, *, body: str):
-    '''Run python scripts on discord!'''
+    'Run python scripts on discord!'
     await to_code_block(ctx, body)
     env = {
         'bot': bot,
         'ctx': ctx,
-        'channel': ctx.message.channel,
-        'author': ctx.message.author,
-        'server': ctx.message.server,
+        'channel': ctx.channel,
+        'author': ctx.author,
+        'server': ctx.guild,
         'message': ctx.message,
     }
-
     env.update(globals())
-
     body = cleanup_code(content=body)
     stdout = io.StringIO()
-
-    to_compile = 'async def func():\n%s' % textwrap.indent(body, '  ')
-
+    to_compile = ('async def func():\n%s' % textwrap.indent(body, '  '))
     try:
         exec(to_compile, env)
     except SyntaxError as e:
-        return await bot.say(get_syntax_error(e))
-
+        return await ctx.send(get_syntax_error(e))
     func = env['func']
     try:
         with redirect_stdout(stdout):
             ret = await func()
     except Exception as e:
         value = stdout.getvalue()
-        x = await bot.say(f'```py\n{e}\n{traceback.format_exc()}\n{value}```')
+        x = await ctx.send(f'''```py
+{e}
+{traceback.format_exc()}
+{value}```''')
         try:
-            await bot.add_reaction(x, '\U0001f534')
+            await x.add_reaction('🔴')
         except:
             pass
     else:
         value = stdout.getvalue()
-
-        if TOKEN in value:
-            value = value.replace(TOKEN,"[EXPUNGED]")
-
-        if ret is None:
+        if (TOKEN in value):
+            value = value.replace(TOKEN, '[EXPUNGED]')
+        if (ret is None):
             if value:
                 try:
-                    x = await bot.say('```py\n%s\n```' % value)
+                    x = await ctx.send(('```py\n%s\n```' % value))
                 except:
-                    x = await bot.say('```py\n\'Result was too long.\'```')
+                    x = await ctx.send("```py\n'Result was too long.'```")
                 try:
-                    await bot.add_reaction(x, '\U0001f535')
+                    await x.add_reaction('🔵')
                 except:
                     pass
             else:
                 try:
-                    await bot.add_reaction(ctx.message, '\U0001f535')
+                    await ctx.message.add_reaction('🔵')
                 except:
                     pass
         else:
             try:
-                x = await bot.say('```py\n%s%s\n```' % (value, ret))
+                x = await ctx.send(('```py\n%s%s\n```' % (value, ret)))
             except:
-                x = await bot.say('```py\n\'Result was too long.\'```')
+                x = await ctx.send("```py\n'Result was too long.'```")
             try:
-                await bot.add_reaction(x, '\U0001f535')
+                await x.add_reaction('🔵')
             except:
                 pass
 
-@bot.command(pass_context=True)
+@bot.command()
 async def say(ctx, *, message: str):
-    '''Say something as the bot.'''
-    if discord.utils.get(ctx.message.author.roles, id='298817057426767873') != None:
-        if '{}say'.format(ctx.prefix) in message:
-            await bot.say("Don't ya dare spam.")
+    'Say something as the bot.'
+    if (discord.utils.get(ctx.author.roles, id=298817057426767873) != None):
+        if ('{}say'.format(ctx.prefix) in message):
+            await ctx.send("Don't ya dare spam.")
         else:
-            await bot.say(message)
+            await ctx.send(message)
 
-@bot.command(pass_context=True)
-async def source(ctx, *, command: str = None):
-    """Displays my full source code or for a specific command.
-    To display the source code of a subcommand you can separate it by
-    periods, e.g. tag.create for the create subcommand of the tag command
-    or by spaces.
-    """
+@bot.command()
+async def source(ctx, *, command: str=None):
+    'Displays my full source code or for a specific command.\n    To display the source code of a subcommand you can separate it by\n    periods, e.g. tag.create for the create subcommand of the tag command\n    or by spaces.\n    '
     source_url = 'https://github.com/fourjr/mcplayzbot'
-    if command is None:
-        await bot.say(source_url)
+    if (command is None):
+        await ctx.send(source_url)
         return
-
     obj = bot.get_command(command.replace('.', ' '))
-    if obj is None:
-        return await bot.say('Could not find command.')
-
-    # since we found the command we're looking for, presumably anyway, let's
-    # try to access the code itself
+    if (obj is None):
+        return await ctx.send('Could not find command.')
     src = obj.callback.__code__
-    lines, firstlineno = inspect.getsourcelines(src)
-    if not obj.callback.__module__.startswith('discord'):
-        # not a built-in command
+    (lines, firstlineno) = inspect.getsourcelines(src)
+    if (not obj.callback.__module__.startswith('discord')):
         location = os.path.relpath(src.co_filename).replace('\\', '/')
     else:
-        location = obj.callback.__module__.replace('.', '/') + '.py'
+        location = (obj.callback.__module__.replace('.', '/') + '.py')
         source_url = 'https://github.com/fourjr/mcplayzbot'
+    final_url = '<{}/blob/master/{}#L{}-L{}>'.format(source_url, location, firstlineno, ((firstlineno + len(lines)) - 1))
+    await ctx.send(final_url)
 
-    final_url = '<{}/blob/master/{}#L{}-L{}>'.format(source_url, location, firstlineno, firstlineno + len(lines) - 1)
-    await bot.say(final_url)
-
-@bot.command(pass_context=True,name='reload')
-async def _reload(ctx,*, module : str):
-    """Reloads a module."""
-    if ctx.message.author.id == '180314310298304512':
-        channel = ctx.message.channel
-        module = 'cogs.'+module
+@bot.command(name='reload')
+async def _reload(ctx, *, module: str):
+    'Reloads a module.'
+    if (ctx.author.id == 180314310298304512):
+        channel = ctx.channel
+        module = ('cogs.' + module)
         try:
             bot.unload_extension(module)
-            x = await bot.send_message(channel,'Successfully Unloaded.')
+            x = await channel.send('Successfully Unloaded.')
             bot.load_extension(module)
-            x = await bot.edit_message(x,'Successfully Reloaded.')
+            x = await x.edit(content='Successfully Reloaded.')
         except Exception as e:
-            x = await bot.edit_message(x,'\N{PISTOL}')
-            await bot.say('{}: {}'.format(type(e).__name__, e))
+            x = await x.edit(content='🔫')
+            await ctx.send('{}: {}'.format(type(e).__name__, e))
         else:
-            x = await bot.edit_message(x,'Done. \N{OK HAND SIGN}')
+            x = await x.edit(content='Done. 👌')
 
-@bot.command(pass_context=True)
+@bot.command()
 async def load(ctx, *, module):
-    if ctx.message.author.id == '180314310298304512':
-        '''Loads a module.'''
-        module = 'cogs.'+module
+    if (ctx.author.id == 180314310298304512):
+        'Loads a module.'
+        module = ('cogs.' + module)
         try:
             bot.load_extension(module)
-            await bot.say('Successfully Loaded.')
+            await ctx.send('Successfully Loaded.')
         except Exception as e:
-            await bot.say('\N{PISTOL}\n{}: {}'.format(type(e).__name__, e))
+            await ctx.send('🔫\n{}: {}'.format(type(e).__name__, e))
 
-@bot.command(pass_context=True)
+@bot.command()
 async def unload(ctx, *, module):
-    '''Unloads a module.'''
-    if ctx.message.author.id == '180314310298304512':
-        module = 'cogs.'+module
+    'Unloads a module.'
+    if (ctx.author.id == 180314310298304512):
+        module = ('cogs.' + module)
         try:
             bot.unload_extension(module)
-            await bot.say('Successfully Unloaded `{}`'.format(module))
+            await ctx.send('Successfully Unloaded `{}`'.format(module))
         except:
             pass
-
 for extension in _extensions:
     try:
         bot.load_extension(extension)
@@ -323,8 +278,7 @@ for extension in _extensions:
     except Exception as e:
         exc = '{}: {}'.format(type(e).__name__, e)
         print('Error on load: {}\n{}'.format(extension, exc))
-
 try:
-    bot.run(TOKEN.strip('\"'))
+    bot.run(TOKEN.strip('"'))
 except Exception as e:
     print('\n[ERROR]: \n{}\n'.format(e))
