@@ -137,7 +137,7 @@ class claninfo:
         em.set_footer(text="Powered by cr-api", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
         await self.bot.say(embed=em)
 
-    async def clanupdate():
+    async def clanupdate(self):
         async with aiohttp.ClientSession() as session:
             async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
                 sa1 = await d.json() 
@@ -159,19 +159,15 @@ class claninfo:
 **SA4** \n:shield: {sa4['memberCount']}/50 \n:trophy: {sa4['requiredScore']} \n:medal: {sa4['score']} \n<:clanchest:366182009124421633> Tier {sa4cc} \n:globe_with_meridians: {sa4['typeName']} \n---------------------
 :busts_in_silhouette: {int(sa1['memberCount']) + int(sa2['memberCount']) + int(sa3['memberCount']) + int(sa4['memberCount'])}/200'''
         await self.bot.edit_message(await self.bot.get_message(discord.utils.get(discord.utils.get(self.bot.servers, id='298812318903566337').channels, id='365870449915330560'), '365888079665299457'), message)
-    
-    self.clanupdate = clanupdate
 
-    async def clanupdateloop():
+    async def clanupdateloop(self):
         await self.bot.wait_until_ready()
         while not self.bot.is_closed:
             await self.clanupdate()
             await asyncio.sleep(3600)
 
-    self.clanupdateloop = clanupdateloop
-    
     @commands.command(pass_context=True)
-    async def update(ctx):
+    async def update(self, ctx):
         await self.clanupdate()
         await self.bot.add_reaction(ctx.message, 'league7:335746873753075714')
 
