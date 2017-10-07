@@ -334,10 +334,10 @@ async def clanupdate():
         sa4cc = tiers.index(max([n for n in tiers if sa4['clanChest']['clanChestCrowns'] > n]))
         
     message = f'''**SA1** \n:shield: {sa1['memberCount']}/50 \n:trophy: {sa1['requiredScore']} \n:medal: {sa1['score']} \n:globe_with_meridians: {sa1['typeName']} \n<:clanchest:366182009124421633> Tier {sa1cc} \n--------------------- 
-            \n**SA2** \n:shield: {sa2['memberCount']}/50 \n:trophy: {sa2['requiredScore']} \n:medal: {sa2['score']} \n:globe_with_meridians: {sa2['typeName']} \n<:clanchest:366182009124421633> Tier {sa2cc}  \n--------------------- 
-            \n**SA3** \n:shield: {sa3['memberCount']}/50 \n:trophy: {sa3['requiredScore']} \n:medal: {sa3['score']} \n:globe_with_meridians: {sa3['typeName']} \n<:clanchest:366182009124421633> Tier {sa3cc}  \n--------------------- 
-            \n**SA4** \n:shield: {sa4['memberCount']}/50 \n:trophy: {sa4['requiredScore']} \n:medal: {sa4['score']} \n:globe_with_meridians: {sa4['typeName']} \n<:clanchest:366182009124421633> Tier {sa4cc}  \n--------------------- \n 
-            :busts_in_silhouette: {int(sa1['memberCount']) + int(sa2['memberCount']) + int(sa3['memberCount']) + int(sa4['memberCount'])}/200'''
+**SA2** \n:shield: {sa2['memberCount']}/50 \n:trophy: {sa2['requiredScore']} \n:medal: {sa2['score']} \n:globe_with_meridians: {sa2['typeName']} \n<:clanchest:366182009124421633> Tier {sa2cc}  \n--------------------- 
+**SA3** \n:shield: {sa3['memberCount']}/50 \n:trophy: {sa3['requiredScore']} \n:medal: {sa3['score']} \n:globe_with_meridians: {sa3['typeName']} \n<:clanchest:366182009124421633> Tier {sa3cc}  \n--------------------- 
+**SA4** \n:shield: {sa4['memberCount']}/50 \n:trophy: {sa4['requiredScore']} \n:medal: {sa4['score']} \n:globe_with_meridians: {sa4['typeName']} \n<:clanchest:366182009124421633> Tier {sa4cc}  \n--------------------- \n 
+:busts_in_silhouette: {int(sa1['memberCount']) + int(sa2['memberCount']) + int(sa3['memberCount']) + int(sa4['memberCount'])}/200'''
     await bot.edit_message(await bot.get_message(discord.utils.get(discord.utils.get(bot.servers, id='298812318903566337').channels, id='365870449915330560'), '365888079665299457'), message)
     
 async def clanupdateloop():
