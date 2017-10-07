@@ -316,25 +316,7 @@ async def unload(ctx, *, module):
         except:
             pass
         
-async def clanupdateloop():
-    await bot.wait_until_ready()
-    while not bot.is_closed:
-        async with aiohttp.ClientSession() as session:
-            async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
-                sa1 = await d.json() 
-            async with session.get('http://api.cr-api.com/clan/29UQQ282') as d:
-                sa2 = await d.json()
-            async with session.get('http://api.cr-api.com/clan/28JU8P0Y') as d:
-                sa3 = await d.json()
-            async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d:
-                sa4 = await d.json()
-
-        message = '**SA1** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n--------------------- \n**SA2** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n--------------------- \n**SA3** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n--------------------- \n**SA4** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n--------------------- \n :busts_in_silhouette: {}/200'.format(sa1['memberCount'], sa1['requiredScore'], sa1['score'], sa1['typeName'], sa2['memberCount'], sa2['requiredScore'], sa2['score'], sa2['typeName'], sa3['memberCount'], sa3['requiredScore'], sa3['score'], sa3['typeName'], sa4['memberCount'], sa4['requiredScore'], sa4['score'], sa4['typeName'], int(sa1['memberCount']) + int(sa2['memberCount']) + int(sa3['memberCount']) + int(sa4['memberCount']))
-        await bot.edit_message(await bot.get_message(discord.utils.get(discord.utils.get(bot.servers, id='298812318903566337').channels, id='365870449915330560'), '365888079665299457'), message)
-        await asyncio.sleep(3600)
-
-@bot.command(pass_context=True)
-async def update(ctx):
+async def clanupdate():
     async with aiohttp.ClientSession() as session:
         async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
             sa1 = await d.json() 
@@ -345,8 +327,24 @@ async def update(ctx):
         async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d:
             sa4 = await d.json()
 
-    message = '**SA1** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n--------------------- \n**SA2** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n--------------------- \n**SA3** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n--------------------- \n**SA4** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n--------------------- \n :busts_in_silhouette: {}/200'.format(sa1['memberCount'], sa1['requiredScore'], sa1['score'], sa1['typeName'], sa2['memberCount'], sa2['requiredScore'], sa2['score'], sa2['typeName'], sa3['memberCount'], sa3['requiredScore'], sa3['score'], sa3['typeName'], sa4['memberCount'], sa4['requiredScore'], sa4['score'], sa4['typeName'], int(sa1['memberCount']) + int(sa2['memberCount']) + int(sa3['memberCount']) + int(sa4['memberCount']))
-    await bot.edit_message(await bot.get_message(discord.utils.get(discord.utils.get(bot.servers, id='298812318903566337').channels, id='365870449915330560'), '365888079665299457'), message)                      
+        tiers = [70, 160, 270, 400, 550, 720, 910, 1120, 1350, 1600]
+        sa1cc = max([n for n in tiers if sa1['clanChest']['clanChestCrowns'] > n])
+        sa2cc = max([n for n in tiers if sa2['clanChest']['clanChestCrowns'] > n])
+        sa3cc = max([n for n in tiers if sa3['clanChest']['clanChestCrowns'] > n])
+        sa4cc = max([n for n in tiers if sa4['clanChest']['clanChestCrowns'] > n])
+        
+    message = '**SA1** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n<:clanchest:366182009124421633> Tier {} \n--------------------- \n**SA2** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n<:clanchest:366182009124421633> Tier {}  \n--------------------- \n**SA3** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n<:clanchest:366182009124421633> Tier {}  \n--------------------- \n**SA4** \n:shield: {}/50 \n:trophy: {} \n:medal: {} \n:globe_with_meridians: {} \n<:clanchest:366182009124421633> Tier {}  \n--------------------- \n :busts_in_silhouette: {}/200'.format(sa1['memberCount'], sa1['requiredScore'], sa1['score'], sa1['typeName'], sa1cc, sa2['memberCount'], sa2['requiredScore'], sa2['score'], sa2['typeName'], sa2cc, sa3['memberCount'], sa3['requiredScore'], sa3['score'], sa3['typeName'], sa3cc, sa4['memberCount'], sa4['requiredScore'], sa4['score'], sa4['typeName'], sa4cc, int(sa1['memberCount']) + int(sa2['memberCount']) + int(sa3['memberCount']) + int(sa4['memberCount']))
+    await bot.edit_message(await bot.get_message(discord.utils.get(discord.utils.get(bot.servers, id='298812318903566337').channels, id='365870449915330560'), '365888079665299457'), message)
+    
+async def clanupdateloop():
+    await bot.wait_until_ready()
+    while not bot.is_closed:
+      await clanupdate()
+        await asyncio.sleep(3600)
+
+@bot.command(pass_context=True)
+async def update(ctx):
+    await clanupdate()
     await bot.add_reaction(ctx.message, 'league7:335746873753075714')
     
 bot.loop.create_task(clanupdateloop())
