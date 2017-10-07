@@ -41,13 +41,18 @@ async def on_ready():
     await bot.change_presence(game=discord.Game(name="for Stu's Army!"))
     async with aiohttp.ClientSession() as session:
         async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
-            bot.sa1 = await d.json() 
+            sa1 = await d.json() 
         async with session.get('http://api.cr-api.com/clan/29UQQ282') as d:
-            bot.sa2 = await d.json()
+            sa2 = await d.json()
         async with session.get('http://api.cr-api.com/clan/28JU8P0Y') as d:
-            bot.sa3 = await d.json()
+            sa3 = await d.json()
         async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d:
-            bot.sa4 = await d.json()
+            sa4 = await d.json()
+            
+bot.sa1 = sa1
+bot.sa2 = sa2
+bot.sa3 = sa3
+bot.sa4 = sa4
     
         
 @bot.command(pass_context=True)
