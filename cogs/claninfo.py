@@ -34,7 +34,7 @@ class claninfo():
 :trophy: {sa1['requiredScore']} 
 :medal: {sa1['score']} 
 <:soon:337920093532979200> {sa1['donations']}/week
-<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa1['clanChest']['clanChestCrowns'] > n)])) + 1)} 
+<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa1['clanChest']['clanChestCrowns'] > n)])) + 2)} 
 :globe_with_meridians: {sa1['typeName']} 
 --------------------- 
 **SA2** 
@@ -42,7 +42,7 @@ class claninfo():
 :trophy: {sa2['requiredScore']}
 :medal: {sa2['score']}
 <:soon:337920093532979200> {sa2['donations']}/week
-<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa2['clanChest']['clanChestCrowns'] > n)])) + 1)} 
+<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa2['clanChest']['clanChestCrowns'] > n)])) + 2)} 
 :globe_with_meridians: {sa2['typeName']} 
 --------------------- 
 **SA3** 
@@ -50,7 +50,7 @@ class claninfo():
 :trophy: {sa3['requiredScore']} 
 :medal: {sa3['score']} 
 <:soon:337920093532979200> {sa3['donations']}/week
-<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa3['clanChest']['clanChestCrowns'] > n)])) + 1)} 
+<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa3['clanChest']['clanChestCrowns'] > n)])) + 2)} 
 :globe_with_meridians: {sa3['typeName']} 
 --------------------- 
 **SA4** 
@@ -58,7 +58,7 @@ class claninfo():
 :trophy: {sa4['requiredScore']} 
 :medal: {sa4['score']} 
 <:soon:337920093532979200> {sa4['donations']}/week
-<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa4['clanChest']['clanChestCrowns'] > n)])) + 1)} 
+<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa4['clanChest']['clanChestCrowns'] > n)])) + 2)} 
 :globe_with_meridians: {sa4['typeName']} 
 ---------------------
 **SA5**
@@ -70,7 +70,7 @@ Coming soon! :)
 #:trophy: {sa5['requiredScore']}
 #:medal: {sa5['score']}
 #<:soon:337920093532979200> {sa5['donations']}/week
-#<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa5['clanChest']['clanChestCrowns'] > n)])) + 1)}
+#<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa5['clanChest']['clanChestCrowns'] > n)])) + 2)}
 #:globe_with_meridians: {sa5['typeName']}
 
         await (await discord.utils.get(discord.utils.get(self.bot.guilds, id=298812318903566337).channels, id=365870449915330560).get_message(365888079665299457)).edit(content=message)
