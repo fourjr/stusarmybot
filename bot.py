@@ -37,7 +37,16 @@ async def ping(ctx):
 @bot.command()
 async def help(ctx):
     'Shows.. help?'
-    await ctx.send("This isn't kept up to date 100% because I'm lazy :)\n**Welcome Channel**\n`!sa1` to `!sa4` - Give appropriate roles\n`!visitor` - Give appropriate roles\n\n**Non-Welcome Channel**\n`>update` - Updates <#365870449915330560>")
+    await ctx.send("""This isn't kept up to date 100% because I'm lazy :)
+    **Welcome Channel**
+    `>sa1` to `>sa5` - Give appropriate roles
+    `>visitor` - Give appropriate roles
+    
+    **Non-Welcome Channel**
+    `>help` - Shows this ~~never updated~~ list of useful information.
+    `>ping` - Pong!
+    `>update` - Updates <#365870449915330560>
+    `>sa1info` to `>sa4info` - Gives you Clan Stats for the various Clans. """)
 
 @bot.command()
 async def restart(ctx):
