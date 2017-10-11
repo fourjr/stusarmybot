@@ -23,7 +23,7 @@ class Commands():
         elif (trophy >= 2400):
             await ctx.send("You can check out Stu's Army 3! <@277389105501831170>, help him out!")
         elif (trophy >= 2000):
-            await ctx.send("You can check out Stu's Army 2! <@277389105501831170>, help him out!")
+            await ctx.send("You can check out Stu's Army 4! <@277389105501831170>, help him out!")
         else:
             await ctx.send("I'm sorry but you don't meet the criteria for any of our Clans. You can do `>visitor` if you want to stick around though!")
 
