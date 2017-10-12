@@ -21,7 +21,12 @@ _extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo']
 @bot.event
 async def on_ready():
     bot.uptime = datetime.datetime.now()
-    print('------------------------------------------\nBot Ready!\n------------------------------------------\nUsername: {}\nUser ID: {}\n------------------------------------------'.format(bot.user, bot.user.id))
+    print('''------------------------------------------
+          Bot Ready!
+          ------------------------------------------
+          Username: {}
+          User ID: {}
+          ------------------------------------------'''.format(bot.user, bot.user.id))
     await bot.change_presence(game=discord.Game(name="for Stu's Army!"))
 
 @bot.command()
