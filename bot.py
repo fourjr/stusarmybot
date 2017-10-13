@@ -11,9 +11,25 @@ import discord
 from discord.ext import commands
 from ext.formatter import EmbedHelp
 
-TOKEN = os.environ['TOKEN']
-PREFIX = '>'
-bot = commands.Bot(command_prefix=PREFIX, formatter=EmbedHelp())
+def token():
+    '''Returns your token wherever it is'''
+    try:
+        with open('./data/config.json') as f:
+            config = json.load(f)
+            return config.get('TOKEN').strip('\"')
+    except:
+        return os.environ.get('TOKEN')
+
+def prefix():
+    '''Returns your token wherever it is'''
+    try:
+        with open('./data/config.json') as f:
+            config = json.load(f)
+            return config.get('PREFIX').strip('\"')
+    except:
+        return '!'
+
+bot = commands.Bot(command_prefix=prefix(), formatter=EmbedHelp())
 bot.remove_command('help')
 
 _extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo']
@@ -286,7 +302,8 @@ for extension in _extensions:
     except Exception as e:
         exc = '{}: {}'.format(type(e).__name__, e)
         print('Error on load: {}\n{}'.format(extension, exc))
+
 try:
-    bot.run(TOKEN.strip('"'))
+    bot.run(token(), reconnect=True)
 except Exception as e:
-    print('\n[ERROR]: \n{}\n'.format(e))
+    print(e)

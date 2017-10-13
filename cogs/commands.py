@@ -10,7 +10,10 @@ class Commands():
         self.sessions = set()
 
     def welcomechannel(ctx):
-        return ((ctx.channel.id == 298816198349553665) or (ctx.channel.id == 362172188301852672))
+        return (ctx.channel.id == 298816198349553665) or (ctx.channel.id == 362172188301852672)
+
+    def anniversary(ctx):
+        return False
 
     @commands.command()
     @commands.check(welcomechannel)
@@ -86,6 +89,24 @@ class Commands():
         await member.add_roles(discord.utils.get(ctx.guild.roles, id=366215438142537738), discord.utils.get(ctx.guild.roles, id=329922314747641859))
         await ctx.send('I have given {} the **SA4** and **Member** Roles!'.format(member.name))
         await discord.utils.get(ctx.guild.channels, id=298812318903566337).send("Welcome {} to Stu's Army 5!".format(member.mention))
+
+    @commands.command()
+    async def membercount(self, ctx):
+        '''Outputs member count'''
+        await ctx.send(f'Current member count: {len(ctx.guild.members)}')
+
+    @commands.command()
+    @commands.check(anniversary)
+    async def addrole(self, ctx, *, rolename:str):
+        '''Adds some cool roles'''
+        if rolename == '2 Year Crew':
+            await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=368317195001921536))
+            await ctx.send('Oh yeah! 2 Years! Welcome to the Crew!')
+        elif rolename == '2 Year Tournament':
+            await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=368317384148385792))
+            await ctx.send('Welcome to the 2 Year Tournament! More details in <#368317815679221763>!')
+        else:
+            await ctx.send('Invalid Role!')
         
 def setup(bot):
     bot.add_cog(Commands(bot))
