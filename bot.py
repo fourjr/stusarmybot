@@ -27,7 +27,7 @@ def prefix():
             config = json.load(f)
             return config.get('PREFIX').strip('\"')
     except:
-        return '!'
+        return '>' 
 
 bot = commands.Bot(command_prefix=prefix(), formatter=EmbedHelp())
 bot.remove_command('help')
