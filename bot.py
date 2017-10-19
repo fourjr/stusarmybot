@@ -5,6 +5,8 @@ import io
 import os
 import random
 import textwrap
+import aiohttp
+import json
 import traceback
 from contextlib import redirect_stdout
 import discord
@@ -23,26 +25,56 @@ def token():
 def prefix():
     '''Returns your token wherever it is'''
     try:
-        with open('./data/config.json') as f:
+        with open('data/config.json') as f:
             config = json.load(f)
-            return config.get('PREFIX').strip('\"')
+            return 'b>'
     except:
         return '>' 
 
+def heroku():
+    '''Using Heroku?'''
+    try:
+        with open('./data/config.json') as f:
+            config = json.load(f)
+            return False
+    except:
+        return True
+
 bot = commands.Bot(command_prefix=prefix(), formatter=EmbedHelp())
 bot.remove_command('help')
+
+async def webhook(content):
+    '''Grabs from Database'''
+    async with aiohttp.ClientSession() as session:
+        url = 'https://canary.discordapp.com/api/webhooks/370568981045575681/21TEod8EkGSLNWQ_CWyepYPkqkukJJLNYs54K7xWG8qadWesoesgZ90bAQ4ctDsh_OUC'
+        payload = {
+            'content': content,
+        }
+        headers = {
+            'content-type': 'application/json',
+        }
+        async with session.post(url, data=json.dumps(payload), headers=headers) as r:
+            resp = r
+            resp.close()
+
+def check(msg):
+    return msg.author.id == 249891250117804032 and msg.channel.id == 370240126795776000
+
+bot.web = webhook
+bot.check = check
 
 _extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo']
 
 @bot.event
 async def on_ready():
     bot.uptime = datetime.datetime.now()
-    print('''------------------------------------------
-          Bot Ready!
-          ------------------------------------------
-          Username: {}
-          User ID: {}
-          ------------------------------------------'''.format(bot.user, bot.user.id))
+    print('''
+------------------------------------------
+Bot Ready!
+------------------------------------------
+Username: {}
+User ID: {}
+------------------------------------------'''.format(bot.user, bot.user.id))
     await bot.change_presence(game=discord.Game(name="for Stu's Army!"))
 
 @bot.command()
@@ -307,6 +339,14 @@ for extension in _extensions:
     except Exception as e:
         exc = '{}: {}'.format(type(e).__name__, e)
         print('Error on load: {}\n{}'.format(extension, exc))
+
+if not heroku():
+    try:
+        bot.load_extension('cogs.stats')
+        print('Loaded: {}'.format('cogs.stats'))
+    except Exception as e:
+        exc = '{}: {}'.format(type(e).__name__, e)
+        print('Error on load: {}\n{}'.format('cogs.stats', exc))
 
 try:
     bot.run(token(), reconnect=True)

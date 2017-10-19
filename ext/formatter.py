@@ -109,8 +109,8 @@ class EmbedHelp(HelpFormatter):
         if (len(params) > 0):
             for (name, param) in params.items():
                 if (param.default is not param.empty):
-                    should_print = (param.default if isinstance(param.default, str) else (param.default is not None))
-                    if should_print:
+                    should_#print = (param.default if isinstance(param.default, str) else (param.default is not None))
+                    if should_#print:
                         result.append('[{}={}]'.format(name, param.default))
                     else:
                         result.append('[{}]'.format(name))
@@ -178,13 +178,13 @@ class EmbedHelp(HelpFormatter):
                             msg[i] = (('``' + x) + '``')
                         if (not line):
                             del msg[i]
-                    print(msg)
+                    #print(msg)
                     em = discord.Embed(color=discord.Colour.orange(), title=msg[0])
                     try:
                         em.description = ''.join(msg[1:])
                     except:
                         pass
-                    print('OVER HERE', em)
+                    #print('OVER HERE', em)
                     return [em]
         max_width = self.max_name_size
 
