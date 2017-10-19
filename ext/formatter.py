@@ -109,8 +109,8 @@ class EmbedHelp(HelpFormatter):
         if (len(params) > 0):
             for (name, param) in params.items():
                 if (param.default is not param.empty):
-                    should_#print = (param.default if isinstance(param.default, str) else (param.default is not None))
-                    if should_#print:
+                    should_print = (param.default if isinstance(param.default, str) else (param.default is not None))
+                    if should_print:
                         result.append('[{}={}]'.format(name, param.default))
                     else:
                         result.append('[{}]'.format(name))
