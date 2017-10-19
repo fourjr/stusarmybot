@@ -60,10 +60,15 @@ async def webhook(content):
 def check(msg):
     return msg.author.id == 249891250117804032 and msg.channel.id == 370240126795776000
 
+def emoji(name:str):
+    emoji = discord.utils.get(bot.emojis, name=name)
+    return '<:{}:{}>'.format(emoji.name, emoji.id)
+
+bot.emoji = emoji 
 bot.web = webhook
 bot.check = check
 
-_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo']
+_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.stats']
 
 @bot.event
 async def on_ready():
@@ -339,14 +344,6 @@ for extension in _extensions:
     except Exception as e:
         exc = '{}: {}'.format(type(e).__name__, e)
         print('Error on load: {}\n{}'.format(extension, exc))
-
-if not heroku():
-    try:
-        bot.load_extension('cogs.stats')
-        print('Loaded: {}'.format('cogs.stats'))
-    except Exception as e:
-        exc = '{}: {}'.format(type(e).__name__, e)
-        print('Error on load: {}\n{}'.format('cogs.stats', exc))
 
 try:
     bot.run(token(), reconnect=True)
