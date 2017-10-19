@@ -62,8 +62,11 @@ def check(msg):
 
 def emoji(name:str):
     emoji = discord.utils.get(bot.emojis, name=name)
-    return '<:{}:{}>'.format(emoji.name, emoji.id)
-
+    try:
+        return '<:{}:{}>'.format(emoji.name, emoji.id)
+    except:
+        return name
+    
 bot.emoji = emoji 
 bot.web = webhook
 bot.check = check
