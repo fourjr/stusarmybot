@@ -19,7 +19,11 @@ class Stats():
         emoji = self.bot.emoji
         if tag == None:
             await self.bot.web(f'read stusarmybottags | {ctx.author.id} |')
-            tagmsg = await self.bot.wait_for('message', check=self.bot.check)
+            try:
+                tagmsg = await self.bot.wait_for('message', check=self.bot.check, timeout = 2)
+            except asyncio.TimeoutError:
+                await ctx.send("You have not registered your tag yet! Do `>tag save #tag` or `>tag profile #tag`!")
+                return
             tag = tagmsg.content
 
         async with aiohttp.ClientSession() as session:
@@ -61,6 +65,49 @@ class Stats():
         profile.add_field(name='Deck', value=deck)
 
         await ctx.send(embed=profile)
+    
+    @commands.command(aliases=['chest'])
+    async def chests(self, ctx, tag = None):
+        emoji = self.bot.emoji
+        if tag == None:
+            await self.bot.web(f'read stusarmybottags | {ctx.author.id} |')
+            try:
+                tagmsg = await self.bot.wait_for('message', check=self.bot.check, timeout = 2)
+            except asyncio.TimeoutError:
+                await ctx.send("You have not registered your tag yet! Do `>save #tag` or `>chests #tag`!")
+                return
+            tag = tagmsg.content
+
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"http://api.cr-api.com/profile/{tag.replace('#', '').upper()}") as d:
+                crprof = await d.json()
+
+        async with aiohttp.ClientSession() as session:
+            async with session.get('http://api.cr-api.com/constants') as d:
+                constants = await d.json()
+
+        chests = ''
+        index = crprof['chestCycle']['position'] % len(constants['chestCycle']['order'])
+        chestindex = crprof['chestCycle']['position']
+
+        for i in range(10):
+            if chestindex == crprof['chestCycle']['superMagicalPos']:
+                chests += emoji('chestsupermagical') + ' '
+            elif chestindex == crprof['chestCycle']['legendaryPos']:
+                chests += emoji('chestlegendary') + ' '
+            elif chestindex == crprof['chestCycle']['epicPos']:
+                chests += emoji('chestepic') + ' '
+            else:
+                chests += emoji('chest' + constants['chestCycle']['order'][index].lower()) + ' '
+            index += 1
+            chestindex += 1
+        
+        index = crprof['chestCycle']['position'] % len(constants['chestCycle']['order'])
+        smc = crprof['chestCycle']['superMagicalPos'] - crprof['chestCycle']['position']
+        legendary = crprof['chestCycle']['legendaryPos'] - crprof['chestCycle']['position']
+        epic = crprof['chestCycle']['epicPos'] - crprof['chestCycle']['position']
+
+        await ctx.send(f"{chests} {smc}{emoji('chestsupermagical')} {legendary}{emoji('chestlegendary')} {epic}{emoji('chestepic')}")
 
 def setup(bot):
     bot.add_cog(Stats(bot))
