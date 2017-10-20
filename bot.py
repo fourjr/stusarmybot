@@ -106,10 +106,17 @@ This isn't kept up to date 100% because I'm lazy :)
 `>visitor` - Give appropriate roles
 
 **Non-Welcome Channel**
-`>help` - Shows this ~~never updated~~ list of useful information.
+`>help` - Shows this list of useful information.
 `>ping` - Pong!
 `>update` - Updates <#365870449915330560>
-`>sa1info` to `>sa4info` - Gives you Clan Stats for the various Clans. """)
+`>sa1info` to `>sa5info` - Gives you Clan Stats for the various Clans. 
+
+**Clash Royale Stats**
+`>save <tag>` - Saves your tag!
+`>profile [player tag/user]` - Shows part of your Clash Royale Profile
+`>clan [clan tag/user]` - Shows some Clan Stats
+`>chests [number] [player tag/user]` - Shows [number] of upcoming chests
+*This cog is heavily under development.*""")
 
 @bot.command()
 async def restart(ctx):
