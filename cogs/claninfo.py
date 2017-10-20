@@ -64,7 +64,7 @@ class claninfo():
 **SA5**
 Coming soon! :)
 ---------------------
-:busts_in_silhouette: {(((int(sa1['memberCount']) + int(sa2['memberCount'])) + int(sa3['memberCount'])) + int(sa4['memberCount']))}/200'''
+:busts_in_silhouette: {(((int(sa1['memberCount']) + int(sa2['memberCount'])) + int(sa3['memberCount'])) + int(sa4['memberCount']))}/250'''
 
 #:shield: {sa5['memberCount']}/50
 #:trophy: {sa5['requiredScore']}
