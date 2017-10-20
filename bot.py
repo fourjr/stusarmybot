@@ -114,8 +114,8 @@ This isn't kept up to date 100% because I'm lazy :)
 **Clash Royale Stats**
 `>save <tag>` - Saves your tag!
 `>profile [player tag/user]` - Shows part of your Clash Royale Profile
-`>clan [clan tag/user]` - Shows some Clan Stats
 `>chests [number] [player tag/user]` - Shows [number] of upcoming chests
+`>clan [clan tag/user]` - Shows some Clan Stats
 *This cog is heavily under development.*""")
 
 @bot.command()
