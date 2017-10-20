@@ -38,7 +38,7 @@ class Stats():
         tag = tag.replace('#', '').replace('O', '0').upper()
         if await self.checktag(tag, ctx.channel):
             await self.bot.web(f"make stusarmybottags | {ctx.author.id} | {tag}")
-            await ctx.send(f'Linked {tag} to {ctx.author.name}!')
+            await ctx.send(f'Linked tag `#{tag}` to {ctx.author.name}!')
 
     @commands.command()
     async def profile(self, ctx, tag = None):
