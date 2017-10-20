@@ -193,86 +193,86 @@ async def coglist(ctx):
     await ctx.send(embed=em1)
     await ctx.send(embed=em2)
 
-def cleanup_code(content):
-    'Automatically removes code blocks from the code.'
-    if (content.startswith('```') and content.endswith('```')):
-        return '\n'.join(content.split('\n')[1:(- 1)])
-    return content.strip('` \n')
-
-def get_syntax_error(e):
-    if (e.text is None):
-        return '```py\n{0.__class__.__name__}: {0}\n```'.format(e)
-    return '```py\n{0.text}{1:>{0.offset}}\n{2}: {0}```'.format(e, '^', type(e).__name__)
-
-async def to_code_block(ctx, body):
-    if (body.startswith('```') and body.endswith('```')):
-        content = '\n'.join(body.split('\n')[1:(- 1)])
-    else:
-        content = body.strip('`')
-    await ctx.send((('```py\n' + content) + '```'))
-
+@commands.is_owner()
 @bot.command(name='eval')
 async def _eval(ctx, *, body: str):
-    'Run python scripts on discord!'
-    await to_code_block(ctx, body)
+    """Evaluates python code"""
+
     env = {
-        'bot': bot,
         'ctx': ctx,
         'channel': ctx.channel,
         'author': ctx.author,
-        'server': ctx.guild,
+        'guild': ctx.guild,
         'message': ctx.message,
+        'source': inspect.getsource
     }
+
     env.update(globals())
-    body = cleanup_code(content=body)
+
+    body = cleanup_code(body)
     stdout = io.StringIO()
-    to_compile = ('async def func():\n%s' % textwrap.indent(body, '  '))
+    err = out = None
+
+    to_compile = f'async def func():\n{textwrap.indent(body, "  ")}'
+
     try:
         exec(to_compile, env)
-    except SyntaxError as e:
-        return await ctx.send(get_syntax_error(e))
+    except Exception as e:
+        err = await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
+        return await err.add_reaction('\u2049')
+
     func = env['func']
     try:
         with redirect_stdout(stdout):
             ret = await func()
     except Exception as e:
         value = stdout.getvalue()
-        x = await ctx.send(f'''```py
-{e}
-{traceback.format_exc()}
-{value}```''')
-        try:
-            await x.add_reaction('🔴')
-        except:
-            pass
+        err = await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
     else:
         value = stdout.getvalue()
-        if (TOKEN in value):
-            value = value.replace(TOKEN, '[EXPUNGED]')
-        if (ret is None):
+        if token() in value:
+            value = value.replace(token(),"[EXPUNGED]")
+        if ret is None:
             if value:
                 try:
-                    x = await ctx.send(('```py\n%s\n```' % value))
+                    out = await ctx.send(f'```py\n{value}\n```')
                 except:
-                    x = await ctx.send("```py\n'Result was too long.'```")
-                try:
-                    await x.add_reaction('🔵')
-                except:
-                    pass
-            else:
-                try:
-                    await ctx.message.add_reaction('🔵')
-                except:
-                    pass
+                    paginated_text = ctx.paginate(value)
+                    for page in paginated_text:
+                        if page == paginated_text[-1]:
+                            out = await ctx.send(f'```py\n{page}\n```')
+                            break
+                        await ctx.send(f'```py\n{page}\n```')
         else:
             try:
-                x = await ctx.send(('```py\n%s%s\n```' % (value, ret)))
+                out = await ctx.send(f'```py\n{value}{ret}\n```')
             except:
-                x = await ctx.send("```py\n'Result was too long.'```")
-            try:
-                await x.add_reaction('🔵')
-            except:
-                pass
+                paginated_text = ctx.paginate(f"{value}{ret}")
+                for page in paginated_text:
+                    if page == paginated_text[-1]:
+                        out = await ctx.send(f'```py\n{page}\n```')
+                        break
+                    await ctx.send(f'```py\n{page}\n```')
+
+    if out:
+        await out.add_reaction('\u2705')
+    if err:
+        await err.add_reaction('\u2049')
+
+
+def cleanup_code(content):
+    """Automatically removes code blocks from the code."""
+    # remove ```py\n```
+    if content.startswith('```') and content.endswith('```'):
+        return '\n'.join(content.split('\n')[1:-1])
+
+    # remove `foo`
+    return content.strip('` \n')
+
+def get_syntax_error(e):
+    if e.text is None:
+        return f'```py\n{e.__class__.__name__}: {e}\n```'
+    return f'```py\n{e.text}{"^":>{e.offset}}\n{e.__class__.__name__}: {e}```'
 
 @bot.command()
 async def say(ctx, *, message: str):
