@@ -34,6 +34,7 @@ class Stats():
 
     @commands.command()
     async def save(self, ctx, tag:str):
+        '''Saves your tag!'''
         tag = tag.replace('#', '').replace('O', '0').upper()
         if await self.checktag(tag, ctx.channel):
             await self.bot.web(f"make stusarmybottags | {ctx.author.id} | {tag}")
@@ -41,6 +42,7 @@ class Stats():
 
     @commands.command()
     async def profile(self, ctx, tag = None):
+        '''Shows your Clash Royale Profile'''
         async with ctx.channel.typing():
             emoji = self.bot.emoji
             db = False
@@ -112,6 +114,7 @@ class Stats():
 
     @commands.command()
     async def clan(self, ctx, clantag=None):
+        '''Shows some Clan Statistics'''
         async with ctx.channel.typing():
             emoji = self.bot.emoji
             db = False
@@ -166,6 +169,7 @@ class Stats():
         
     @commands.command(aliases=['chest'])
     async def chests(self, ctx, number = 10, tag = None):
+        '''Shows some of your upcoming/special chests'''
         async with ctx.channel.typing():
             emoji = self.bot.emoji
             db = False
