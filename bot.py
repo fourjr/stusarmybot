@@ -293,7 +293,7 @@ async def say(ctx, *, message: str):
 @bot.command()
 async def source(ctx, *, command: str=None):
     'Displays my full source code or for a specific command.\n    To display the source code of a subcommand you can separate it by\n    periods, e.g. tag.create for the create subcommand of the tag command\n    or by spaces.\n    '
-    source_url = 'https://github.com/fourjr/mcplayzbot'
+    source_url = 'https://github.com/fourjr/stusarmybot'
     if (command is None):
         await ctx.send(source_url)
         return
@@ -306,7 +306,7 @@ async def source(ctx, *, command: str=None):
         location = os.path.relpath(src.co_filename).replace('\\', '/')
     else:
         location = (obj.callback.__module__.replace('.', '/') + '.py')
-        source_url = 'https://github.com/fourjr/mcplayzbot'
+        source_url = 'https://github.com/fourjr/stusarmybot'
     final_url = '<{}/blob/master/{}#L{}-L{}>'.format(source_url, location, firstlineno, ((firstlineno + len(lines)) - 1))
     await ctx.send(final_url)
 
@@ -355,6 +355,14 @@ for extension in _extensions:
     except Exception as e:
         exc = '{}: {}'.format(type(e).__name__, e)
         print('Error on load: {}\n{}'.format(extension, exc))
+
+if not heroku():
+    try:
+        bot.load_extension('cogs.levelling')
+        print('Loaded: {}'.format('cogs.levelling'))
+    except Exception as e:
+        exc = '{}: {}'.format(type(e).__name__, e)
+        print('Error on load: {}\n{}'.format('cogs.levelling', exc))
 
 try:
     bot.run(token(), reconnect=True)
