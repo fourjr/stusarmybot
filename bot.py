@@ -61,6 +61,7 @@ def check(msg):
     return msg.author.id == 249891250117804032 and msg.channel.id == 370240126795776000
 
 def emoji(name:str):
+    if name == 'chestmagic': name = 'chestmagical'
     emoji = discord.utils.get(bot.emojis, name=name)
     try:
         return '<:{}:{}>'.format(emoji.name, emoji.id)
