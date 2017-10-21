@@ -22,6 +22,7 @@ class Stats():
             return False
         else:
             return True
+
     
     def clanprofileurl(self, profile):
         if profile['clan'] == None:
@@ -37,8 +38,17 @@ class Stats():
         '''Saves your tag!'''
         tag = tag.replace('#', '').replace('O', '0').upper()
         if await self.checktag(tag, ctx.channel):
-            await self.bot.web(f"make stusarmybottags | {ctx.author.id} | {tag}")
+            await self.bot.getdata(f"make stusarmybottags | {ctx.author.id} | {tag}")
             await ctx.send(f'Linked tag `#{tag}` to {ctx.author.name}!')
+
+    @commands.has_any_role("SA1 | Leader", "SA2 | Leader", "SA3 | Leader", "SA4 | Leader", "SA5 | Leader") 
+    @commands.command()
+    async def savefor(self, ctx, member:discord.Member, tag:str):
+        '''Saves the tag for someone!'''
+        tag = tag.replace('#', '').replace('O', '0').upper()
+        if await self.checktag(tag, ctx.channel):
+            await self.bot.getdata(f"make stusarmybottags | {member.id} | {tag}")
+            await ctx.send(f'{ctx.author.name} linked tag `#{tag}` to {member.name}!')
 
     @commands.command()
     async def profile(self, ctx, tag = None):
@@ -50,11 +60,11 @@ class Stats():
                 member = discord.utils.get(ctx.guild.members, id=ctx.message.raw_mentions[0])
                 errormsg = f'{member.name} has not registered a tag!'
                 db = True
-                await self.bot.web(f'read stusarmybottags | {member.id} |')
+                await self.bot.getdata(f'read stusarmybottags | {member.id} |')
 
             if tag == None or db:
                 if not db:
-                    await self.bot.web(f'read stusarmybottags | {ctx.author.id} |')
+                    await self.bot.getdata(f'read stusarmybottags | {ctx.author.id} |')
                 try:
                     tagmsg = await self.bot.wait_for('message', check=self.bot.check, timeout = 2)
                 except asyncio.TimeoutError:
@@ -92,7 +102,10 @@ class Stats():
 
             deck = ''
             for i in range(8):
-                deck += f"{emoji(crprof['currentDeck'][i]['name'].lower().replace(' ', ''))}{crprof['currentDeck'][i]['level']} "
+                if crprof['currentDeck'][i]['name'] == 'Mini P.E.K.K.A':
+                    deck += f"{emoji('minipekka')}{crprof['currentDeck'][i]['level']}"
+                else:
+                    deck += f"{emoji(crprof['currentDeck'][i]['name'].lower().replace(' ', ''))}{crprof['currentDeck'][i]['level']}"
 
             index = crprof['chestCycle']['position'] % len(constants['chestCycle']['order'])
             smc = crprof['chestCycle']['superMagicalPos'] - crprof['chestCycle']['position']
@@ -100,12 +113,17 @@ class Stats():
             epic = crprof['chestCycle']['epicPos'] - crprof['chestCycle']['position']
 
             winstreak = crprof['games']['currentWinStreak']
+            clainfo = ''
+            if crprof['clan'] == None:
+                claninfo = 'Not in a Clan'
+            else:
+                claninfo = f"Clan: {crprof['clan']['name']} (#{crprof['clan']['tag']}) \nRole: {crprof['clan']['role']}"
             if winstreak < 0: winstreak = 0
             profile = discord.Embed(description=f'[StatsRoyale Profile](https://statsroyale.com/profile/{tag})', color=0xe74c3c)
             profile.set_author(name=f"{crprof['name']} (#{crprof['tag']})", icon_url = ctx.author.avatar_url)
             profile.set_thumbnail(url=self.clanprofileurl(crprof))
             profile.add_field(name='Trophies', value=f"{crprof['trophies']}/{crprof['stats']['maxTrophies']} PB {emoji('trophy')}", inline=True)
-            profile.add_field(name='Clan Info', value=f"Clan: {crprof['clan']['name']} (#{crprof['clan']['tag']}) \nRole: {crprof['clan']['role']}")
+            profile.add_field(name='Clan Info', value=claninfo)
             profile.add_field(name=f"Chests ({crprof['chestCycle']['position']} opened)", value=f"{chests} \n{emoji('chestsupermagical')} +{smc} {emoji('chestlegendary')} +{legendary} {emoji('chestepic')} +{epic}")
             profile.add_field(name='Deck', value=deck)
             profile.add_field(name='Shop Offers (Days)', value=f"{emoji('chestlegendary')}{crprof['shopOffers']['legendary']} {emoji('chestepic')}{crprof['shopOffers']['epic']} {emoji('arena11')}{crprof['shopOffers']['arena']}")
@@ -123,11 +141,11 @@ class Stats():
                 member = discord.utils.get(ctx.guild.members, id=ctx.message.raw_mentions[0])
                 errormsg = f'{member.name} has not registered a tag!'
                 db = True
-                await self.bot.web(f'read stusarmybottags | {member.id} |')
+                await self.bot.getdata(f'read stusarmybottags | {member.id} |')
 
             if clantag == None or db:
                 if not db:
-                    await self.bot.web(f'read stusarmybottags | {ctx.author.id} |')
+                    await self.bot.getdata(f'read stusarmybottags | {ctx.author.id} |')
                 try:
                     tagmsg = await self.bot.wait_for('message', check=self.bot.check, timeout = 2)
                 except asyncio.TimeoutError:
@@ -177,11 +195,11 @@ class Stats():
                 member = discord.utils.get(ctx.guild.members, id=ctx.message.raw_mentions[0])
                 errormsg = f'{member.name} has not registered a tag!'
                 db = True
-                await self.bot.web(f'read stusarmybottags | {member.id} |')
+                await self.bot.getdata(f'read stusarmybottags | {member.id} |')
 
             if tag == None or db:
                 if not db:
-                    await self.bot.web(f'read stusarmybottags | {ctx.author.id} |')
+                    await self.bot.getdata(f'read stusarmybottags | {ctx.author.id} |')
                 try:
                     tagmsg = await self.bot.wait_for('message', check=self.bot.check, timeout = 2)
                 except asyncio.TimeoutError:

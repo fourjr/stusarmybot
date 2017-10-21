@@ -43,22 +43,17 @@ def heroku():
 bot = commands.Bot(command_prefix=prefix(), formatter=EmbedHelp())
 bot.remove_command('help')
 
-async def webhook(content):
-    '''Grabs from Database'''
-    async with aiohttp.ClientSession() as session:
-        url = 'https://canary.discordapp.com/api/webhooks/370568981045575681/21TEod8EkGSLNWQ_CWyepYPkqkukJJLNYs54K7xWG8qadWesoesgZ90bAQ4ctDsh_OUC'
-        payload = {
-            'content': content,
-        }
-        headers = {
-            'content-type': 'application/json',
-        }
-        async with session.post(url, data=json.dumps(payload), headers=headers) as r:
-            resp = r
-            resp.close()
+async def getdata(message):
+    await discord.utils.get(discord.utils.get(bot.guilds, id=359577438101176320).channels, id=370240126795776000).send(message)
+
+async def getdata2(message):
+    await discord.utils.get(discord.utils.get(bot.guilds, id=359577438101176320).channels, id=371244319660834817).send(message)
 
 def check(msg):
     return msg.author.id == 249891250117804032 and msg.channel.id == 370240126795776000
+
+def checksplit(msg):
+    return msg.author.id == 249891250117804032 and msg.channel.id == 371244319660834817 and msg.content.split()[0] == str(bot.tempvar)
 
 def emoji(name:str):
     if name == 'chestmagic': name = 'chestmagical'
@@ -69,8 +64,12 @@ def emoji(name:str):
         return name
     
 bot.emoji = emoji 
-bot.web = webhook
+bot.getdata = getdata
+bot.getdata2 = getdata2
 bot.check = check
+bot.checksplit = checksplit
+bot.tempvar = ''
+bot.heroku = heroku
 
 _extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.stats']
 
@@ -281,6 +280,7 @@ def get_syntax_error(e):
         return f'```py\n{e.__class__.__name__}: {e}\n```'
     return f'```py\n{e.text}{"^":>{e.offset}}\n{e.__class__.__name__}: {e}```'
 
+@commands.is_owner()
 @bot.command()
 async def say(ctx, *, message: str):
     'Say something as the bot.'
@@ -348,6 +348,7 @@ async def unload(ctx, *, module):
             await ctx.send('Successfully Unloaded `{}`'.format(module))
         except:
             pass
+
 for extension in _extensions:
     try:
         bot.load_extension(extension)
@@ -363,6 +364,11 @@ if not heroku():
     except Exception as e:
         exc = '{}: {}'.format(type(e).__name__, e)
         print('Error on load: {}\n{}'.format('cogs.levelling', exc))
+    try:
+        bot.unload_extension('cogs.logging')
+        print('Unloaded: {}'.format('cogs.logging'))
+    except:
+        pass
 
 try:
     bot.run(token(), reconnect=True)

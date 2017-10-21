@@ -10,11 +10,7 @@ class Logging():
         self.sessions = set()
 
     async def on_message_edit(self, before, after):
-        if (before.channel.id == 362172188301852672):
-            return
-        if (before.author == self.bot.user):
-            return
-        if (before.content == after.content):
+        if before.guild.id != 298812318903566337 or before.channel.id == 362172188301852672 or before.author == self.bot.user or before.content == after.content:
             return
         embed = discord.Embed(title='Message Edited', color=10748571)
         embed.add_field(name='User', value='{}#{} ({})'.format(before.author.name, before.author.discriminator, before.author.id), inline=True)
@@ -25,9 +21,7 @@ class Logging():
         await before.guild.get_channel(362175558043566080).send(embed=embed)
 
     async def on_message_delete(self, message):
-        if (message.channel.id == 362172188301852672):
-            return
-        if (message.author == message.guild.me):
+        if message.guild.id != 298812318903566337 or message.channel.id == 362172188301852672 or message.author == self.bot.user:
             return
         embed = discord.Embed(title='Message Deleted', color=16718367)
         embed.add_field(name='User', value='{}#{} ({})'.format(message.author.name, message.author.discriminator, message.author.id), inline=True)
