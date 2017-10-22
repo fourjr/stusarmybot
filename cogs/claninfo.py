@@ -16,6 +16,21 @@ class claninfo():
         self.sessions = set()
         self.clanupdateloopthing = self.bot.loop.create_task(self.clanupdateloop())
 
+    def info(self, clan):
+        tier = 200
+        tiers = [70, 160, 270, 400, 550, 720, 910, 1120, 1350, 1600] 
+        try:
+            tier = tiers.index(max([n for n in tiers if (clan['clanChest']['clanChestCrowns'] > n)])) + 2
+        except:
+            pass
+
+        return f''':shield: {clan['memberCount']}/50 
+:trophy: {clan['requiredScore']}
+:medal: {clan['score']}
+<:soon:337920093532979200> {clan['donations']}/week
+<:clanchest:366182009124421633> Tier {tier} 
+:globe_with_meridians: {clan['typeName']}'''
+
     async def clanupdate(self):
         async with aiohttp.ClientSession() as session:
             async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
@@ -29,58 +44,16 @@ class claninfo():
             async with session.get('http://api.cr-api.com/clan/8YUU2CQV') as d:
                 sa5 = await d.json()
 
-        clanchestcrowns = 0
-        try:
-            clanchestcrowns = tiers.index(max([n for n in tiers if (sa5['clanChest']['clanChestCrowns'] > n)])) + 2
-        except:
-            pass
-        tiers = [70, 160, 270, 400, 550, 720, 910, 1120, 1350, 1600] 
+        embed = discord.Embed(title="Stu's Army!", color=0xf1c40f)
+        embed.add_field(name='SA1', value=self.info(sa1))
 
-        message = f'''**SA1** 
-:shield: {sa1['memberCount']}/50 
-:trophy: {sa1['requiredScore']} 
-:medal: {sa1['score']} 
-<:soon:337920093532979200> {sa1['donations']}/week
-<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa1['clanChest']['clanChestCrowns'] > n)])) + 1)} 
-:globe_with_meridians: {sa1['typeName']} 
---------------------- 
-**SA2** 
-:shield: {sa2['memberCount']}/50 
-:trophy: {sa2['requiredScore']}
-:medal: {sa2['score']}
-<:soon:337920093532979200> {sa2['donations']}/week
-<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa2['clanChest']['clanChestCrowns'] > n)])) + 1)} 
-:globe_with_meridians: {sa2['typeName']} 
---------------------- 
-**SA3** 
-:shield: {sa3['memberCount']}/50 
-:trophy: {sa3['requiredScore']} 
-:medal: {sa3['score']} 
-<:soon:337920093532979200> {sa3['donations']}/week
-<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa3['clanChest']['clanChestCrowns'] > n)])) + 1)} 
-:globe_with_meridians: {sa3['typeName']} 
---------------------- 
-**SA4** 
-:shield: {sa4['memberCount']}/50 
-:trophy: {sa4['requiredScore']} 
-:medal: {sa4['score']} 
-<:soon:337920093532979200> {sa4['donations']}/week
-<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa4['clanChest']['clanChestCrowns'] > n)])) + 1)} 
-:globe_with_meridians: {sa4['typeName']} 
----------------------
-**SA5**
-:shield: {sa5['memberCount']}/50
-:trophy: {sa5['requiredScore']}
-:medal: {sa5['score']}
-<:soon:337920093532979200> {sa5['donations']}/week
-<:clanchest:366182009124421633> Tier {clanchestcrowns}
-:globe_with_meridians: {sa5['typeName']}
----------------------
-:busts_in_silhouette: {int(sa1['memberCount']) + int(sa2['memberCount']) + int(sa3['memberCount']) + int(sa4['memberCount']) + int(sa5['memberCount'])}/250
+        embed.add_field(name='SA2', value=self.info(sa2))
+        embed.add_field(name='SA3', value=self.info(sa3))
+        embed.add_field(name='SA4', value=self.info(sa4))
+        embed.add_field(name='SA5', value=self.info(sa5))
+        embed.add_field(name='More Info', value=f":busts_in_silhouette: {int(sa1['memberCount']) + int(sa2['memberCount']) + int(sa3['memberCount']) + int(sa4['memberCount']) + int(sa5['memberCount'])}/250 \n \nLast updated {datetime.now(timezone('Asia/Singapore')).strftime('%Y-%m-%d %H:%M:%S')}")
 
-Last updated {datetime.now(timezone('Asia/Singapore')).strftime("%Y-%m-%d %H:%M:%S")}'''
-
-        await (await discord.utils.get(discord.utils.get(self.bot.guilds, id=298812318903566337).channels, id=365870449915330560).get_message(365888079665299457)).edit(content=message)
+        await (await discord.utils.get(discord.utils.get(self.bot.guilds, id=298812318903566337).channels, id=365870449915330560).get_message(371704816143040523)).edit(content='', embed=embed)
 
     @commands.command(aliases=['SA1info', 'SA1-info', 'sa1-info'])
     async def sa1info(self, ctx):
