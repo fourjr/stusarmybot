@@ -8,3 +8,4 @@ mtranslate
 pyfiglet
 sqlalchemy
 pymysql
+pytz
