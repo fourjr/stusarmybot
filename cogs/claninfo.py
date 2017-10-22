@@ -6,6 +6,7 @@ import asyncio
 import json
 import aiohttp
 import io
+import datetime
 
 class claninfo():
 
@@ -68,9 +69,7 @@ class claninfo():
 <:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa5['clanChest']['clanChestCrowns'] > n)])) + 2)}
 :globe_with_meridians: {sa5['typeName']}
 ---------------------
-:busts_in_silhouette: {(((int(sa1['memberCount']) + int(sa2['memberCount'])) + int(sa3['memberCount'])) + int(sa4['memberCount'])) + int(sa5['memberCount'])}/250
-
-Last updated: {ctx.message.edited_at}'''
+:busts_in_silhouette: {(((int(sa1['memberCount']) + int(sa2['memberCount'])) + int(sa3['memberCount'])) + int(sa4['memberCount'])) + int(sa5['memberCount'])}/250'''
 
         await (await discord.utils.get(discord.utils.get(self.bot.guilds, id=298812318903566337).channels, id=365870449915330560).get_message(365888079665299457)).edit(content=message)
 
