@@ -22,7 +22,7 @@ class claninfo():
         try:
             tier = tiers.index(max([n for n in tiers if (clan['clanChest']['clanChestCrowns'] > n)])) + 2
         except:
-            pass
+            tier = 0
 
         return f''':shield: {clan['memberCount']}/50 
 :trophy: {clan['requiredScore']}
