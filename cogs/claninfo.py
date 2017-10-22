@@ -24,7 +24,7 @@ class claninfo():
                 sa3 = await d.json()
             async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d:
                 sa4 = await d.json()
-            async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d: #to add
+            async with session.get('http://api.cr-api.com/clan/8YUU2CQV') as d:
                 sa5 = await d.json()
 
         tiers = [70, 160, 270, 400, 550, 720, 910, 1120, 1350, 1600] 
@@ -61,17 +61,16 @@ class claninfo():
 <:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa4['clanChest']['clanChestCrowns'] > n)])) + 1)} 
 :globe_with_meridians: {sa4['typeName']} 
 ---------------------
-**SA5**
-Coming soon! :)
+:shield: {sa5['memberCount']}/50
+:trophy: {sa5['requiredScore']}
+:medal: {sa5['score']}
+<:soon:337920093532979200> {sa5['donations']}/week
+<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa5['clanChest']['clanChestCrowns'] > n)])) + 2)}
+:globe_with_meridians: {sa5['typeName']}
 ---------------------
-:busts_in_silhouette: {(((int(sa1['memberCount']) + int(sa2['memberCount'])) + int(sa3['memberCount'])) + int(sa4['memberCount']))}/250'''
+:busts_in_silhouette: {(((int(sa1['memberCount']) + int(sa2['memberCount'])) + int(sa3['memberCount'])) + int(sa4['memberCount'])) + int(sa5['memberCount'])}/250
 
-#:shield: {sa5['memberCount']}/50
-#:trophy: {sa5['requiredScore']}
-#:medal: {sa5['score']}
-#<:soon:337920093532979200> {sa5['donations']}/week
-#<:clanchest:366182009124421633> Tier {(tiers.index(max([n for n in tiers if (sa5['clanChest']['clanChestCrowns'] > n)])) + 2)}
-#:globe_with_meridians: {sa5['typeName']}
+Last updated: {ctx.message.edited_at}'''
 
         await (await discord.utils.get(discord.utils.get(self.bot.guilds, id=298812318903566337).channels, id=365870449915330560).get_message(365888079665299457)).edit(content=message)
 
@@ -176,6 +175,38 @@ Coming soon! :)
         tag = '8PUUGRYG'
         async with aiohttp.ClientSession() as session:
             async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d:
+                data = await d.json()
+        em = discord.Embed(color=discord.Color(value=3407664), title=f'''{data['name']} (#{tag})''', description=f'''{data['description']}''')
+        em.set_author(name='Clan', url=f'''http://cr-api.com/clan/{tag}''', icon_url=f'''http://api.cr-api.com{data['badge']['url']}''')
+        em.set_thumbnail(url=f'''http://api.cr-api.com{data['badge']['url']}''')
+        em.add_field(name='Trophies', value=str(data['score']), inline=True)
+        em.add_field(name='Type', value=data['typeName'], inline=True)
+        em.add_field(name='Member Count', value=f'''{data['memberCount']}/50''', inline=True)
+        em.add_field(name='Requirement', value=str(data['requiredScore']), inline=True)
+        em.add_field(name='Donations', value=str(data['donations']), inline=True)
+        em.add_field(name='Region', value=data['region']['name'])
+        players = []
+        for i in range(len(data['members'])):
+            if (i <= 2):
+                players.append(f'''{data['members'][i]['name']}: {data['members'][i]['trophies']}
+(#{data['members'][i]['tag']})''')
+        em.add_field(name='Top 3 Players', value='\n\n'.join(players), inline=True)
+        contributors = sorted(data['members'], key=(lambda x: x['clanChestCrowns']))
+        contributors = list(reversed(contributors))
+        players = []
+        for i in range(len(data['members'])):
+            if (i <= 2):
+                players.append(f'''{contributors[i]['name']}: {contributors[i]['clanChestCrowns']}
+(#{contributors[i]['tag']})''')
+        em.add_field(name='Top CC Contributors', value='\n\n'.join(players), inline=True)
+        em.set_footer(text='Powered by cr-api', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+        await ctx.send(embed=em)
+
+    @commands.command(aliases=['SA5info', 'SA45info', 'sa5info'])
+    async def sa5info(self, ctx):
+        tag = '8YUU2CQV'
+        async with aiohttp.ClientSession() as session:
+            async with session.get('http://api.cr-api.com/clan/8YUU2CQV') as d:
                 data = await d.json()
         em = discord.Embed(color=discord.Color(value=3407664), title=f'''{data['name']} (#{tag})''', description=f'''{data['description']}''')
         em.set_author(name='Clan', url=f'''http://cr-api.com/clan/{tag}''', icon_url=f'''http://api.cr-api.com{data['badge']['url']}''')
