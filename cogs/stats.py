@@ -109,7 +109,11 @@ class Stats():
 
             index = crprof['chestCycle']['position'] % len(constants['chestCycle']['order'])
             smc = crprof['chestCycle']['superMagicalPos'] - crprof['chestCycle']['position']
-            legendary = crprof['chestCycle']['legendaryPos'] - crprof['chestCycle']['position']
+            legendary = None
+            try:
+                legendary = crprof['chestCycle']['legendaryPos'] - crprof['chestCycle']['position']
+            except:
+                pass
             epic = crprof['chestCycle']['epicPos'] - crprof['chestCycle']['position']
 
             winstreak = crprof['games']['currentWinStreak']
@@ -239,7 +243,11 @@ class Stats():
             
             index = crprof['chestCycle']['position'] % len(constants['chestCycle']['order'])
             smc = crprof['chestCycle']['superMagicalPos'] - crprof['chestCycle']['position']
-            legendary = crprof['chestCycle']['legendaryPos'] - crprof['chestCycle']['position']
+            legendary = None
+            try:
+                legendary = crprof['chestCycle']['legendaryPos'] - crprof['chestCycle']['position']
+            except:
+                pass
             epic = crprof['chestCycle']['epicPos'] - crprof['chestCycle']['position']
 
             chestemb = discord.Embed(description = f"{crprof['chestCycle']['position']} Chests Opened", color=0xf1c40f)

@@ -21,12 +21,14 @@ class Commands():
         'We will suggest Clans that meet your trophy level!'
         if (trophy >= 4000):
             await ctx.send("You can check out Stu's Army 1! <@277389105501831170>, help him out!")
-        elif (trophy >= 2800):
+        elif (trophy >= 3000):
             await ctx.send("You can check out Stu's Army 2! <@277389105501831170>, help him out!")
-        elif (trophy >= 2400):
+        elif (trophy >= 2600):
             await ctx.send("You can check out Stu's Army 3! <@277389105501831170>, help him out!")
-        elif (trophy >= 2000):
+        elif (trophy >= 2203299223147476418590):
             await ctx.send("You can check out Stu's Army 4! <@277389105501831170>, help him out!")
+        elif (trophy >= 1600):
+            await ctx.send("You can check out Stu's Army 5! <@277389105501831170>, help him out!")
         else:
             await ctx.send("I'm sorry but you don't meet the criteria for any of our Clans. You can do `>visitor` if you want to stick around though!")
 
@@ -86,7 +88,7 @@ class Commands():
         'Gives the SA5 role and Member role to the specified member'
         if member == None or discord.utils.get(ctx.author.roles, id=334250664870019073) == None:
             member = ctx.author
-        await member.add_roles(discord.utils.get(ctx.guild.roles, id=366215438142537738), discord.utils.get(ctx.guild.roles, id=329922314747641859))
+        await member.add_roles(discord.utils.get(ctx.guild.roles, id=298817009372889088), discord.utils.get(ctx.guild.roles, id=366215438142537738))
         await ctx.send('I have given {} the **SA4** and **Member** Roles!'.format(member.name))
         await discord.utils.get(ctx.guild.channels, id=298812318903566337).send("Welcome {} to Stu's Army 5!".format(member.mention))
 
