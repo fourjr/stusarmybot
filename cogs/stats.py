@@ -130,7 +130,7 @@ class Stats():
             profile.add_field(name='Clan Info', value=claninfo)
             profile.add_field(name=f"Chests ({crprof['chestCycle']['position']} opened)", value=f"{chests} \n{emoji('chestsupermagical')} +{smc} {emoji('chestlegendary')} +{legendary} {emoji('chestepic')} +{epic}")
             profile.add_field(name='Deck', value=deck)
-            profile.add_field(name='Shop Offers (Days)', value=f"{emoji('chestlegendary')}{crprof['shopOffers']['legendary']} {emoji('chestepic')}{crprof['shopOffers']['epic']} {emoji('arena11')}{crprof['shopOffers']['arena']}")
+            profile.add_field(name='Shop Offers (Days)', value=f"{emoji('chestlegendary')}{crprof['shopOffers']['legendary']} {emoji('chestepic')}{crprof['shopOffers']['epic']} {emoji('arena11')}{crprof['shopOffers']['arena']}", inline=False)
             profile.add_field(name='Wins/Losses/Draws', value=f"{crprof['games']['wins']}/{crprof['games']['losses']}/{crprof['games']['draws']} ({winstreak} win streak)")
             await ctx.send(embed=profile)
 
