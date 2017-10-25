@@ -33,6 +33,12 @@ class Stats():
     def clanclanurl(self, clan):
         return f"http://api.cr-api.com{clan['badge']['url']}"
 
+    def positive(self, number:int):
+        if number < 0:
+            return 0
+        else:
+            return number
+        
     @commands.command()
     async def save(self, ctx, tag:str):
         '''Saves your tag!'''
@@ -122,6 +128,7 @@ class Stats():
                 claninfo = 'Not in a Clan'
             else:
                 claninfo = f"Clan: {crprof['clan']['name']} (#{crprof['clan']['tag']}) \nRole: {crprof['clan']['role']}"
+
             if winstreak < 0: winstreak = 0
             profile = discord.Embed(description=f'[StatsRoyale Profile](https://statsroyale.com/profile/{tag})', color=0xe74c3c)
             profile.set_author(name=f"{crprof['name']} (#{crprof['tag']})", icon_url = ctx.author.avatar_url)
@@ -130,7 +137,7 @@ class Stats():
             profile.add_field(name='Clan Info', value=claninfo)
             profile.add_field(name=f"Chests ({crprof['chestCycle']['position']} opened)", value=f"{chests} \n{emoji('chestsupermagical')} +{smc} {emoji('chestlegendary')} +{legendary} {emoji('chestepic')} +{epic}")
             profile.add_field(name='Deck', value=deck)
-            profile.add_field(name='Shop Offers (Days)', value=f"{emoji('chestlegendary')}{crprof['shopOffers']['legendary']} {emoji('chestepic')}{crprof['shopOffers']['epic']} {emoji('arena11')}{crprof['shopOffers']['arena']}", inline=False)
+            profile.add_field(name='Shop Offers (Days)', value=f"{emoji('chestlegendary')}{self.positive(crprof['shopOffers']['legendary'])} {emoji('chestepic')}{self.positive(crprof['shopOffers']['epic'])} {emoji('arena11')}{self.positive(crprof['shopOffers']['arena'])}", inline=False)
             profile.add_field(name='Wins/Losses/Draws', value=f"{crprof['games']['wins']}/{crprof['games']['losses']}/{crprof['games']['draws']} ({winstreak} win streak)")
             await ctx.send(embed=profile)
 
