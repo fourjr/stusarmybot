@@ -38,6 +38,30 @@ class Stats():
             return 0
         else:
             return number
+
+    def chestcycle(self, profile, constants, chest):
+        chestno = None
+        if chest == 'legendaryPos' or chest == 'superMagicalPos' or chest == 'epicPos':
+            try:
+                chestno = profile['chestCycle'][chest] - profile['chestCycle']['position'] + 1
+            except:
+                pass
+        else:
+            chest = chest[0].upper() + chest[1:]
+            found = False
+            index = profile['chestCycle']['position'] % len(constants['chestCycle']['order'])
+            i = index
+            while not found:
+                if constants['chestCycle']['order'][index] != chest:
+                    i += 1
+                    #print(index)
+                    continue
+                else:
+                    chestno = i - index
+                    #print('yay ' + index)
+                    found = True
+                    break
+        return chestno
         
     @commands.command()
     async def save(self, ctx, tag:str):
@@ -90,6 +114,14 @@ class Stats():
                 async with session.get('http://api.cr-api.com/constants') as d:
                     constants = await d.json()
 
+            try:
+                temp = crprof['error']
+            except:
+                pass
+            else:
+                await ctx.send(crprof['error'])
+                return
+
             chests = ''
             index = crprof['chestCycle']['position'] % len(constants['chestCycle']['order'])
             chestindex = crprof['chestCycle']['position']
@@ -114,31 +146,22 @@ class Stats():
                     deck += f"{emoji(crprof['currentDeck'][i]['name'].lower().replace(' ', ''))}{crprof['currentDeck'][i]['level']}"
 
             index = crprof['chestCycle']['position'] % len(constants['chestCycle']['order'])
-            smc = crprof['chestCycle']['superMagicalPos'] - crprof['chestCycle']['position']
-            legendary = None
-            try:
-                legendary = crprof['chestCycle']['legendaryPos'] - crprof['chestCycle']['position']
-            except:
-                pass
-            epic = crprof['chestCycle']['epicPos'] - crprof['chestCycle']['position']
 
-            winstreak = crprof['games']['currentWinStreak']
-            clainfo = ''
+            claninfo = ''
             if crprof['clan'] == None:
                 claninfo = 'Not in a Clan'
             else:
                 claninfo = f"Clan: {crprof['clan']['name']} (#{crprof['clan']['tag']}) \nRole: {crprof['clan']['role']}"
 
-            if winstreak < 0: winstreak = 0
             profile = discord.Embed(description=f'[StatsRoyale Profile](https://statsroyale.com/profile/{tag})', color=0xe74c3c)
             profile.set_author(name=f"{crprof['name']} (#{crprof['tag']})", icon_url = ctx.author.avatar_url)
             profile.set_thumbnail(url=self.clanprofileurl(crprof))
             profile.add_field(name='Trophies', value=f"{crprof['trophies']}/{crprof['stats']['maxTrophies']} PB {emoji('trophy')}", inline=True)
             profile.add_field(name='Clan Info', value=claninfo)
-            profile.add_field(name=f"Chests ({crprof['chestCycle']['position']} opened)", value=f"{chests} \n{emoji('chestsupermagical')} +{smc} {emoji('chestlegendary')} +{legendary} {emoji('chestepic')} +{epic}")
+            profile.add_field(name=f"Chests ({crprof['chestCycle']['position']} opened)", value=f"{chests} \n{emoji('chestsupermagical')} + {self.chestcycle(crprof, constants, 'superMagicalPos')} {emoji('chestlegendary')} + {self.chestcycle(crprof, constants, 'legendaryPos')} {emoji('chestepic')} + {self.chestcycle(crprof, constants, 'epicPos')} {emoji('chestmagical')} + {self.chestcycle(crprof, constants, 'magical')}")
             profile.add_field(name='Deck', value=deck)
             profile.add_field(name='Shop Offers (Days)', value=f"{emoji('chestlegendary')}{self.positive(crprof['shopOffers']['legendary'])} {emoji('chestepic')}{self.positive(crprof['shopOffers']['epic'])} {emoji('arena11')}{self.positive(crprof['shopOffers']['arena'])}", inline=False)
-            profile.add_field(name='Wins/Losses/Draws', value=f"{crprof['games']['wins']}/{crprof['games']['losses']}/{crprof['games']['draws']} ({winstreak} win streak)")
+            profile.add_field(name='Wins/Losses/Draws', value=f"{crprof['games']['wins']}/{crprof['games']['losses']}/{crprof['games']['draws']} ({self.positive(crprof['games']['currentWinStreak'])} win streak)")
             await ctx.send(embed=profile)
 
     @commands.command()
@@ -261,7 +284,7 @@ class Stats():
             chestemb.set_author(name=f"{crprof['name']} (#{crprof['tag']})", icon_url = ctx.author.avatar_url)
             chestemb.set_thumbnail(url=self.clanprofileurl(crprof))
             chestemb.add_field(name=f'Upcoming Chests ({number})', value=chests)
-            chestemb.add_field(name='Special Chests', value=f"{emoji('chestsupermagical')} +{smc} {emoji('chestlegendary')} +{legendary} {emoji('chestepic')} +{epic}")
+            chestemb.add_field(name='Special Chests', value=f"{chests} \n{emoji('chestsupermagical')} + {self.chestcycle(crprof, constants, 'superMagicalPos')} {emoji('chestlegendary')} + {self.chestcycle(crprof, constants, 'legendaryPos')} {emoji('chestepic')} + {self.chestcycle(crprof, constants, 'epicPos')} {emoji('chestsilver')} + {self.chestcycle(crprof, constants, 'silver')}")
             await ctx.send(embed=chestemb)
 
 def setup(bot):

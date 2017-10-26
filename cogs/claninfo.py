@@ -32,29 +32,37 @@ class claninfo():
 <:clanchest:366182009124421633> Tier {tier} 
 :globe_with_meridians: {clan['typeName']}'''
 
-    async def clanupdate(self):
+    async def clanupdate(self, message = None):
         async with aiohttp.ClientSession() as session:
-            async with session.get('http://api.cr-api.com/clan/88PYQV') as d:
-                sa1 = await d.json()
-            async with session.get('http://api.cr-api.com/clan/29UQQ282') as d:
-                sa2 = await d.json()
-            async with session.get('http://api.cr-api.com/clan/28JU8P0Y') as d:
-                sa3 = await d.json()
-            async with session.get('http://api.cr-api.com/clan/8PUUGRYG') as d:
-                sa4 = await d.json()
-            async with session.get('http://api.cr-api.com/clan/8YUU2CQV') as d:
-                sa5 = await d.json()
+            sa = None
+            async with session.get('http://api.cr-api.com/clan/88PYQV,29UQQ282,28JU8P0Y,8PUUGRYG,8YUU2CQV') as d:
+                if d.status == 200: sa = await d.json()
+
+            if sa == None:
+                if message != None:
+                    await message.add_reaction(self.bot.emoji('Lag', emoji=True))
+                return
+            try:
+                temp = sa[0]['error']
+            except:
+                pass
+            else:
+                if message != None:
+                    await ctx.send(sa[0]['error'])
+                    await message.add_reaction(self.bot.emoji('Lag', emoji=True))
+                return
 
         embed = discord.Embed(title="Stu's Army!", color=0xf1c40f)
-        embed.add_field(name='SA1', value=self.info(sa1))
-
-        embed.add_field(name='SA2', value=self.info(sa2))
-        embed.add_field(name='SA3', value=self.info(sa3))
-        embed.add_field(name='SA4', value=self.info(sa4))
-        embed.add_field(name='SA5', value=self.info(sa5))
-        embed.add_field(name='More Info', value=f":busts_in_silhouette: {int(sa1['memberCount']) + int(sa2['memberCount']) + int(sa3['memberCount']) + int(sa4['memberCount']) + int(sa5['memberCount'])}/250 \n \nLast updated {datetime.now(timezone('Asia/Singapore')).strftime('%Y-%m-%d %H:%M:%S')}")
+        embed.add_field(name='SA1', value=self.info(sa[0]))
+        embed.add_field(name='SA2', value=self.info(sa[1]))
+        embed.add_field(name='SA3', value=self.info(sa[2]))
+        embed.add_field(name='SA4', value=self.info(sa[3]))
+        embed.add_field(name='SA5', value=self.info(sa[4]))
+        embed.add_field(name='More Info', value=f":busts_in_silhouette: {int(sa[0]['memberCount']) + int(sa[1]['memberCount']) + int(sa[2]['memberCount']) + int(sa[3]['memberCount']) + int(sa[4]['memberCount'])}/250 \n \nLast updated {datetime.now(timezone('Asia/Singapore')).strftime('%Y-%m-%d %H:%M:%S')}")
 
         await (await discord.utils.get(discord.utils.get(self.bot.guilds, id=298812318903566337).channels, id=365870449915330560).get_message(371704816143040523)).edit(content='', embed=embed)
+        if message != None:
+            await message.add_reaction(self.bot.emoji('league7', emoji=True))
 
     @commands.command(aliases=['SA1info', 'SA1-info', 'sa1-info'])
     async def sa1info(self, ctx):
@@ -218,8 +226,8 @@ class claninfo():
 
     @commands.command()
     async def update(self, ctx):
-        await self.clanupdate()
-        await ctx.message.add_reaction('league7:335746873753075714')
+        async with ctx.channel.typing():
+            await self.clanupdate(ctx.message)
 
     async def clanupdateloop(self):
         await self.bot.wait_until_ready()

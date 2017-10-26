@@ -60,12 +60,15 @@ def emoji(name:str, emoji = False):
     emoji = discord.utils.get(bot.emojis, name=name)
     if not emoji:
         try:
-            return '<:{}:{}>'.format(emoji.name, emoji.id)
+            return str(f'<:{emoji.name}:{emoji.id}>')
         except:
             return name
     else:
-        return emoji
-    
+        if emoji != None:
+            return emoji
+        else:
+            return name
+
 bot.emoji = emoji 
 bot.getdata = getdata
 bot.getdata2 = getdata2
