@@ -133,9 +133,11 @@ This isn't kept up to date 100% because I'm lazy :)
 
 **Clash Royale Stats**
 `>save <tag>` - Saves your tag!
+`>savefor <member> <tag>` - Saves the tag for someone! Mod only!
 `>profile [player tag/user]` - Shows part of your Clash Royale Profile
 `>chests [number] [player tag/user]` - Shows [number] of upcoming chests
 `>clan [clan tag/user]` - Shows some Clan Stats
+`>usertag [user]` - Shows [user]'s tag
 *This cog is heavily under development.*""")
 
 @bot.command()
@@ -379,12 +381,12 @@ for extension in _extensions:
         print('Error on load: {}\n{}'.format(extension, exc))
 
 if not heroku():
-    try:
-        bot.load_extension('cogs.levelling')
-        print('Loaded: {}'.format('cogs.levelling'))
-    except Exception as e:
-        exc = '{}: {}'.format(type(e).__name__, e)
-        print('Error on load: {}\n{}'.format('cogs.levelling', exc))
+    # try:
+    #     bot.load_extension('cogs.levelling')
+    #     print('Loaded: {}'.format('cogs.levelling'))
+    # except Exception as e:
+    #     exc = '{}: {}'.format(type(e).__name__, e)
+    #     print('Error on load: {}\n{}'.format('cogs.levelling', exc))
     try:
         bot.unload_extension('cogs.logging')
         print('Unloaded: {}'.format('cogs.logging'))
