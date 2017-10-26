@@ -40,7 +40,7 @@ class claninfo():
 
             if sa == None:
                 if message != None:
-                    await message.add_reaction(self.bot.emoji('Lag', emoji=True))
+                    await message.add_reaction(self.bot.emoji('Lag', emojiresp=True))
                 return
             try:
                 temp = sa[0]['error']
@@ -49,7 +49,7 @@ class claninfo():
             else:
                 if message != None:
                     await ctx.send(sa[0]['error'])
-                    await message.add_reaction(self.bot.emoji('Lag', emoji=True))
+                    await message.add_reaction(self.bot.emoji('Lag', emojiresp=True))
                 return
 
         embed = discord.Embed(title="Stu's Army!", color=0xf1c40f)

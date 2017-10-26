@@ -48,17 +48,19 @@ class Stats():
                 pass
         else:
             chest = chest[0].upper() + chest[1:]
+            if chest == 'Magical': chest = 'Magic'
             found = False
             index = profile['chestCycle']['position'] % len(constants['chestCycle']['order'])
+            total = len(constants['chestCycle']['order'])
             i = index
             while not found:
-                if constants['chestCycle']['order'][index] != chest:
+                if i > total:
+                    return '>' + str(total)
+                if constants['chestCycle']['order'][i] != chest:
                     i += 1
-                    #print(index)
                     continue
                 else:
                     chestno = i - index
-                    #print('yay ' + index)
                     found = True
                     break
         return chestno

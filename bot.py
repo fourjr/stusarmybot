@@ -61,10 +61,10 @@ def pingcheck(msg):
 def checksplit(msg):
     return msg.author.id == 249891250117804032 and msg.channel.id == 371244319660834817 and msg.content.split()[0] == str(bot.tempvar)
 
-def emoji(name:str, emoji = False):
+def emoji(name:str, emojiresp = False):
     if name == 'chestmagic': name = 'chestmagical'
     emoji = discord.utils.get(bot.emojis, name=name)
-    if not emoji:
+    if not emojiresp:
         try:
             return str(f'<:{emoji.name}:{emoji.id}>')
         except:
