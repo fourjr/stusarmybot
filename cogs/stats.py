@@ -298,7 +298,7 @@ class Stats():
         except asyncio.TimeoutError:
             await ctx.send(f'{member.name} have not registered a tag! Do `>save #tag` or `>profile #tag`!')
             return
-        await ctx.send(f"{member.name}'s tag is #{tagmsg.content}")
+        await ctx.send(f"{member.name}'s tag is `#{tagmsg.content}`")
 
 def setup(bot):
     bot.add_cog(Stats(bot))
