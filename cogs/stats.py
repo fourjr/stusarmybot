@@ -290,7 +290,7 @@ class Stats():
             await ctx.send(embed=chestemb)
 
     @commands.command()
-    async def usertag(self, ctx, member:discord.Member = None):
+    async def usertag(self, ctx, *, member:discord.Member = None):
         if member == None: member = ctx.author
         await self.bot.getdata(f'read stusarmybottags | {member.id} |')
         try:
