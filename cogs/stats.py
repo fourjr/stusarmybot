@@ -289,5 +289,16 @@ class Stats():
             chestemb.add_field(name='Special Chests', value=f"{chests} \n{emoji('chestsupermagical')} + {self.chestcycle(crprof, constants, 'superMagicalPos')} {emoji('chestlegendary')} + {self.chestcycle(crprof, constants, 'legendaryPos')} {emoji('chestepic')} + {self.chestcycle(crprof, constants, 'epicPos')} {emoji('chestsilver')} + {self.chestcycle(crprof, constants, 'silver')}")
             await ctx.send(embed=chestemb)
 
+    @commands.command()
+    async def usertag(self, ctx, member:discord.Member = None):
+        if member == None: member = ctx.author
+        await self.bot.getdata(f'read stusarmybottags | {member.id} |')
+        try:
+            tagmsg = await self.bot.wait_for('message', check=self.bot.check, timeout = 2)
+        except asyncio.TimeoutError:
+            await ctx.send(f'{member.name} have not registered a tag! Do `>save #tag` or `>profile #tag`!')
+            return
+        await ctx.send(f"{member.name}'s tag is #{tagmsg.content}")
+
 def setup(bot):
     bot.add_cog(Stats(bot))
