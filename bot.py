@@ -97,8 +97,16 @@ async def ping(ctx):
     msgtime = ctx.message.created_at
     await (await bot.ws.ping())
     now = datetime.datetime.now()
-    ping = (now - msgtime)
-    pong = discord.Embed(title='Pong!', description=(str((ping.microseconds / 1000.0)) + ' ms'), color=65535)
+    ping = now - msgtime
+    await bot.getdata2('.ping')
+    msgtime = datetime.datetime.now()
+    await bot.wait_for('message', check=pingcheck)
+    now = datetime.datetime.now()
+    dblatency = now - msgtime
+    pong = discord.Embed(title='Pong!', color=65535)
+    pong.add_field(name='Message Latency', value=str("%.2f" % (ping.microseconds / 1000)) + 'ms')
+    pong.add_field(name='Discord API Latency', value=str("%.2f" % (bot.latency*1000)) + 'ms')
+    pong.add_field(name='Database Latency', value=str("%.2f" % (dblatency.microseconds / 1000)) + 'ms')
     await ctx.send(embed=pong)
 
 @bot.command()
