@@ -52,6 +52,12 @@ async def getdata2(message):
 def check(msg):
     return msg.author.id == 249891250117804032 and msg.channel.id == 370240126795776000
 
+def check2(msg):
+    return msg.author.id == 249891250117804032 and msg.channel.id == 371244319660834817
+
+def pingcheck(msg):
+    return msg.author.id == 249891250117804032 and msg.channel.id == 371244319660834817 and msg.content == 'pong'
+
 def checksplit(msg):
     return msg.author.id == 249891250117804032 and msg.channel.id == 371244319660834817 and msg.content.split()[0] == str(bot.tempvar)
 
@@ -73,6 +79,7 @@ bot.emoji = emoji
 bot.getdata = getdata
 bot.getdata2 = getdata2
 bot.check = check
+bot.check2 = check2
 bot.checksplit = checksplit
 bot.tempvar = ''
 bot.heroku = heroku
