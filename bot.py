@@ -55,13 +55,16 @@ def check(msg):
 def checksplit(msg):
     return msg.author.id == 249891250117804032 and msg.channel.id == 371244319660834817 and msg.content.split()[0] == str(bot.tempvar)
 
-def emoji(name:str):
+def emoji(name:str, emoji = False):
     if name == 'chestmagic': name = 'chestmagical'
     emoji = discord.utils.get(bot.emojis, name=name)
-    try:
-        return '<:{}:{}>'.format(emoji.name, emoji.id)
-    except:
-        return name
+    if not emoji:
+        try:
+            return '<:{}:{}>'.format(emoji.name, emoji.id)
+        except:
+            return name
+    else:
+        return emoji
     
 bot.emoji = emoji 
 bot.getdata = getdata
