@@ -9,3 +9,4 @@ pyfiglet
 sqlalchemy
 pymysql
 pytz
+crasync

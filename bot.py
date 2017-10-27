@@ -12,6 +12,7 @@ from contextlib import redirect_stdout
 import discord
 from discord.ext import commands
 from ext.formatter import EmbedHelp
+import crasync
 
 def token():
     '''Returns your token wherever it is'''
@@ -83,6 +84,7 @@ bot.check2 = check2
 bot.checksplit = checksplit
 bot.tempvar = ''
 bot.heroku = heroku
+bot.client = crasync.Client()
 
 _extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.stats']
 
