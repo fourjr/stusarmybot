@@ -62,7 +62,7 @@ class claninfo():
 
         await (await discord.utils.get(discord.utils.get(self.bot.guilds, id=298812318903566337).channels, id=365870449915330560).get_message(371704816143040523)).edit(content='', embed=embed)
         if message != None:
-            await message.add_reaction(self.bot.emoji('league7', emoji=True))
+            await message.add_reaction(self.bot.emoji('league7', emojiresp=True))
 
     @commands.command()
     async def update(self, ctx):
