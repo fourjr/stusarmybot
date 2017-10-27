@@ -20,7 +20,7 @@ class Commands():
     async def trophy(self, ctx, trophy: int):
         'We will suggest Clans that meet your trophy level!'
         if (trophy >= 4000):
-            await ctx.send("You can check out Stu's Army 1! <@277389105501831170>, help him out!")
+            await ctx.send("You can check out Stu's Army! <@277389105501831170>, help him out!")
         elif (trophy >= 3000):
             await ctx.send("You can check out Stu's Army 2! <@277389105501831170>, help him out!")
         elif (trophy >= 2600):
