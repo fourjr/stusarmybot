@@ -33,7 +33,9 @@ class Stats():
     def clanclanurl(self, clan):
         return f"http://api.cr-api.com{clan['badge']['url']}"
 
-    def positive(self, number:int):
+    def positive(self, number):
+        if number is None:
+            return None
         if number < 0:
             return 0
         else:
