@@ -175,10 +175,10 @@ class Stats():
             emoji = self.bot.emoji
             if clantag.lower() == 'sa1' or clantag.lower() == 'sa2' or clantag.lower() == 'sa3' or clantag.lower() == 'sa4' or clantag.lower() == 'sa5':
                 if clantag.lower() == 'sa1': tag = '88PYQV'
-                if clantag.lower() == 'sa1': tag = '29UQQ282'
-                if clantag.lower() == 'sa1': tag = '28JU8P0Y'
-                if clantag.lower() == 'sa1': tag = '8PUUGRYG'
-                if clantag.lower() == 'sa1': tag = '8YUU2CQV'
+                if clantag.lower() == 'sa2': tag = '29UQQ282'
+                if clantag.lower() == 'sa3': tag = '28JU8P0Y'
+                if clantag.lower() == 'sa4': tag = '8PUUGRYG'
+                if clantag.lower() == 'sa5': tag = '8YUU2CQV'
                 async with aiohttp.ClientSession().get(f'http://api.cr-api.com/clan/{tag}') as d:
                     data = await d.json()
 
