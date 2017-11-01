@@ -133,16 +133,18 @@ This isn't kept up to date 100% because I'm lazy :)
 `>help` - Shows this list of useful information.
 `>ping` - Pong!
 `>update` - Updates <#365870449915330560>
-`>sa1info` to `>sa5info` - Gives you Clan Stats for the various Clans. 
 
 **Clash Royale Stats**
 `>save <tag>` - Saves your tag!
-`>savefor <member> <tag>` - Saves the tag for someone! Mod only!
 `>profile [player tag/user]` - Shows part of your Clash Royale Profile
 `>chests [number] [player tag/user]` - Shows [number] of upcoming chests
 `>clan [clan tag/user]` - Shows some Clan Stats
 `>usertag [user]` - Shows [user]'s tag
-*This cog is heavily under development.*""")
+*This cog is heavily under development.*
+
+**Mod Commands**
+`>savefor <member> <tag>` - Saves the tag for someone!
+`>checkdb [option]` - list or total""")
 
 @bot.command()
 async def restart(ctx):
@@ -175,11 +177,7 @@ async def on_command_error(ctx, error):
     await discord.utils.get(discord.utils.get(bot.guilds, id=359577438101176320).channels, id=375113574038896640).send(embed=erroremb)
     channel = ctx.channel
     if isinstance(error, commands.MissingRequiredArgument):
-        if ctx.message.content.startswith('>trophy'):
-            embed = discord.Embed(title='>trophy <current amount of trophies>', description='We will suggest Clans that meet your trophy level!', color=15105570)
-            await channel.send(embed=embed)
-        else:
-            await send_cmd_help(ctx)
+        await send_cmd_help(ctx)
     elif isinstance(error, commands.BadArgument):
         await send_cmd_help(ctx)
     elif isinstance(error, commands.DisabledCommand):

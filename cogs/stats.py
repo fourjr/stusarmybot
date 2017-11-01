@@ -208,5 +208,30 @@ class Stats():
             return
         await ctx.send(f"{member.name}'s tag is `#{tagmsg.content}`")
 
+    @commands.has_any_role("SA1 | Leader", "SA2 | Leader", "SA3 | Leader", "SA4 | Leader", "SA5 | Leader") 
+    @commands.command()
+    async def checkdb(self, ctx, option=None):
+        await self.bot.getdata('.view -db stusarmybottags')
+        try:
+            database = await self.bot.wait_for('message', check=self.bot.check, timeout = 2)
+        except asyncio.TimeoutError:
+            return await ctx.send('DB Down')
+        
+        message = ''
+        db = database.content.split('\n')
+        for i in range(len(db)):
+            db[i] = db[i].split(': ')
+
+        if option == None or option == 'list':
+            for i in range(len(db)):
+                try:
+                    message += f'{discord.utils.get(ctx.guild.members, id=int(db[i][0])).name}: {db[i][1]}\n'
+                except:
+                    pass
+            await ctx.send('```\n' +message + '\n```')
+
+        elif option == 'total':
+            await ctx.send(f'{len(db)} tags stored')
+
 def setup(bot):
     bot.add_cog(Stats(bot))

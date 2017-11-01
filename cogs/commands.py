@@ -14,24 +14,7 @@ class Commands():
 
     def anniversary(ctx):
         return False
-
-    @commands.command()
-    @commands.check(welcomechannel)
-    async def trophy(self, ctx, trophy: int):
-        'We will suggest Clans that meet your trophy level!'
-        if (trophy >= 4000):
-            await ctx.send("You can check out Stu's Army! <@277389105501831170>, help him out!")
-        elif (trophy >= 3000):
-            await ctx.send("You can check out Stu's Army 2! <@277389105501831170>, help him out!")
-        elif (trophy >= 2600):
-            await ctx.send("You can check out Stu's Army 3! <@277389105501831170>, help him out!")
-        elif (trophy >= 2203299223147476418590):
-            await ctx.send("You can check out Stu's Army 4! <@277389105501831170>, help him out!")
-        elif (trophy >= 1600):
-            await ctx.send("You can check out Stu's Army 5! <@277389105501831170>, help him out!")
-        else:
-            await ctx.send("I'm sorry but you don't meet the criteria for any of our Clans. You can do `>visitor` if you want to stick around though!")
-
+    
     @commands.command()
     @commands.check(welcomechannel)
     async def visitor(self, ctx, member: discord.Member=None):
@@ -109,6 +92,6 @@ class Commands():
             await ctx.send('Welcome to the 2 Year Tournament! More details in <#368317815679221763>!')
         else:
             await ctx.send('Invalid Role!')
-        
+
 def setup(bot):
     bot.add_cog(Commands(bot))
