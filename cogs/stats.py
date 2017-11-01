@@ -93,7 +93,7 @@ class Stats():
             profile.set_thumbnail(url=self.clanprofileurl(crprof))
             profile.add_field(name='Trophies', value=f"{crprof.current_trophies}/{crprof.highest_trophies} PB {emoji('trophy')}", inline=True)
             profile.add_field(name='Clan Info', value=claninfo)
-            profile.add_field(name=f"Chests ({crprof.chest_cycle.position} opened)", value=f"{' '.join([emoji('chest' + crprof.get_chest(x).lower()) for x in range(number)])} \n{emoji('chestsupermagical')} +{crprof.chest_cycle.super_magical-crprof.chest_cycle.position} {emoji('chestlegendary')} +{crprof.chest_cycle.legendary-crprof.chest_cycle.position} {emoji('chestepic')} +{crprof.chest_cycle.epic-crprof.chest_cycle.position} {emoji('chestmagical')} +{crprof.chest_cycle.magical-crprof.chest_cycle.position}")
+            profile.add_field(name=f"Chests ({crprof.chest_cycle.position} opened)", value=f"{' '.join([emoji('chest' + crprof.get_chest(x).lower()) for x in range(10)])} \n{emoji('chestsupermagical')} +{crprof.chest_cycle.super_magical-crprof.chest_cycle.position} {emoji('chestlegendary')} +{crprof.chest_cycle.legendary-crprof.chest_cycle.position} {emoji('chestepic')} +{crprof.chest_cycle.epic-crprof.chest_cycle.position} {emoji('chestmagical')} +{crprof.chest_cycle.magical-crprof.chest_cycle.position}")
             profile.add_field(name='Deck', value=deck)
             profile.add_field(name='Shop Offers (Days)', value=f"{emoji('chestlegendary')}{crprof.shop_offers.legendary} {emoji('chestepic')}{crprof.shop_offers.epic} {emoji('arena11')}{crprof.shop_offers.arena}", inline=False)
             profile.add_field(name='Wins/Losses/Draws', value=f"{crprof.wins}/{crprof.losses}/{crprof.draws} ({crprof.win_streak} win streak)")
