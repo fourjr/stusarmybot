@@ -30,24 +30,32 @@ class Stats():
             return profile.clan_badge_url
         
     @commands.command()
-    async def save(self, ctx, tag:str):
+    async def save(self, ctx, tag:str, add:str = None):
         '''Saves your tag!'''
         tag = tag.replace('#', '').replace('O', '0').upper()
         if await self.checktag(tag, ctx.channel):
-            await self.bot.getdata(f"make stusarmybottags | {ctx.author.id} | {tag}")
-            await ctx.send(f'Linked tag `#{tag}` to {ctx.author.name}!')
+            if add == None:
+                await self.bot.getdata(f"make stusarmybottags | {ctx.author.id} | {tag}")
+                await ctx.send(f'Linked tag `#{tag}` to {ctx.author.name}!')
+            elif add.lower() == 'add':
+                await self.bot.getdata(f'append stusarmybottags | {ctx.author.id} | {tag}')
+                await ctx.send(f'Added tag `#{tag}` to {ctx.author.name}!')
 
     @commands.has_any_role("SA1 | Leader", "SA2 | Leader", "SA3 | Leader", "SA4 | Leader", "SA5 | Leader") 
     @commands.command()
-    async def savefor(self, ctx, member:discord.Member, tag:str):
+    async def savefor(self, ctx, member:discord.Member, tag:str, add:str = None):
         '''Saves the tag for someone!'''
         tag = tag.replace('#', '').replace('O', '0').upper()
         if await self.checktag(tag, ctx.channel):
-            await self.bot.getdata(f"make stusarmybottags | {member.id} | {tag}")
-            await ctx.send(f'{ctx.author.name} linked tag `#{tag}` to {member.name}!')
+            if add == None:
+                await self.bot.getdata(f"make stusarmybottags | {member.id} | {tag}")
+                await ctx.send(f'Linked tag `#{tag}` to {member.name}!')
+            elif add.lower() == 'add':
+                await self.bot.getdata(f'append stusarmybottags | {member.id} | {tag}')
+                await ctx.send(f'Added tag `#{tag}` to {member.name}!')
 
     @commands.command()
-    async def profile(self, ctx, tag = None):
+    async def profile(self, ctx, tag=None, index=1):
         '''Shows your Clash Royale Profile'''
         async with ctx.channel.typing():
             emoji = self.bot.emoji
@@ -64,7 +72,13 @@ class Stats():
                     tagmsg = await self.bot.wait_for('message', check=self.bot.check, timeout = 2)
                 except asyncio.TimeoutError:
                     return await ctx.send(errormsg)
-                tag = tagmsg.content
+                if len(ctx.message.raw_mentions) == 1:
+                    tag = tagmsg.content
+                else:
+                    try:
+                        tag = tagmsg.content.split(',')[index-1]
+                    except IndexError:
+                        return await ctx.send(f"You don't have {index} tags stored yet! Do `>save #tag add`!")
 
             tag = tag.replace('#', '').replace('O', '0').upper()
             if not await self.checktag(tag, ctx.channel): return
@@ -72,6 +86,11 @@ class Stats():
             try:
                 crprof = await self.bot.client.get_profile(tag)
             except Exception as error:
+                if error == 'Bad Request (400): invalid: tag too short':
+                    try:
+                        tag = tagmsg.content.split(',')[tag-1]
+                    except IndexError:
+                        return await ctx.send(f"You don't have {index} tags stored yet! Do `>save #tag add`! \nEither that, or you are inputting a tag too short!")
                 return await ctx.send(error)
             try:
                 constants = await self.bot.client.get_constants()
