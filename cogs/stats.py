@@ -80,10 +80,7 @@ class Stats():
 
             deck = ''
             for i in range(8):
-                if crprof.deck[i].name == 'Mini P.E.K.K.A':
-                    deck += f"{emoji('minipekka')}{crprof.deck[i].level}"
-                else:
-                    deck += f"{emoji(crprof.deck[i].name.lower().replace(' ', ''))}{crprof.deck[i].level}"
+                deck += f"{emoji(crprof.deck[i].name.lower().replace(' ', ''))}{crprof.deck[i].level}"
 
             index = crprof.chest_cycle.position % len(constants.chest_cycle)
 
