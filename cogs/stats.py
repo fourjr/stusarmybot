@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import crasync
+import asyncio
 
 class Stats():
     def __init__(self, bot):
