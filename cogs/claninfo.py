@@ -34,9 +34,10 @@ class claninfo():
     async def clanupdate(self, message = None):
         try:
             sa = await self.bot.client.get_clan('88PYQV,29UQQ282,28JU8P0Y,8PUUGRYG,8YUU2CQV')
-        except:
+        except Exception as error:
             if message is not None:
                 await message.add_reaction(self.bot.emoji('Lag', emojiresp=True))
+                await message.channel.send(error)
             return
 
         embed = discord.Embed(title="Stu's Army!", color=0xf1c40f)
