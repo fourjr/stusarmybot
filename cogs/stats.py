@@ -59,7 +59,10 @@ class Stats():
         '''Shows your Clash Royale Profile'''
         async with ctx.channel.typing():
             emoji = self.bot.emoji
-            if len(ctx.message.raw_mentions) == 1 or tag is None:
+            try: int(tag)
+            except: tagint = False
+            else: tagint = True
+            if len(ctx.message.raw_mentions) == 1 or tag is None or tagint:
                 if len(ctx.message.raw_mentions) == 1:
                     member = discord.utils.get(ctx.guild.members, id=ctx.message.raw_mentions[0])
                     errormsg = f'{member.name} has not registered a tag!'
@@ -75,6 +78,7 @@ class Stats():
                 if len(ctx.message.raw_mentions) == 1:
                     tag = tagmsg.content
                 else:
+                    if tagint: index = int(tag)
                     try:
                         tag = tagmsg.content.split(',')[index-1]
                     except IndexError:
@@ -86,11 +90,6 @@ class Stats():
             try:
                 crprof = await self.bot.client.get_profile(tag)
             except Exception as error:
-                if error == 'Bad Request (400): invalid: tag too short':
-                    try:
-                        tag = tagmsg.content.split(',')[tag-1]
-                    except IndexError:
-                        return await ctx.send(f"You don't have {index} tags stored yet! Do `>save #tag add`! \nEither that, or you are inputting a tag too short!")
                 return await ctx.send(error)
             try:
                 constants = await self.bot.client.get_constants()
@@ -147,6 +146,7 @@ class Stats():
                     except asyncio.TimeoutError:
                         return await ctx.send(errormsg)
                     tag = tagmsg.content
+                    
                     try:
                         clantag = (await self.bot.client.get_profile(tag)).clan_tag
                     except Exception as error:
@@ -176,11 +176,14 @@ class Stats():
 
         
     @commands.command(aliases=['chest'])
-    async def chests(self, ctx, number = 10, tag = None):
+    async def chests(self, ctx, number = 10, tag = None, index=1):
         '''Shows some of your upcoming/special chests'''
         async with ctx.channel.typing():
             emoji = self.bot.emoji
-            if len(ctx.message.raw_mentions) == 1 or tag is None:
+            try: int(tag)
+            except: tagint = False
+            else: tagint = True
+            if len(ctx.message.raw_mentions) == 1 or tag is None or tagint:
                 if len(ctx.message.raw_mentions) == 1:
                     member = discord.utils.get(ctx.guild.members, id=ctx.message.raw_mentions[0])
                     errormsg = f'{member.name} has not registered a tag!'
@@ -193,7 +196,14 @@ class Stats():
                     tagmsg = await self.bot.wait_for('message', check=self.bot.check, timeout = 2)
                 except asyncio.TimeoutError:
                     return await ctx.send(errormsg)
-                tag = tagmsg.content
+                if len(ctx.message.raw_mentions) == 1:
+                    tag = tagmsg.content
+                else:
+                    if tagint: index = int(tag)
+                    try:
+                        tag = tagmsg.content.split(',')[index-1]
+                    except IndexError:
+                        return await ctx.send(f"You don't have {index} tags stored yet! Do `>save #tag add`!")
 
             tag = tag.replace('#', '').replace('O', '0').upper()
             if not await self.checktag(tag, ctx.channel): return
