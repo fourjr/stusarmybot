@@ -32,7 +32,7 @@ class Logging():
 
     async def on_member_join(self, member):
         colors = (16715647, 16715546, 3077724, 16118788, 893416, 16753152, 14248690)
-        embed = discord.Embed(title='Hello {}!'.format(member.name), description='Welcome To {} Below listed are our Clans! \n \nDo `>save <your player tag>` to help us select a clan for you!'.format(member.guild.name), color=random.choice(colors[0:6]))
+        embed = discord.Embed(title='Hello {}!'.format(member.name), description='Welcome To {} Below listed are our Clans! \n \nDo `>save <your player tag>` (e.g. `>save 2P0LYQ`) to help us select a clan for you!'.format(member.guild.name), color=random.choice(colors[0:6]))
         embed.add_field(name="Stu's Army!", value='4000 Trophies [Read more](https://statsroyale.com/clan/88PYQV)', inline=True)
         embed.add_field(name="Stu's Army! II", value='3400 Trophies [Read More](https://statsroyale.com/clan/29UQQ282)', inline=True)
         embed.add_field(name="Stu's Army! III", value='2800 Trophies [Read More](https://statsroyale.com/clan/28JU8P0Y)', inline=True)
