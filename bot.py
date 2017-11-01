@@ -64,6 +64,7 @@ def checksplit(msg):
 
 def emoji(name:str, emojiresp = False):
     if name == 'chestmagic': name = 'chestmagical'
+    if name == 'p.e.k.k.a.': name = 'pekka'
     emoji = discord.utils.get(bot.emojis, name=name)
     if not emojiresp:
         try:
