@@ -400,18 +400,7 @@ if not heroku():
         print('Unloaded: {}'.format('cogs.logging'))
     except:
         pass
-    try:
-        bot.unload_extension('cogs.stats')
-        print('Unloaded: {}'.format('cogs.stats'))
-    except:
-        pass
-    try:
-        bot.load_extension('cogs.stats1')
-        print('Loaded: {}'.format('cogs.stats1'))
-    except Exception as e:
-        exc = '{}: {}'.format(type(e).__name__, e)
-        print('Error on load: {}\n{}'.format('cogs.stats1', exc))
-
+        
 try:
     bot.run(token(), reconnect=True)
 except Exception as e:
