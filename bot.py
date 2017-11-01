@@ -165,6 +165,12 @@ async def send_cmd_help(ctx):
 @bot.event
 async def on_command_error(ctx, error):
     print(''.join(traceback.format_exception(type(error), error, error.__traceback__)))
+    erroremb = discord.Embed(description='```py\n' +''.join(traceback.format_exception(type(error), error, error.__traceback__)) + '\n```', color = discord.Color.red(), timestamp=ctx.message.created_at)
+    erroremb.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
+    erroremb.add_field(name='Message Content', value=ctx.message.content)
+    #erroremb.add_field(name='Error', value=)
+    erroremb.add_field(name='Location', value=f'#{ctx.channel.name} ({ctx.channel.id})')
+    await discord.utils.get(discord.utils.get(bot.guilds, id=359577438101176320).channels, id=375113574038896640).send(embed=erroremb)
     channel = ctx.channel
     if isinstance(error, commands.MissingRequiredArgument):
         if ctx.message.content.startswith('>trophy'):
@@ -394,6 +400,17 @@ if not heroku():
         print('Unloaded: {}'.format('cogs.logging'))
     except:
         pass
+    try:
+        bot.unload_extension('cogs.stats')
+        print('Unloaded: {}'.format('cogs.stats'))
+    except:
+        pass
+    try:
+        bot.load_extension('cogs.stats1')
+        print('Loaded: {}'.format('cogs.stats1'))
+    except Exception as e:
+        exc = '{}: {}'.format(type(e).__name__, e)
+        print('Error on load: {}\n{}'.format('cogs.stats1', exc))
 
 try:
     bot.run(token(), reconnect=True)
