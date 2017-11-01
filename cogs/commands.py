@@ -89,7 +89,7 @@ class Commands():
         if member == None or discord.utils.get(ctx.author.roles, id=334250664870019073) == None:
             member = ctx.author
         await member.add_roles(discord.utils.get(ctx.guild.roles, id=298817009372889088), discord.utils.get(ctx.guild.roles, id=366215438142537738))
-        await ctx.send('I have given {} the **SA4** and **Member** Roles!'.format(member.name))
+        await ctx.send('I have given {} the **SA5** and **Member** Roles!'.format(member.name))
         await discord.utils.get(ctx.guild.channels, id=298812318903566337).send("Welcome {} to Stu's Army 5!".format(member.mention))
 
     @commands.command()
