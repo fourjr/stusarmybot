@@ -28,6 +28,11 @@ class Stats():
             return 'https://raw.githubusercontent.com/kwugfighter/cr-selfstats/master/data/clanless.png'
         else:
             return profile.clan_badge_url
+
+    def none(self, first, second):
+        if first is None:
+            return None
+        return first-second
         
     @commands.command()
     async def save(self, ctx, tag:str, add:str = None):
@@ -86,7 +91,6 @@ class Stats():
 
             tag = tag.replace('#', '').replace('O', '0').upper()
             if not await self.checktag(tag, ctx.channel): return
-
             try:
                 crprof = await self.bot.client.get_profile(tag)
             except Exception as error:
@@ -109,7 +113,7 @@ class Stats():
             profile.set_thumbnail(url=self.clanprofileurl(crprof))
             profile.add_field(name='Trophies', value=f"{crprof.current_trophies}/{crprof.highest_trophies} PB {emoji('trophy')}", inline=True)
             profile.add_field(name='Clan Info', value=claninfo)
-            profile.add_field(name=f"Chests ({crprof.chest_cycle.position} opened)", value=f"{' '.join([emoji('chest' + crprof.get_chest(x).lower()) for x in range(10)])} \n{emoji('chestsupermagical')} +{crprof.chest_cycle.super_magical-crprof.chest_cycle.position} {emoji('chestlegendary')} +{crprof.chest_cycle.legendary-crprof.chest_cycle.position} {emoji('chestepic')} +{crprof.chest_cycle.epic-crprof.chest_cycle.position} {emoji('chestmagical')} +{crprof.chest_cycle.magical-crprof.chest_cycle.position}")
+            profile.add_field(name=f"Chests ({crprof.chest_cycle.position} opened)", value=f"{' '.join([emoji('chest' + crprof.get_chest(x).lower()) for x in range(10)])} \n{emoji('chestsupermagical')} +{self.none(crprof.chest_cycle.super_magical,crprof.chest_cycle.position)} {emoji('chestlegendary')} +{self.none(crprof.chest_cycle.legendary,crprof.chest_cycle.position)} {emoji('chestepic')} +{self.none(crprof.chest_cycle.epic,crprof.chest_cycle.position)} {emoji('chestmagical')} +{self.none(crprof.chest_cycle.magical,crprof.chest_cycle.position)}")
             profile.add_field(name='Deck', value=deck)
             profile.add_field(name='Shop Offers (Days)', value=f"{emoji('chestlegendary')}{crprof.shop_offers.legendary} {emoji('chestepic')}{crprof.shop_offers.epic} {emoji('arena11')}{crprof.shop_offers.arena}", inline=False)
             profile.add_field(name='Wins/Losses/Draws', value=f"{crprof.wins}/{crprof.losses}/{crprof.draws} ({crprof.win_streak} win streak)")
