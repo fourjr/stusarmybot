@@ -25,7 +25,7 @@ class Stats():
     
     def clanprofileurl(self, profile):
         if profile.clan_badge_url == None:
-            return 'https://raw.githubusercontent.com/kwugfighter/cr-selfstats/master/data/clanless.png'
+            return 'https://i.imgur.com/Y3uXsgj.png'
         else:
             return profile.clan_badge_url
 
