@@ -227,7 +227,7 @@ class Stats():
             chestemb.set_author(name=f"{crprof.name} (#{crprof.tag})", icon_url = ctx.author.avatar_url)
             chestemb.set_thumbnail(url=self.clanprofileurl(crprof))
             chestemb.add_field(name=f'Upcoming Chests ({number})', value=' '.join([emoji('chest' + crprof.get_chest(x).lower()) for x in range(number)]))
-            chestemb.add_field(name=f"Special Chests", value=f"{emoji('chestsupermagical')} +{crprof.chest_cycle.super_magical-crprof.chest_cycle.position} {emoji('chestlegendary')} +{crprof.chest_cycle.legendary-crprof.chest_cycle.position} {emoji('chestepic')} +{crprof.chest_cycle.epic-crprof.chest_cycle.position} {emoji('chestmagical')} +{crprof.chest_cycle.magical-crprof.chest_cycle.position}")
+            chestemb.add_field(name=f"Special Chests", value=f"{emoji('chestsupermagical')} +{self.none(crprof.chest_cycle.super_magical,crprof.chest_cycle.position)} {emoji('chestlegendary')} +{self.none(crprof.chest_cycle.legendary,crprof.chest_cycle.position)} {emoji('chestepic')} +{self.none(crprof.chest_cycle.epic,crprof.chest_cycle.position)} {emoji('chestmagical')} +{self.none(crprof.chest_cycle.magical,crprof.chest_cycle.position)}")
             await ctx.send(embed=chestemb)
 
     @commands.command()
