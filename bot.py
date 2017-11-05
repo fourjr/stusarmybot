@@ -87,7 +87,7 @@ bot.tempvar = ''
 bot.heroku = heroku
 bot.client = crasync.Client()
 
-_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.stats']
+_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo
 
 @bot.event
 async def on_ready():
@@ -133,13 +133,6 @@ This isn't kept up to date 100% because I'm lazy :)
 `>ping` - Pong!
 `>update` - Updates <#365870449915330560>
 
-**Clash Royale Stats**
-`>save <tag>` - Saves your tag!
-`>profile [player tag/user]` - Shows part of your Clash Royale Profile
-`>chests [number] [player tag/user]` - Shows [number] of upcoming chests
-`>clan [clan tag/user]` - Shows some Clan Stats
-`>usertag [user]` - Shows [user]'s tag
-*This cog is heavily under development.*
 
 **Mod Commands**
 `>savefor <member> <tag>` - Saves the tag for someone!
