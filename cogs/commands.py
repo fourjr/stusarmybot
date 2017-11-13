@@ -18,12 +18,12 @@ class Commands():
     @commands.command()
     @commands.check(welcomechannel)
     async def visitor(self, ctx, member: discord.Member=None):
-        'Get the Visitor and Member Role!'
+        'Get the Visitor Role!'
         if ((member == None) or (discord.utils.get(ctx.author.roles, id=334250664870019073) == None)):
             member = ctx.author
-        await member.add_roles(discord.utils.get(ctx.guild.roles, id=298817009372889088), discord.utils.get(ctx.guild.roles, id=298815975980138496))
+        await member.add_roles(discord.utils.get(ctx.guild.roles, id=298815975980138496))
         await ctx.send('I have given {} the **Visitor** and **Member** Roles!'.format(member.name))
-        await discord.utils.get(ctx.guild.channels, id=298812318903566337).send("Welcome {} to Stu's Army! He is a visitor!".format(member.mention))
+        await discord.utils.get(ctx.guild.channels, id=377204201408823296).send("Welcome {} to Stu's Army! He is a visitor!".format(member.mention))
 
     @commands.command(aliases=['SA1'])
     @commands.check(welcomechannel)
