@@ -133,10 +133,12 @@ This isn't kept up to date 100% because I'm lazy :)
 `>ping` - Pong!
 `>update` - Updates <#365870449915330560>
 
+**All Channels**
+`>clanstats` - Sends you the data in <#365870449915330560>
 
 **Mod Commands**
-`>savefor <member> <tag>` - Saves the tag for someone!
-`>checkdb [option]` - list or total""")
+`>kick` - Kick?
+`>ban` - Use this on JJ ;)""")
 
 @bot.command()
 async def restart(ctx):

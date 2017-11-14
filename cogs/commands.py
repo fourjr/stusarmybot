@@ -93,5 +93,9 @@ class Commands():
         else:
             await ctx.send('Invalid Role!')
 
+    @commands.command()
+    async def claninfo(self, ctx):
+        await ctx.send(embed=((await ctx.guild.get_channel(365870449915330560).get_message(371704816143040523)).embeds[0]))
+
 def setup(bot):
     bot.add_cog(Commands(bot))
