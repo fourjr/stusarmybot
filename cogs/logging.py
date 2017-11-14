@@ -35,7 +35,7 @@ class Logging():
         embed = discord.Embed(title='Hello {}!'.format(member.name), description='Welcome To {} Below listed are our Clans! \n \nDo `?save <your player tag>` (e.g. `?save 2P0LYQ`) to help us select a clan for you!'.format(member.guild.name), color=random.choice(colors[0:6]))
         embed.add_field(name="Stu's Army!", value='4000 Trophies [Read more](https://statsroyale.com/clan/88PYQV)', inline=True)
         embed.add_field(name="Stu's Army! II", value='3400 Trophies [Read More](https://statsroyale.com/clan/29UQQ282)', inline=True)
-        embed.add_field(name="Stu's Army! III", value='3600 Trophies [Read More](https://statsroyale.com/clan/28JU8P0Y)', inline=True)
+        embed.add_field(name="Stu's Army! III", value='3000 Trophies [Read More](https://statsroyale.com/clan/28JU8P0Y)', inline=True)
         embed.add_field(name="Stu's Army! IV", value='3000 Trophies [Read More](https://statsroyale.com/clan/8PUUGRYG)', inline=True)
         embed.add_field(name="Stu's Army! V", value='2600 Trophies [Read More](https://statsroyale.com/clan/8YUU2CQV)', inline=True)
         welcome = await member.guild.get_channel(298816198349553665).send('{} <@&334250664870019073> <@277389105501831170>'.format(member.mention), embed=embed)
