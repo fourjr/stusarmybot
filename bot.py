@@ -87,7 +87,7 @@ bot.tempvar = ''
 bot.heroku = heroku
 bot.client = crasync.Client()
 
-_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo'] 
+_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod'] 
 
 @bot.event
 async def on_ready():
