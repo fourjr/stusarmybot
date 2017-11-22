@@ -34,7 +34,7 @@ class Logging():
 
     async def on_member_join(self, member):
         colors = (16715647, 16715546, 3077724, 16118788, 893416, 16753152, 14248690)
-        embed = discord.Embed(title='Hello {}!'.format(member.name), description='Welcome To {} Below listed are our Clans! \n \nDo `?save <your player tag>` (e.g. `?save 2P0LYQ`) to help us select a clan for you!'.format(member.guild.name), color=random.choice(colors[0:6]))
+        embed = discord.Embed(title='Hello {}!'.format(member.name), description='Welcome To {} Below listed are our Clans! \n \nDo `?save <your player tag>` (e.g. `?save 2P0LYQ`) to help us select a clan for you!\n\nFollow us on [Twitter](https://twitter.com/StusArmyCR)!'.format(member.guild.name), color=random.choice(colors[0:6]))
         try:
             sa1 = (await self.bot.client.get_clan('88PYQV')).required_trophies
             sa2 = (await self.bot.client.get_clan('29UQQ282')).required_trophies
