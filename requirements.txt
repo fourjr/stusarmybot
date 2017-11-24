@@ -9,4 +9,4 @@ pyfiglet
 sqlalchemy
 pymysql
 pytz
-git+https://github.com/grokkers/cr-async
+git+https://github.com/cgrok/cr-async
