@@ -1,7 +1,7 @@
 import discord
 import random
 import asyncio
-import craysnc
+import crasync
 import aiohttp
 from discord.ext import commands
 
