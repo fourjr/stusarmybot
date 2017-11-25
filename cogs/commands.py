@@ -95,6 +95,16 @@ class Commands():
         else:
             await ctx.send('Invalid Role!')
 
+    @property
+    def challonge(self):
+        '''Returns your challonge token wherever it is'''
+        try:
+            with open('./data/config.json') as f:
+                config = json.load(f)
+                return config.get('CHALLONGE').strip('\"')
+        except:
+            return os.environ.get('CHALLONGE')
+    
     @commands.check(lambda ctx: ctx.channel.id == 362172188301852672 or ctx.channel.id == 382967220499644416)
     @commands.command()
     async def scores(self, ctx, matchid:int, results:str):
@@ -102,11 +112,11 @@ class Commands():
             winner = 'player1_id'
         else:
             winner = 'player2_id'
-        async with self.bot.session.get('https://api.challonge.com/v1/tournaments/DecemberSA/matches.json', params={'api_key':'VIdVtxGdmdovTBaivb4z2BmjsG3cQrlwKSCoARQq'}) as resp:
+        async with self.bot.session.get('https://api.challonge.com/v1/tournaments/DecemberSA/matches.json', params={'api_key':self.challonge}) as resp:
             respj = await resp.json()
             if 300 > resp.status >= 200:
                 print(json.dumps(await resp.json(), indent=4))
-                async with self.bot.session.put('https://api.challonge.com/v1/tournaments/DecemberSA/matches/' + str(respj[matchid-1]['match']['id']) + f'.json', params={'api_key': 'VIdVtxGdmdovTBaivb4z2BmjsG3cQrlwKSCoARQq', 'match[scores_csv]': results, 'match[winner_id]': respj[matchid-1]['match'][winner]}) as resp2:
+                async with self.bot.session.put('https://api.challonge.com/v1/tournaments/DecemberSA/matches/' + str(respj[matchid-1]['match']['id']) + f'.json', params={'api_key': self.challonge, 'match[scores_csv]': results, 'match[winner_id]': respj[matchid-1]['match'][winner]}) as resp2:
                     if 300 > resp2.status >= 200:
                         await message.add_reaction(self.bot.emoji('check', emojiresp=True))
                     else:
