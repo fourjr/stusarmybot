@@ -86,6 +86,7 @@ bot.checksplit = checksplit
 bot.tempvar = ''
 bot.heroku = heroku
 bot.client = crasync.Client()
+bot.session = aiohttp.ClientSession()
 
 _extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod'] 
 
