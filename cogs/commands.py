@@ -3,6 +3,7 @@ import random
 import json
 import aiohttp
 import asyncio
+import os
 from discord.ext import commands
 
 class Commands():
