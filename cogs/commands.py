@@ -109,6 +109,10 @@ class Commands():
     @commands.check(lambda ctx: ctx.channel.id == 362172188301852672 or ctx.channel.id == 382967220499644416)
     @commands.command()
     async def scores(self, ctx, matchid:int, results:str):
+        '''Report scores for esports'''
+        if '-' not in results:
+            await message.add_reaction(self.bot.emoji('xmark', emojiresp=True))
+            return await ctx.author.send("You didn't include a `-` in your results!")
         if results.split('-')[0] > results.split('-')[1]:
             winner = 'player1_id'
         else:
