@@ -111,7 +111,7 @@ class Commands():
     async def scores(self, ctx, matchid:int, results:str):
         '''Report scores for esports'''
         if '-' not in results:
-            await message.add_reaction(self.bot.emoji('xmark', emojiresp=True))
+            await ctx.message.add_reaction(self.bot.emoji('xmark', emojiresp=True))
             return await ctx.author.send("You didn't include a `-` in your results!")
         if results.split('-')[0] > results.split('-')[1]:
             winner = 'player1_id'
@@ -123,16 +123,16 @@ class Commands():
                 print(json.dumps(await resp.json(), indent=4))
                 async with self.bot.session.put('https://api.challonge.com/v1/tournaments/DecemberSA/matches/' + str(respj[matchid-1]['match']['id']) + f'.json', params={'api_key': self.challonge, 'match[scores_csv]': results, 'match[winner_id]': respj[matchid-1]['match'][winner]}) as resp2:
                     if 300 > resp2.status >= 200:
-                        await message.add_reaction(self.bot.emoji('check', emojiresp=True))
+                        await ctx.message.add_reaction(self.bot.emoji('check', emojiresp=True))
                     else:
-                        await message.add_reaction(self.bot.emoji('xmark', emojiresp=True))
+                        await ctx.message.add_reaction(self.bot.emoji('xmark', emojiresp=True))
                         try:
                             await self.bot.get_channel(362172188301852672).send('```py\n' + json.dumps(await resp2.json(), indent=4) + '\n```')
                         except:
                             print(json.dumps(await resp2.json(), indent=4))
 
             else:
-                await message.add_reaction(self.bot.emoji('xmark', emojiresp=True))
+                await ctx.message.add_reaction(self.bot.emoji('xmark', emojiresp=True))
                 try:
                     await self.bot.get_channel(362172188301852672).send('```py\n' + json.dumps(respj, indent=4) + '\n```')
                 except:
