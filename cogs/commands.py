@@ -84,15 +84,20 @@ class Commands():
         await ctx.send(f'Current member count: {len(ctx.guild.members)}')
 
     @commands.command()
-    @commands.check(anniversary)
-    async def addrole(self, ctx, *, rolename:str):
+    async def addrole(self, ctx, *, rolename:str=None):
         '''Adds some cool roles'''
-        if rolename == '2 Year Crew':
-            await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=368317195001921536))
-            await ctx.send('Oh yeah! 2 Years! Welcome to the Crew!')
-        elif rolename == '2 Year Tournament':
-            await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=368317384148385792))
-            await ctx.send('Welcome to the 2 Year Tournament! More details in <#368317815679221763>!')
+        if rolename is None:
+            return await ctx.send('__**Available roles**__\n\n`Christmas 2017`')
+        rolename = rolename.lower()
+        if rolename == 'christmas 2017':
+            await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=380756624001990657))
+            await ctx.send('Merry Christmas!')
+        # if rolename == '2 Year Crew':
+        #     await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=368317195001921536))
+        #     await ctx.send('Oh yeah! 2 Years! Welcome to the Crew!')
+        # elif rolename == '2 Year Tournament':
+        #     await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=368317384148385792))
+        #     await ctx.send('Welcome to the 2 Year Tournament! More details in <#368317815679221763>!')
         else:
             await ctx.send('Invalid Role!')
 
@@ -113,24 +118,51 @@ class Commands():
         if '-' not in results:
             await ctx.message.add_reaction(self.bot.emoji('xmark', emojiresp=True))
             return await ctx.author.send("You didn't include a `-` in your results!")
-        if results.split('-')[0] > results.split('-')[1]:
+        result = results.split('-')
+        if result[0] > result[1]:
             winner = 'player1_id'
         else:
             winner = 'player2_id'
         async with self.bot.session.get('https://api.challonge.com/v1/tournaments/DecemberSA/matches.json', params={'api_key':self.challonge}) as resp:
             respj = await resp.json()
             if 300 > resp.status >= 200:
-                print(json.dumps(await resp.json(), indent=4))
-                async with self.bot.session.put('https://api.challonge.com/v1/tournaments/DecemberSA/matches/' + str(respj[matchid-1]['match']['id']) + f'.json', params={'api_key': self.challonge, 'match[scores_csv]': results, 'match[winner_id]': respj[matchid-1]['match'][winner]}) as resp2:
+                async with self.bot.session.get('https://api.challonge.com/v1/tournaments/DecemberSA/participants.json', params={'api_key':self.challonge}) as resp2:
+                    resp2j = await resp2.json()
                     if 300 > resp2.status >= 200:
-                        await ctx.message.add_reaction(self.bot.emoji('check', emojiresp=True))
+                        player1 = None
+                        player2 = None
+                        for item in resp2j:
+                            # if player1 is not None and player2 is not None:
+                            #     break
+                            if item['participant']['id'] == respj[matchid-1]['match']['player1_id']:
+                                player1 = item['participant']['name']
+                            elif item['participant']['id'] == respj[matchid-1]['match']['player2_id']:
+                                player2 = item['participant']['name']
+                            
+                        confirm = await ctx.send(f'**{player1} vs {player2}**\n{result[0]} vs {result[1]} \nPlease react to this if you confirm.')
+                        await confirm.add_reaction(self.bot.emoji('blobokhand', emojiresp=True))
+                        try:
+                            await self.bot.wait_for('reaction_add', timeout=10, check=lambda reaction, user: user == ctx.author)# and reaction.message == confirm)
+                        except asyncio.TimeoutError:
+                            await confirm.edit(content=confirm.content.replace('Please react to this if you confirm.', 'Please react... **[TIMEOUT]**'), delete_after=10)
+                            await ctx.message.add_reaction(self.bot.emoji('blobthumbsdown', emojiresp=True))
+                        else:
+                            await confirm.delete()
+                            async with self.bot.session.put('https://api.challonge.com/v1/tournaments/DecemberSA/matches/' + str(respj[matchid-1]['match']['id']) + f'.json', params={'api_key': self.challonge, 'match[scores_csv]': results, 'match[winner_id]': respj[matchid-1]['match'][winner]}) as resp3:
+                                if 300 > resp3.status >= 200:
+                                    await ctx.message.add_reaction(self.bot.emoji('check', emojiresp=True))
+                                else:
+                                    await ctx.message.add_reaction(self.bot.emoji('xmark', emojiresp=True))
+                                    try:
+                                        await self.bot.get_channel(362172188301852672).send('```py\n' + json.dumps(await resp2.json(), indent=4) + '\n```')
+                                    except:
+                                        print(json.dumps(await resp3.json(), indent=4))
                     else:
                         await ctx.message.add_reaction(self.bot.emoji('xmark', emojiresp=True))
                         try:
                             await self.bot.get_channel(362172188301852672).send('```py\n' + json.dumps(await resp2.json(), indent=4) + '\n```')
                         except:
                             print(json.dumps(await resp2.json(), indent=4))
-
             else:
                 await ctx.message.add_reaction(self.bot.emoji('xmark', emojiresp=True))
                 try:
