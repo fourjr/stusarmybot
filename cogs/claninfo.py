@@ -31,7 +31,7 @@ class claninfo():
 <:clanchest:366182009124421633> Tier {tier} 
 :globe_with_meridians: {clan.type_name}'''
 
-    async def clanupdate(self, message = None):
+    async def clanupdate(self, message=None):
         try:
             sa = await self.bot.client.get_clan('88PYQV,29UQQ282,28JU8P0Y,8PUUGRYG,8YUU2CQV')
         except Exception as error:
@@ -48,7 +48,7 @@ class claninfo():
         embed.add_field(name='SA5', value=self.info(sa[4]))
         embed.add_field(name='More Info', value=f":busts_in_silhouette: {int(len(sa[0].members)) + int(len(sa[1].members)) + int(len(sa[2].members)) + int(len(sa[3].members)) + int(len(sa[4].members))}/250 \n \nLast updated {datetime.now(timezone('Asia/Singapore')).strftime('%Y-%m-%d %H:%M:%S')}", inline=False)
 
-        await (await discord.utils.get(discord.utils.get(self.bot.guilds, id=298812318903566337).channels, id=365870449915330560).get_message(371704816143040523)).edit(content='', embed=embed)
+        await (await self.bot.get_channel(365870449915330560).get_message(371704816143040523)).edit(content='', embed=embed)
         if message != None:
             await message.add_reaction(self.bot.emoji('league7', emojiresp=True))
 

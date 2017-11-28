@@ -13,6 +13,7 @@ import discord
 from discord.ext import commands
 from ext.formatter import EmbedHelp
 import crasync
+from cogs.claninfo import claninfo
 
 def token():
     '''Returns your token wherever it is'''
@@ -135,7 +136,8 @@ This isn't kept up to date 100% because I'm lazy :)
 `>update` - Updates <#365870449915330560>
 
 **All Channels**
-`>clanstats` - Sends you the data in <#365870449915330560>
+`>claninfo` - Sends you the data in <#365870449915330560>
+`>addrole` - Adds custom roles
 
 **Mod Commands**
 `>kick` - Kick?
@@ -185,6 +187,14 @@ async def on_command_error(ctx, error):
             msg = "I couldn't send the help message to you in DM. Either you blocked me or you disabled DMs in this server."
             await channel.send(msg)
             return
+
+@bot.event
+async def on_raw_reaction_add(emoji, message_id, channel_id, user_id):
+    if message_id == 371704816143040523:
+        await claninfo.clanupdate(bot.get_cog('claninfo'))
+        message = await bot.get_channel(365870449915330560).get_message(371704816143040523)
+        await message.remove_reaction(bot.get_emoji(emoji.id), bot.get_guild(298812318903566337).get_member(user_id))
+
 
 @bot.command()
 async def coglist(ctx):
