@@ -13,6 +13,7 @@ import discord
 from discord.ext import commands
 from ext.formatter import EmbedHelp
 import crasync
+from cogs.new_welcome import InvalidTag
 from cogs.claninfo import claninfo
 
 def token():
@@ -86,10 +87,10 @@ bot.check2 = check2
 bot.checksplit = checksplit
 bot.tempvar = ''
 bot.heroku = heroku
-bot.client = crasync.Client()
 bot.session = aiohttp.ClientSession()
+bot.client = crasync.Client(session=bot.session, timeout=3)
 
-_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod'] 
+_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod', 'cogs.new_welcome'] 
 
 @bot.event
 async def on_ready():
@@ -179,6 +180,8 @@ async def on_command_error(ctx, error):
         await send_cmd_help(ctx)
     elif isinstance(error, commands.DisabledCommand):
         await channel.send('That command is disabled.')
+    elif isinstance(error, InvalidTag):
+        await ctx.send(error.message)
     elif isinstance(error, commands.CommandInvokeError):
         no_dms = 'Cannot send messages to this user'
         is_help_cmd = (ctx.command.qualified_name == 'help')
@@ -188,12 +191,12 @@ async def on_command_error(ctx, error):
             await channel.send(msg)
             return
 
-@bot.event
-async def on_raw_reaction_add(emoji, message_id, channel_id, user_id):
-    if message_id == 371704816143040523:
-        await claninfo.clanupdate(bot.get_cog('claninfo'))
-        message = await bot.get_channel(365870449915330560).get_message(371704816143040523)
-        await message.remove_reaction(bot.get_emoji(emoji.id), bot.get_guild(298812318903566337).get_member(user_id))
+# @bot.event
+# async def on_raw_reaction_add(emoji, message_id, channel_id, user_id):
+#     if message_id == 371704816143040523:
+#         await claninfo.clanupdate(bot.get_cog('claninfo'))
+#         message = await bot.get_channel(365870449915330560).get_message(371704816143040523)
+#         await message.remove_reaction(bot.get_emoji(emoji.id), bot.get_guild(298812318903566337).get_member(user_id))
 
 
 @bot.command()
