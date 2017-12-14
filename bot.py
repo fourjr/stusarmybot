@@ -13,7 +13,7 @@ import discord
 from discord.ext import commands
 from ext.formatter import EmbedHelp
 import crasync
-#from cogs.new_welcome import InvalidTag
+
 from cogs.claninfo import claninfo
 
 def token():
@@ -180,8 +180,8 @@ async def on_command_error(ctx, error):
         await send_cmd_help(ctx)
     elif isinstance(error, commands.DisabledCommand):
         await channel.send('That command is disabled.')
-    elif isinstance(error, InvalidTag):
-        await ctx.send(error.message)
+    #elif isinstance(error, InvalidTag):
+        #await ctx.send(error.message)
     elif isinstance(error, commands.CommandInvokeError):
         no_dms = 'Cannot send messages to this user'
         is_help_cmd = (ctx.command.qualified_name == 'help')
