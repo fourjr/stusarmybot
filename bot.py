@@ -13,7 +13,7 @@ import discord
 from discord.ext import commands
 from ext.formatter import EmbedHelp
 import crasync
-from cogs.new_welcome import InvalidTag
+#from cogs.new_welcome import InvalidTag
 from cogs.claninfo import claninfo
 
 def token():
@@ -90,7 +90,7 @@ bot.heroku = heroku
 bot.session = aiohttp.ClientSession()
 bot.client = crasync.Client(session=bot.session, timeout=3)
 
-_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod', 'cogs.new_welcome'] 
+_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod'] #, 'cogs.new_welcome'] 
 
 @bot.event
 async def on_ready():
