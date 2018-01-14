@@ -5,6 +5,9 @@ class Mod():
     def __init__(self, bot):
         self.bot = bot
     
+    def __local_check(self, ctx):
+        return commands.has_any_role("SA1 | Leader", "SA2 | Leader", "SA3 | Leader", "SA4 | Leader", "SA5 | Leader") 
+
     @commands.command()
     async def kick(self, ctx, member:discord.Member, reason=None):
         try:

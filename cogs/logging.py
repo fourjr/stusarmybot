@@ -36,11 +36,11 @@ class Logging():
         colors = (16715647, 16715546, 3077724, 16118788, 893416, 16753152, 14248690)
         embed = discord.Embed(title='Hello {}!'.format(member.name), description='Welcome To {} Below listed are our Clans! \n \nDo `?save <your player tag>` (e.g. `?save 2P0LYQ`) to help us select a clan for you!\n\nFollow us on [Twitter](https://twitter.com/StusArmyCR)!'.format(member.guild.name), color=random.choice(colors[0:6]))
         try:
-            sa1 = (await self.bot.client.get_clan('88PYQV')).required_trophies
-            sa2 = (await self.bot.client.get_clan('29UQQ282')).required_trophies
-            sa3 = (await self.bot.client.get_clan('28JU8P0Y')).required_trophies
-            sa4 = (await self.bot.client.get_clan('8PUUGRYG')).required_trophies
-            sa5 = (await self.bot.client.get_clan('8YUU2CQV')).required_trophies
+            sa1 = (await self.bot.client.get_clan('88PYQV')).required_score
+            sa2 = (await self.bot.client.get_clan('29UQQ282')).required_score
+            sa3 = (await self.bot.client.get_clan('28JU8P0Y')).required_score
+            sa4 = (await self.bot.client.get_clan('8PUUGRYG')).required_score
+            sa5 = (await self.bot.client.get_clan('8YUU2CQV')).required_score
             embed.add_field(name="Stu's Army!", value=f'{sa1} Trophies [Read more](https://statsroyale.com/clan/88PYQV)')
             embed.add_field(name="Stu's Army! II", value=f'{sa2} Trophies [Read More](https://statsroyale.com/clan/29UQQ282)')
             embed.add_field(name="Stu's Army! III", value=f'{sa3} Trophies [Read More](https://statsroyale.com/clan/28JU8P0Y)')

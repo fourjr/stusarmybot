@@ -78,28 +78,39 @@ class Commands():
         await ctx.send('I have given {} the **SA5** and **Member** Roles!'.format(member.name))
         await discord.utils.get(ctx.guild.channels, id=298812318903566337).send("Welcome {} to Stu's Army 5!".format(member.mention))
 
+
+    @commands.command(aliases=['SA6'])
+    @commands.check(welcomechannel)
+    async def sa6(self, ctx, member: discord.Member=None):
+        'Gives the SA6 role and Member role to the specified member'
+        if member == None or discord.utils.get(ctx.author.roles, id=334250664870019073) == None:
+            member = ctx.author
+        await member.add_roles(discord.utils.get(ctx.guild.roles, id=298817009372889088), discord.utils.get(ctx.guild.roles, id=402047524933861376))
+        await ctx.send('I have given {} the **SA6** and **Member** Roles!'.format(member.name))
+        await discord.utils.get(ctx.guild.channels, id=298812318903566337).send("Welcome {} to Stu's Army 6!".format(member.mention))
+
     @commands.command()
     async def membercount(self, ctx):
         '''Outputs member count'''
         await ctx.send(f'Current member count: {len(ctx.guild.members)}')
 
-    @commands.command()
-    async def addrole(self, ctx, *, rolename:str=None):
-        '''Adds some cool roles'''
-        if rolename is None:
-            return await ctx.send('__**Available roles**__\n\n`Christmas 2017`')
-        rolename = rolename.lower()
-        if rolename == 'christmas 2017':
-            await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=380756624001990657))
-            await ctx.send('Merry Christmas!')
-        # if rolename == '2 Year Crew':
-        #     await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=368317195001921536))
-        #     await ctx.send('Oh yeah! 2 Years! Welcome to the Crew!')
-        # elif rolename == '2 Year Tournament':
-        #     await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=368317384148385792))
-        #     await ctx.send('Welcome to the 2 Year Tournament! More details in <#368317815679221763>!')
-        else:
-            await ctx.send('Invalid Role!')
+    # @commands.command()
+    # async def addrole(self, ctx, *, rolename:str=None):
+    #     '''Adds some cool roles'''
+    #     if rolename is None:
+    #         return await ctx.send('__**Available roles**__\n\n`Christmas 2017`')
+    #     rolename = rolename.lower()
+    #     if rolename == 'christmas 2017':
+    #         await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=380756624001990657))
+    #         await ctx.send('Merry Christmas!')
+    #     # if rolename == '2 Year Crew':
+    #     #     await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=368317195001921536))
+    #     #     await ctx.send('Oh yeah! 2 Years! Welcome to the Crew!')
+    #     # elif rolename == '2 Year Tournament':
+    #     #     await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=368317384148385792))
+    #     #     await ctx.send('Welcome to the 2 Year Tournament! More details in <#368317815679221763>!')
+    #     else:
+    #         await ctx.send('Invalid Role!')
 
     @property
     def challonge(self):

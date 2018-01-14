@@ -1,4 +1,5 @@
 import datetime
+import clashroyale
 import glob
 import inspect
 import io
@@ -12,8 +13,7 @@ from contextlib import redirect_stdout
 import discord
 from discord.ext import commands
 from ext.formatter import EmbedHelp
-import crasync
-
+from cogs.new_welcome import InvalidTag
 from cogs.claninfo import claninfo
 
 def token():
@@ -88,7 +88,7 @@ bot.checksplit = checksplit
 bot.tempvar = ''
 bot.heroku = heroku
 bot.session = aiohttp.ClientSession()
-bot.client = crasync.Client(session=bot.session, timeout=3)
+bot.client = clashroyale.Client('9ba015601c85435aa0ac200afc07223e2b1a3190927c4bb19d89fe5f8295d60e', is_async=True, session=bot.session, timeout=3)
 
 _extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod'] #, 'cogs.new_welcome'] 
 
@@ -190,14 +190,6 @@ async def on_command_error(ctx, error):
             msg = "I couldn't send the help message to you in DM. Either you blocked me or you disabled DMs in this server."
             await channel.send(msg)
             return
-
-# @bot.event
-# async def on_raw_reaction_add(emoji, message_id, channel_id, user_id):
-#     if message_id == 371704816143040523:
-#         await claninfo.clanupdate(bot.get_cog('claninfo'))
-#         message = await bot.get_channel(365870449915330560).get_message(371704816143040523)
-#         await message.remove_reaction(bot.get_emoji(emoji.id), bot.get_guild(298812318903566337).get_member(user_id))
-
 
 @bot.command()
 async def coglist(ctx):
