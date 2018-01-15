@@ -98,7 +98,7 @@ class Commands():
     async def addrole(self, ctx, *, rolename:str=None):
         '''Adds some cool roles'''
         if rolename is None:
-          return await ctx.send('__**Available roles**__\n\n`2 Year Crew`')
+            return await ctx.send('__**Available roles**__\n\n`2 Year Crew`')
         rolename = rolename.lower()
         #if rolename == 'christmas 2017':
     #         await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=380756624001990657))
