@@ -13,7 +13,7 @@ from contextlib import redirect_stdout
 import discord
 from discord.ext import commands
 from ext.formatter import EmbedHelp
-from cogs.new_welcome import InvalidTag
+#from cogs.new_welcome import InvalidTag
 from cogs.claninfo import claninfo
 
 def token():
