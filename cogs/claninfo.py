@@ -52,7 +52,7 @@ class claninfo():
             await message.add_reaction(self.bot.emoji('league7', emojiresp=True))
 
     @commands.command()
-    @commands.cooldown(1, 5, BucketType.user)
+    @commands.cooldown(1, 10, BucketType.user)
     async def update(self, ctx):
         async with ctx.channel.typing():
             await self.clanupdate(ctx.message)
