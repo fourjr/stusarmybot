@@ -1,9 +1,6 @@
 import discord
 import random
-import asyncio
-import crasync
-import aiohttp
-from discord.ext import commands
+
 
 class Logging():
 
@@ -41,24 +38,28 @@ class Logging():
             sa3 = (await self.bot.client.get_clan('28JU8P0Y')).required_score
             sa4 = (await self.bot.client.get_clan('8PUUGRYG')).required_score
             sa5 = (await self.bot.client.get_clan('8YUU2CQV')).required_score
+            sa6 = (await self.bot.client.get_clan('8VCGQL2C')).required_score
             embed.add_field(name="Stu's Army!", value=f'{sa1} Trophies [Read more](https://statsroyale.com/clan/88PYQV)')
             embed.add_field(name="Stu's Army! II", value=f'{sa2} Trophies [Read More](https://statsroyale.com/clan/29UQQ282)')
             embed.add_field(name="Stu's Army! III", value=f'{sa3} Trophies [Read More](https://statsroyale.com/clan/28JU8P0Y)')
             embed.add_field(name="Stu's Army! IV", value=f'{sa4} Trophies [Read More](https://statsroyale.com/clan/8PUUGRYG)')
             embed.add_field(name="Stu's Army! V", value=f'{sa5} Trophies [Read More](https://statsroyale.com/clan/8YUU2CQV)')
+            embed.add_field(name="Stu's Army! VI", value=f'{sa6} Trophies [Read More](https://statsroyale.com/clan/8VCGQL2C)')
         except Exception as e:
-            embed.add_field(name="Stu's Army!", value= '[Read more](https://statsroyale.com/clan/88PYQV)')
+            embed.add_field(name="Stu's Army!", value='[Read more](https://statsroyale.com/clan/88PYQV)')
             embed.add_field(name="Stu's Army! II", value=f'[Read More](https://statsroyale.com/clan/29UQQ282)')
             embed.add_field(name="Stu's Army! III", value=f'[Read More](https://statsroyale.com/clan/28JU8P0Y)')
             embed.add_field(name="Stu's Army! IV", value=f'[Read More](https://statsroyale.com/clan/8PUUGRYG)')
             embed.add_field(name="Stu's Army! V", value=f'[Read More](https://statsroyale.com/clan/8YUU2CQV)')
+            embed.add_field(name="Stu's Army! VI", value=f'{sa6} Trophies [Read More](https://statsroyale.com/clan/8VCGQL2C)')
             embed.set_footer(text='API currently down: ' + str(e))
-        
+
         welcome = await member.guild.get_channel(298816198349553665).send('{} <@&334250664870019073> <@277389105501831170>'.format(member.mention), embed=embed)
         await welcome.edit(embed=embed, content='\u200b')
 
     async def on_member_remove(self, member):
         await member.guild.get_channel(298816198349553665).send('{} has left us :('.format(member.name))
+
 
 def setup(bot):
     bot.add_cog(Logging(bot))

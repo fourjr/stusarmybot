@@ -12,12 +12,12 @@ class claninfo():
 
     def __init__(self, bot):
         self.bot = bot
-        self.sa_clans = ['88PYQV','29UQQ282','28JU8P0Y','8PUUGRYG','8YUU2CQV']
+        self.sa_clans = ['88PYQV','29UQQ282','28JU8P0Y','8PUUGRYG','8YUU2CQV', '8VCGQL2C']
         self.clanupdateloopthing = self.bot.loop.create_task(self.clanupdateloop())
 
     def info(self, clan):
         # tier = 200
-        # tiers = [70, 160, 270, 400, 550, 720, 910, 1120, 1350, 1600] 
+        # tiers = [70, 160, 270, 400, 550, 720, 910, 1120, 1350, 1600]
         # try:
         #     tier = tiers.index(max([n for n in tiers if (clan.clan_chest.crowns > n)])) + 2
         # except:
@@ -29,7 +29,7 @@ class claninfo():
 :medal: {clan.score}
 <:soon:337920093532979200> {clan.donations}/week'''
 #:globe_with_meridians: {clan.type_name}'
-#<:clanchest:366182009124421633> Tier {tier} 
+#<:clanchest:366182009124421633> Tier {tier}
 
     async def clanupdate(self, message=None):
         sa = await self.bot.client.get_clans('88PYQV','29UQQ282','28JU8P0Y','8PUUGRYG','8YUU2CQV', '8VCGQL2C')
@@ -42,7 +42,7 @@ class claninfo():
         embed.add_field(name='SA5', value=self.info(sa[4]))
         embed.add_field(name='SA6', value=self.info(sa[5]))
         total_members = sa[0].member_count + sa[1].member_count + sa[2].member_count + sa[3].member_count + sa[4].member_count + sa[5].member_count
-        current_time = datetime.now(timezone('Asia/Singapore')).strftime('%Y-%m-%d %H:%M:%S')
+        current_time = datetime.now(timezone('Europe/London')).strftime('%Y-%m-%d %H:%M:%S %p %Z')
         embed.add_field(name='More Info', value=f":busts_in_silhouette: {total_members}/300 \n \nLast updated {current_time}", inline=False)
 
         await (await self.bot.get_channel(365870449915330560).get_message(371704816143040523)).edit(content='', embed=embed)

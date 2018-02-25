@@ -4,7 +4,6 @@ import glob
 import inspect
 import io
 import os
-import random
 import textwrap
 import aiohttp
 import json
@@ -13,8 +12,9 @@ from contextlib import redirect_stdout
 import discord
 from discord.ext import commands
 from ext.formatter import EmbedHelp
-#from cogs.new_welcome import InvalidTag
+# from cogs.new_welcome import InvalidTag
 from cogs.claninfo import claninfo
+
 
 def token():
     '''Returns your token wherever it is'''
@@ -25,6 +25,7 @@ def token():
     except:
         return os.environ.get('TOKEN')
 
+
 def prefix():
     '''Returns your token wherever it is'''
     try:
@@ -32,7 +33,8 @@ def prefix():
             config = json.load(f)
             return 'b>'
     except:
-        return '>' 
+        return '>'
+
 
 def heroku():
     '''Using Heroku?'''
@@ -43,30 +45,39 @@ def heroku():
     except:
         return True
 
+
 bot = commands.Bot(command_prefix=prefix(), formatter=EmbedHelp())
 bot.remove_command('help')
+
 
 async def getdata(message):
     await discord.utils.get(discord.utils.get(bot.guilds, id=359577438101176320).channels, id=370240126795776000).send(message)
 
+
 async def getdata2(message):
     await discord.utils.get(discord.utils.get(bot.guilds, id=359577438101176320).channels, id=371244319660834817).send(message)
+
 
 def check(msg):
     return msg.author.id == 249891250117804032 and msg.channel.id == 370240126795776000
 
+
 def check2(msg):
     return msg.author.id == 249891250117804032 and msg.channel.id == 371244319660834817
+
 
 def pingcheck(msg):
     return msg.author.id == 249891250117804032 and msg.channel.id == 371244319660834817 and msg.content == 'pong'
 
+
 def checksplit(msg):
     return msg.author.id == 249891250117804032 and msg.channel.id == 371244319660834817 and msg.content.split()[0] == str(bot.tempvar)
 
-def emoji(name:str, emojiresp = False):
-    if name == 'chestmagic': name = 'chestmagical'
-    name = name.replace('.','')
+
+def emoji(name: str, emojiresp=False):
+    if name == 'chestmagic':
+        name = 'chestmagical'
+    name = name.replace('.', '')
     emoji = discord.utils.get(bot.emojis, name=name)
     if not emojiresp:
         try:
@@ -79,7 +90,8 @@ def emoji(name:str, emojiresp = False):
         else:
             return name
 
-bot.emoji = emoji 
+
+bot.emoji = emoji
 bot.getdata = getdata
 bot.getdata2 = getdata2
 bot.check = check
@@ -90,7 +102,8 @@ bot.heroku = heroku
 bot.session = aiohttp.ClientSession()
 bot.client = clashroyale.Client('9ba015601c85435aa0ac200afc07223e2b1a3190927c4bb19d89fe5f8295d60e', is_async=True, session=bot.session, timeout=3)
 
-_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod'] #, 'cogs.new_welcome'] 
+_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod']  # , 'cogs.new_welcome']
+
 
 @bot.event
 async def on_ready():
@@ -103,6 +116,7 @@ Username: {}
 User ID: {}
 ------------------------------------------'''.format(bot.user, bot.user.id))
     await bot.change_presence(game=discord.Game(name="for Stu's Army!"))
+
 
 @bot.command()
 async def ping(ctx):
@@ -118,9 +132,10 @@ async def ping(ctx):
     dblatency = now - msgtime
     pong = discord.Embed(title='Pong!', color=65535)
     pong.add_field(name='Message Latency', value=str("%.2f" % (ping.microseconds / 1000)) + 'ms')
-    pong.add_field(name='Discord API Latency', value=str("%.2f" % (bot.latency*1000)) + 'ms')
+    pong.add_field(name='Discord API Latency', value=str("%.2f" % (bot.latency * 1000)) + 'ms')
     pong.add_field(name='Database Latency', value=str("%.2f" % (dblatency.microseconds / 1000)) + 'ms')
     await ctx.send(embed=pong)
+
 
 @bot.command()
 async def help(ctx):
@@ -128,7 +143,7 @@ async def help(ctx):
     await ctx.send("""
 This isn't kept up to date 100% because I'm lazy :)
 **Welcome Channel**
-`>sa1` to `>sa5` - Give appropriate roles
+`>sa1` to `>sa6` - Give appropriate roles
 `>visitor` - Give appropriate roles
 
 **Non-Welcome Channel**
@@ -144,6 +159,7 @@ This isn't kept up to date 100% because I'm lazy :)
 `>kick` - Kick?
 `>ban` - Use this on JJ ;)""")
 
+
 @bot.command()
 async def restart(ctx):
     'Restarts the bot.'
@@ -151,6 +167,7 @@ async def restart(ctx):
         channel = ctx.channel
         await ctx.send('Restarting...')
         await bot.logout()
+
 
 async def send_cmd_help(ctx):
     if ctx.invoked_subcommand:
@@ -164,13 +181,14 @@ async def send_cmd_help(ctx):
             print(page)
             await ctx.channel.send(embed=page)
 
+
 @bot.event
 async def on_command_error(ctx, error):
     print(''.join(traceback.format_exception(type(error), error, error.__traceback__)))
-    erroremb = discord.Embed(description='```py\n' +''.join(traceback.format_exception(type(error), error, error.__traceback__)) + '\n```', color = discord.Color.red(), timestamp=ctx.message.created_at)
+    erroremb = discord.Embed(description='```py\n' + ''.join(traceback.format_exception(type(error), error, error.__traceback__)) + '\n```', color=discord.Color.red(), timestamp=ctx.message.created_at)
     erroremb.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
     erroremb.add_field(name='Message Content', value=ctx.message.content)
-    #erroremb.add_field(name='Error', value=)
+    # erroremb.add_field(name='Error', value=)
     erroremb.add_field(name='Location', value=f'#{ctx.channel.name} ({ctx.channel.id})')
     await discord.utils.get(discord.utils.get(bot.guilds, id=359577438101176320).channels, id=375113574038896640).send(embed=erroremb)
     channel = ctx.channel
@@ -180,8 +198,8 @@ async def on_command_error(ctx, error):
         await send_cmd_help(ctx)
     elif isinstance(error, commands.DisabledCommand):
         await channel.send('That command is disabled.')
-    #elif isinstance(error, InvalidTag):
-        #await ctx.send(error.message)
+    # elif isinstance(error, InvalidTag):
+        # await ctx.send(error.message)
     elif isinstance(error, commands.CommandInvokeError):
         no_dms = 'Cannot send messages to this user'
         is_help_cmd = (ctx.command.qualified_name == 'help')
@@ -190,6 +208,7 @@ async def on_command_error(ctx, error):
             msg = "I couldn't send the help message to you in DM. Either you blocked me or you disabled DMs in this server."
             await channel.send(msg)
             return
+
 
 @bot.command()
 async def coglist(ctx):
@@ -230,6 +249,7 @@ async def coglist(ctx):
     await ctx.send(embed=em1)
     await ctx.send(embed=em2)
 
+
 @commands.is_owner()
 @bot.command(name='eval')
 async def _eval(ctx, *, body: str):
@@ -268,7 +288,7 @@ async def _eval(ctx, *, body: str):
     else:
         value = stdout.getvalue()
         if token() in value:
-            value = value.replace(token(),"[EXPUNGED]")
+            value = value.replace(token(), "[EXPUNGED]")
         if ret is None:
             if value:
                 try:
@@ -306,10 +326,12 @@ def cleanup_code(content):
     # remove `foo`
     return content.strip('` \n')
 
+
 def get_syntax_error(e):
     if e.text is None:
         return f'```py\n{e.__class__.__name__}: {e}\n```'
     return f'```py\n{e.text}{"^":>{e.offset}}\n{e.__class__.__name__}: {e}```'
+
 
 @commands.is_owner()
 @bot.command()
@@ -320,6 +342,7 @@ async def say(ctx, *, message: str):
             await ctx.send("Don't ya dare spam.")
         else:
             await ctx.send(message)
+
 
 @bot.command()
 async def source(ctx, *, command: str=None):
@@ -341,6 +364,7 @@ async def source(ctx, *, command: str=None):
     final_url = '<{}/blob/master/{}#L{}-L{}>'.format(source_url, location, firstlineno, ((firstlineno + len(lines)) - 1))
     await ctx.send(final_url)
 
+
 @bot.command(name='reload')
 async def _reload(ctx, *, module: str):
     'Reloads a module.'
@@ -358,6 +382,7 @@ async def _reload(ctx, *, module: str):
         else:
             x = await x.edit(content='Done. 👌')
 
+
 @bot.command()
 async def load(ctx, *, module):
     if (ctx.author.id == 180314310298304512):
@@ -368,6 +393,7 @@ async def load(ctx, *, module):
             await ctx.send('Successfully Loaded.')
         except Exception as e:
             await ctx.send('🔫\n{}: {}'.format(type(e).__name__, e))
+
 
 @bot.command()
 async def unload(ctx, *, module):
@@ -400,7 +426,7 @@ if not heroku():
         print('Unloaded: {}'.format('cogs.logging'))
     except:
         pass
-        
+
 try:
     bot.run(token(), reconnect=True)
 except Exception as e:
