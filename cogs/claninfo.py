@@ -8,11 +8,12 @@ import clashroyale
 from datetime import datetime
 from pytz import timezone
 
+
 class claninfo():
 
     def __init__(self, bot):
         self.bot = bot
-        self.sa_clans = ['88PYQV','29UQQ282','28JU8P0Y','8PUUGRYG','8YUU2CQV', '8VCGQL2C']
+        self.sa_clans = ['88PYQV', '29UQQ282', '28JU8P0Y', '8PUUGRYG', '8YUU2CQV', '8VCGQL2C']
         self.clanupdateloopthing = self.bot.loop.create_task(self.clanupdateloop())
 
     def info(self, clan):
@@ -32,7 +33,7 @@ class claninfo():
 #<:clanchest:366182009124421633> Tier {tier}
 
     async def clanupdate(self, message=None):
-        sa = await self.bot.client.get_clans('88PYQV','29UQQ282','28JU8P0Y','8PUUGRYG','8YUU2CQV', '8VCGQL2C')
+        sa = await self.bot.client.get_clans('88PYQV', '29UQQ282', '28JU8P0Y', '8PUUGRYG', '8YUU2CQV', '8VCGQL2C')
 
         embed = discord.Embed(title="Stu's Army!", color=0xf1c40f)
         embed.add_field(name='SA1', value=self.info(sa[0]))
@@ -66,10 +67,10 @@ class claninfo():
     async def on_raw_reaction_add(self, emoji, message_id, channel_id, user_id):
         if message_id == 371704816143040523:
             await self.clanupdate()
-            emoji = self.bot.get_emoji(emoji.id)
             member = self.bot.get_guild(298812318903566337).get_member(user_id)
             message = await self.bot.get_channel(365870449915330560).get_message(371704816143040523)
             await message.remove_reaction(emoji, member)
+
 
 def setup(bot):
     bot.add_cog(claninfo(bot))

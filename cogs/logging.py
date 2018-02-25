@@ -31,7 +31,7 @@ class Logging():
 
     async def on_member_join(self, member):
         colors = (16715647, 16715546, 3077724, 16118788, 893416, 16753152, 14248690)
-        embed = discord.Embed(title='Hello {}!'.format(member.name), description='Welcome To {} Below listed are our Clans! \n \nDo `?save <your player tag>` (e.g. `?save 2P0LYQ`) to help us select a clan for you!\n\nFollow us on [Twitter](https://twitter.com/StusArmyCR)!'.format(member.guild.name), color=random.choice(colors[0:6]))
+        embed = discord.Embed(title='Hello {}!'.format(member.name), description='Welcome To {} Below listed are our clans!\n\nDo `?save <your player tag>` (e.g. `?save 2P0LYQ`) to help us select a clan for you.\n\nFollow us on [Twitter](https://twitter.com/StusArmyCR)!'.format(member.guild.name), color=random.choice(colors[0:6]))
         try:
             sa1 = (await self.bot.client.get_clan('88PYQV')).required_score
             sa2 = (await self.bot.client.get_clan('29UQQ282')).required_score
@@ -39,12 +39,12 @@ class Logging():
             sa4 = (await self.bot.client.get_clan('8PUUGRYG')).required_score
             sa5 = (await self.bot.client.get_clan('8YUU2CQV')).required_score
             sa6 = (await self.bot.client.get_clan('8VCGQL2C')).required_score
-            embed.add_field(name="Stu's Army!", value=f'{sa1} Trophies [Read more](https://statsroyale.com/clan/88PYQV)')
-            embed.add_field(name="Stu's Army! II", value=f'{sa2} Trophies [Read More](https://statsroyale.com/clan/29UQQ282)')
-            embed.add_field(name="Stu's Army! III", value=f'{sa3} Trophies [Read More](https://statsroyale.com/clan/28JU8P0Y)')
-            embed.add_field(name="Stu's Army! IV", value=f'{sa4} Trophies [Read More](https://statsroyale.com/clan/8PUUGRYG)')
-            embed.add_field(name="Stu's Army! V", value=f'{sa5} Trophies [Read More](https://statsroyale.com/clan/8YUU2CQV)')
-            embed.add_field(name="Stu's Army! VI", value=f'{sa6} Trophies [Read More](https://statsroyale.com/clan/8VCGQL2C)')
+            embed.add_field(name="Stu's Army!", value=f'{sa1} Trophies\n[Read more](https://statsroyale.com/clan/88PYQV)')
+            embed.add_field(name="Stu's Army! II", value=f'{sa2} Trophies\n[Read More](https://statsroyale.com/clan/29UQQ282)')
+            embed.add_field(name="Stu's Army! III", value=f'{sa3} Trophies\n[Read More](https://statsroyale.com/clan/28JU8P0Y)')
+            embed.add_field(name="Stu's Army! IV", value=f'{sa4} Trophies\n[Read More](https://statsroyale.com/clan/8PUUGRYG)')
+            embed.add_field(name="Stu's Army! V", value=f'{sa5} Trophies\n[Read More](https://statsroyale.com/clan/8YUU2CQV)')
+            embed.add_field(name="Stu's Army! VI", value=f'{sa6} Trophies\n[Read More](https://statsroyale.com/clan/8VCGQL2C)')
         except Exception as e:
             embed.add_field(name="Stu's Army!", value='[Read more](https://statsroyale.com/clan/88PYQV)')
             embed.add_field(name="Stu's Army! II", value=f'[Read More](https://statsroyale.com/clan/29UQQ282)')
