@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands.cooldowns import BucketType
 from PIL import Image
 import os
 import asyncio
@@ -29,8 +30,8 @@ class claninfo():
 :trophy: {clan.required_score}
 :medal: {clan.score}
 <:soon:337920093532979200> {clan.donations}/week'''
-#:globe_with_meridians: {clan.type_name}'
-#<:clanchest:366182009124421633> Tier {tier}
+# :globe_with_meridians: {clan.type_name}'
+# <:clanchest:366182009124421633> Tier {tier}
 
     async def clanupdate(self, message=None):
         sa = await self.bot.client.get_clans('88PYQV', '29UQQ282', '28JU8P0Y', '8PUUGRYG', '8YUU2CQV', '8VCGQL2C')
@@ -47,10 +48,11 @@ class claninfo():
         embed.add_field(name='More Info', value=f":busts_in_silhouette: {total_members}/300 \n \nLast updated {current_time}", inline=False)
 
         await (await self.bot.get_channel(365870449915330560).get_message(371704816143040523)).edit(content='', embed=embed)
-        if message != None:
+        if message:
             await message.add_reaction(self.bot.emoji('league7', emojiresp=True))
 
     @commands.command()
+    @commands.cooldown(1, 5, BucketType.user)
     async def update(self, ctx):
         async with ctx.channel.typing():
             await self.clanupdate(ctx.message)

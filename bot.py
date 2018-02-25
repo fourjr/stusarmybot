@@ -198,6 +198,8 @@ async def on_command_error(ctx, error):
         await send_cmd_help(ctx)
     elif isinstance(error, commands.DisabledCommand):
         await channel.send('That command is disabled.')
+    elif isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(f'This command is on cooldown. Please wait {error.retry_after:.3f}s')
     # elif isinstance(error, InvalidTag):
         # await ctx.send(error.message)
     elif isinstance(error, commands.CommandInvokeError):
