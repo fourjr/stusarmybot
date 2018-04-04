@@ -12,8 +12,8 @@ class claninfo():
 
     def __init__(self, bot):
         self.bot = bot
-        self.sa_clans = ['88PYQV','29UQQ282','28JU8P0Y','8PUUGRYG','8YUU2CQV']
-        self.clanupdateloopthing = self.bot.loop.create_task(self.clanupdateloop())
+        self.sa_clans = ['88PYQV','29UQQ282','28JU8P0Y','8PUUGRYG']
+        self.clan_update = self.bot.loop.create_task(self.clan_update_loop())
 
     def info(self, clan):
         # tier = 200
@@ -39,11 +39,9 @@ class claninfo():
         embed.add_field(name='SA2', value=self.info(sa[1]))
         embed.add_field(name='SA3', value=self.info(sa[2]))
         embed.add_field(name='SA4', value=self.info(sa[3]))
-        embed.add_field(name='SA5', value=self.info(sa[4]))
-        embed.add_field(name='SA6', value=self.info(sa[5]))
-        total_members = sa[0].member_count + sa[1].member_count + sa[2].member_count + sa[3].member_count + sa[4].member_count + sa[5].member_count
+        total_members = sa[0].member_count + sa[1].member_count + sa[2].member_count + sa[3].member_count
         current_time = datetime.now(timezone('Asia/Singapore')).strftime('%Y-%m-%d %H:%M:%S')
-        embed.add_field(name='More Info', value=f":busts_in_silhouette: {total_members}/300 \n \nLast updated {current_time}", inline=False)
+        embed.add_field(name='More Info', value=f":busts_in_silhouette: {total_members}/200 \n \nLast updated {current_time}", inline=False)
 
         await (await self.bot.get_channel(365870449915330560).get_message(371704816143040523)).edit(content='', embed=embed)
         if message != None:
@@ -54,9 +52,9 @@ class claninfo():
         async with ctx.channel.typing():
             await self.clanupdate(ctx.message)
 
-    async def clanupdateloop(self):
+    async def clan_update_loop(self):
         await self.bot.wait_until_ready()
-        while (not self.bot.is_closed):
+        while not self.bot.is_closed:
             await self.clanupdate()
             await asyncio.sleep(3600)
 

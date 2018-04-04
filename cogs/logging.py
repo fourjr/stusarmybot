@@ -40,18 +40,15 @@ class Logging():
             sa2 = (await self.bot.client.get_clan('29UQQ282')).required_score
             sa3 = (await self.bot.client.get_clan('28JU8P0Y')).required_score
             sa4 = (await self.bot.client.get_clan('8PUUGRYG')).required_score
-            sa5 = (await self.bot.client.get_clan('8YUU2CQV')).required_score
             embed.add_field(name="Stu's Army!", value=f'{sa1} Trophies [Read more](https://statsroyale.com/clan/88PYQV)')
             embed.add_field(name="Stu's Army! II", value=f'{sa2} Trophies [Read More](https://statsroyale.com/clan/29UQQ282)')
             embed.add_field(name="Stu's Army! III", value=f'{sa3} Trophies [Read More](https://statsroyale.com/clan/28JU8P0Y)')
             embed.add_field(name="Stu's Army! IV", value=f'{sa4} Trophies [Read More](https://statsroyale.com/clan/8PUUGRYG)')
-            embed.add_field(name="Stu's Army! V", value=f'{sa5} Trophies [Read More](https://statsroyale.com/clan/8YUU2CQV)')
         except Exception as e:
             embed.add_field(name="Stu's Army!", value= '[Read more](https://statsroyale.com/clan/88PYQV)')
             embed.add_field(name="Stu's Army! II", value=f'[Read More](https://statsroyale.com/clan/29UQQ282)')
             embed.add_field(name="Stu's Army! III", value=f'[Read More](https://statsroyale.com/clan/28JU8P0Y)')
             embed.add_field(name="Stu's Army! IV", value=f'[Read More](https://statsroyale.com/clan/8PUUGRYG)')
-            embed.add_field(name="Stu's Army! V", value=f'[Read More](https://statsroyale.com/clan/8YUU2CQV)')
             embed.set_footer(text='API currently down: ' + str(e))
         
         welcome = await member.guild.get_channel(298816198349553665).send('{} <@&334250664870019073> <@277389105501831170>'.format(member.mention), embed=embed)

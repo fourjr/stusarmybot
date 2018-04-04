@@ -68,27 +68,6 @@ class Commands():
         await ctx.send('I have given {} the **SA4** and **Member** Roles!'.format(member.name))
         await discord.utils.get(ctx.guild.channels, id=298812318903566337).send("Welcome {} to Stu's Army 4!".format(member.mention))
 
-    @commands.command(aliases=['SA5'])
-    @commands.check(welcomechannel)
-    async def sa5(self, ctx, member: discord.Member=None):
-        'Gives the SA5 role and Member role to the specified member'
-        if member == None or discord.utils.get(ctx.author.roles, id=334250664870019073) == None:
-            member = ctx.author
-        await member.add_roles(discord.utils.get(ctx.guild.roles, id=298817009372889088), discord.utils.get(ctx.guild.roles, id=366215438142537738))
-        await ctx.send('I have given {} the **SA5** and **Member** Roles!'.format(member.name))
-        await discord.utils.get(ctx.guild.channels, id=298812318903566337).send("Welcome {} to Stu's Army 5!".format(member.mention))
-
-
-    @commands.command(aliases=['SA6'])
-    @commands.check(welcomechannel)
-    async def sa6(self, ctx, member: discord.Member=None):
-        'Gives the SA6 role and Member role to the specified member'
-        if member == None or discord.utils.get(ctx.author.roles, id=334250664870019073) == None:
-            member = ctx.author
-        await member.add_roles(discord.utils.get(ctx.guild.roles, id=298817009372889088), discord.utils.get(ctx.guild.roles, id=402047524933861376))
-        await ctx.send('I have given {} the **SA6** and **Member** Roles!'.format(member.name))
-        await discord.utils.get(ctx.guild.channels, id=298812318903566337).send("Welcome {} to Stu's Army 6!".format(member.mention))
-
     @commands.command()
     async def membercount(self, ctx):
         '''Outputs member count'''
@@ -181,6 +160,14 @@ class Commands():
                 except:
                     print(json.dumps(respj, indent=4))
 
+    # @commands.command()
+    # async def audit(self, ctx, option:str = 'all'):
+    #     option = option.lower()
+    #     if option == 'all':
+    #         clans = await self.bot.client.get_clan('88PYQV,29UQQ282,28JU8P0Y,8PUUGRYG,8YUU2CQV')
+    #     elif option == 'sa1':
+    #         pass
+    #     await self.bot.getdata('!db')
 
     @commands.command() 
     async def claninfo(self, ctx):

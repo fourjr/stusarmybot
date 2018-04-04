@@ -90,7 +90,7 @@ bot.heroku = heroku
 bot.session = aiohttp.ClientSession()
 bot.client = clashroyale.Client('9ba015601c85435aa0ac200afc07223e2b1a3190927c4bb19d89fe5f8295d60e', is_async=True, session=bot.session, timeout=3)
 
-_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod'] #, 'cogs.new_welcome'] 
+_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod', 'cogs.new_welcome'] 
 
 @bot.event
 async def on_ready():
@@ -180,8 +180,8 @@ async def on_command_error(ctx, error):
         await send_cmd_help(ctx)
     elif isinstance(error, commands.DisabledCommand):
         await channel.send('That command is disabled.')
-    #elif isinstance(error, InvalidTag):
-        #await ctx.send(error.message)
+    elif isinstance(error, InvalidTag):
+        await ctx.send(error.message)
     elif isinstance(error, commands.CommandInvokeError):
         no_dms = 'Cannot send messages to this user'
         is_help_cmd = (ctx.command.qualified_name == 'help')
