@@ -34,7 +34,7 @@ class claninfo():
 # <:clanchest:366182009124421633> Tier {tier}
 
     async def clanupdate(self, message=None):
-        sa = await self.bot.client.get_clans('88PYQV', '29UQQ282', '28JU8P0Y', '8PUUGRYG', '8YUU2CQV', '8VCGQL2C')
+        sa = await self.bot.client.get_clans(*self.sa_clans)
 
         embed = discord.Embed(title="Stu's Army!", color=0xf1c40f)
         embed.add_field(name='SA1', value=self.info(sa[0]))

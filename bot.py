@@ -100,7 +100,7 @@ bot.checksplit = checksplit
 bot.tempvar = ''
 bot.heroku = heroku
 bot.session = aiohttp.ClientSession()
-bot.client = clashroyale.Client('9ba015601c85435aa0ac200afc07223e2b1a3190927c4bb19d89fe5f8295d60e', is_async=True, session=bot.session, timeout=3)
+bot.client = clashroyale.Client('9ba015601c85435aa0ac200afc07223e2b1a3190927c4bb19d89fe5f8295d60e', is_async=True, session=bot.session, timeout=5)
 
 _extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod']  # , 'cogs.new_welcome']
 
@@ -115,7 +115,7 @@ Bot Ready!
 Username: {}
 User ID: {}
 ------------------------------------------'''.format(bot.user, bot.user.id))
-    await bot.change_presence(game=discord.Game(name="for Stu's Army!"))
+    await bot.change_presence(activity=discord.Game("for Stu's Army!"))
 
 
 @bot.command()
