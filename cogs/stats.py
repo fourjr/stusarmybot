@@ -4,16 +4,20 @@ import copy
 import clashroyale
 import discord
 from discord.ext import commands
+from discord.ext.commands.cooldowns import BucketType
 
 from .new_welcome import InvalidTag
 
+
 class TagCheck(commands.Converter):
     check = 'PYLQGRJCUV0289'
+
     async def convert(self, ctx, argument):
-        argument = argument.strip('#').upper().replace('O','0')
+        argument = argument.strip('#').upper().replace('O', '0')
         if not any(i not in self.check for i in argument):
             return argument
         raise InvalidTag
+
 
 class Stats:
     def __init__(self, bot):
@@ -25,8 +29,8 @@ class Stats:
         await self.bot.mongo.stusarmybot.player_tags.find_one_and_update({
             'user_id': ctx.author.id
         },
-        {
-            '$set':{
+            {
+            '$set': {
                 'tag': tag
             }
         }, upsert=True)
@@ -42,6 +46,7 @@ class Stats:
 
     @commands.has_role('leaders')
     @commands.command()
+    @commands.cooldown(1, 3600, BucketType.default)
     async def refresh(self, ctx):
         '''Refreshes all roles and ensures everyone has the right roles.'''
         tags = await self.bot.mongo.stusarmybot.player_tags.find().to_list(None)
@@ -121,6 +126,7 @@ class Stats:
         for p in paginator.pages:
             await ctx.send(p)
         await ctx.send("That's all!")
+
 
 def setup(bot):
     bot.add_cog(Stats(bot))
