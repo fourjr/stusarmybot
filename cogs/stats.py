@@ -21,6 +21,7 @@ class Stats:
 
     @commands.command()
     async def save(self, ctx, tag: TagCheck):
+        '''Saves your game tag'''
         await self.bot.mongo.stusarmybot.player_tags.find_one_and_update({
             'user_id': ctx.author.id
         },
@@ -35,12 +36,14 @@ class Stats:
     @commands.has_role('leaders')
     @commands.command()
     async def savefor(self, ctx, member: discord.Member, tag: TagCheck):
+        '''Saves a tag for another user'''
         ctx.author = member
         await ctx.invoke(self.save, tag=tag)
 
     @commands.has_role('leaders')
     @commands.command()
     async def refresh(self, ctx):
+        '''Refreshes all roles and ensures everyone has the right roles.'''
         tags = await self.bot.mongo.stusarmybot.player_tags.find().to_list(None)
         roles = copy.copy(self.bot.get_cog('Welcome').roles)
         del roles['visitor']
@@ -100,6 +103,7 @@ class Stats:
     @commands.has_role('leaders')
     @commands.command()
     async def unsaved(self, ctx):
+        '''Shows a list of users that have not saved their tags'''
         tags = [i['user_id'] for i in await self.bot.mongo.stusarmybot.player_tags.find().to_list(None)]
         paginator = commands.Paginator()
         roles = copy.copy(self.bot.get_cog('Welcome').roles)

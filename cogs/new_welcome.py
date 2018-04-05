@@ -53,14 +53,19 @@ class Welcome:
         return ctx.channel.id == self.welcome_channel
 
     async def on_member_join(self, member):
-        await self.bot.get_channel(self.welcome_channel).send('\n'.join((
+        await self.bot.get_channel(self.welcome_channel).send(discord.Embed(description='\n'.join((
             f"Hello there, {member.mention}! Welcome to the Stu's Army!\n",
             'If you are here to join us, please do the following commands:',
             '`>save YOUR_CR_TAG` (eg. `>save 2P0LYQ`)',
             '`>recommend`\n',
             'A list of clans you can join would pop up then. You may then join the clan and indicate you are from discord. After you get accepted, you can do the `>verify` command to get access to more channels.\n',
-            f'User ID: {member.id}'))
+            f'User ID: {member.id}')),
+
+            title="Stu's Army!",
+            color=0xf5f404
+            )
         )
+        await self.bot.get_channel(self.welcome_channel).send('<@&334250664870019073>', delete_after=0.2)
 
     async def on_member_remove(self, member):
         await self.bot.get_channel(self.welcome_channel).send('{} has left us :('.format(member.name))
@@ -121,6 +126,7 @@ class Welcome:
     @commands.has_role('Welcome Assistant')
     @commands.command(name='waiting')
     async def _waiting(self, ctx, clan, *, member:discord.Member = None):
+        '''Adds your name to the waiting list'''
         member = member or ctx.author
 
         clan = clan.lower()
