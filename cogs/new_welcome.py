@@ -54,16 +54,17 @@ class Welcome:
 
     async def on_member_join(self, member):
         '''Welcome message'''
-        await self.bot.get_channel(self.welcome_channel).send(embed=discord.Embed(description='\n'.join((
-            f"Hello there, {member.mention}! Welcome to the Stu's Army!\n",
-            'If you are here to join us, please do the following commands:',
-            '`>save YOUR_CR_TAG` (eg. `>save 2P0LYQ`)',
-            '`>recommend`\n',
-            'A list of clans you can join would pop up then. You may then join the clan and indicate you are from discord. After you get accepted, you can do the `>verify` command to get access to more channels.\n',
-            f'User ID: {member.id}')),
+        await self.bot.get_channel(self.welcome_channel).send(content=member.mention,
+            embed=discord.Embed(description='\n'.join((
+                f"Hello there, {member.name}! Welcome to the Stu's Army!\n",
+                'If you are here to join us, please do the following commands:',
+                '`>save YOUR_CR_TAG` (eg. `>save 2P0LYQ`)',
+                '`>recommend`\n',
+                'A list of clans you can join would pop up then. You may then join the clan and indicate you are from discord. After you get accepted, you can do the `>verify` command to get access to more channels.\n',
+                f'User ID: {member.id}')),
 
-            title="Stu's Army!",
-            color=0xf5f404
+                title="Stu's Army!",
+                color=0xf5f404
             )
         )
         await self.bot.get_channel(self.welcome_channel).send('<@&334250664870019073>', delete_after=0.2)
