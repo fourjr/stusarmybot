@@ -62,6 +62,9 @@ class Welcome:
             f'User ID: {member.id}'))
         )
 
+    async def on_member_remove(self, member):
+        await self.bot.get_channel(self.welcome_channel).send('{} has left us :('.format(member.name))
+
     @commands.command(aliases=['rec'])
     async def recommend(self, ctx, tag: TagCheck = None):
         '''Get clan recommendations!'''

@@ -29,31 +29,5 @@ class Logging():
         embed.add_field(name='Content', value=message.content, inline=False)
         await message.guild.get_channel(362175558043566080).send(embed=embed)
 
-    async def on_member_join(self, member):
-        colors = (16715647, 16715546, 3077724, 16118788, 893416, 16753152, 14248690)
-        embed = discord.Embed(title='Hello {}!'.format(member.name), description='Welcome To {} Below listed are our clans!\n\nDo `?save <your player tag>` (e.g. `?save 2P0LYQ`) to help us select a clan for you.\n\nFollow us on [Twitter](https://twitter.com/StusArmyCR)!'.format(member.guild.name), color=random.choice(colors[0:6]))
-        try:
-            sa1 = (await self.bot.client.get_clan('88PYQV')).required_score
-            sa2 = (await self.bot.client.get_clan('29UQQ282')).required_score
-            sa3 = (await self.bot.client.get_clan('28JU8P0Y')).required_score
-            sa4 = (await self.bot.client.get_clan('8PUUGRYG')).required_score
-            embed.add_field(name="Stu's Army!", value=f'{sa1} Trophies\n[Read more](https://royaleapi.com/clan/88PYQV)')
-            embed.add_field(name="Stu's Army! II", value=f'{sa2} Trophies\n[Read More](https://royaleapi.com/clan/29UQQ282)')
-            embed.add_field(name="Stu's Army! III", value=f'{sa3} Trophies\n[Read More](https://royaleapi.com/clan/28JU8P0Y)')
-            embed.add_field(name="Stu's Army! IV", value=f'{sa4} Trophies\n[Read More](https://royaleapi.com/clan/8PUUGRYG)')
-        except Exception as e:
-            embed.add_field(name="Stu's Army!", value='[Read more](https://royaleapi.com/clan/88PYQV)')
-            embed.add_field(name="Stu's Army! II", value=f'[Read More](https://royaleapi.com/clan/29UQQ282)')
-            embed.add_field(name="Stu's Army! III", value=f'[Read More](https://royaleapi.com/clan/28JU8P0Y)')
-            embed.add_field(name="Stu's Army! IV", value=f'[Read More](https://royaleapi.com/clan/8PUUGRYG)')
-            embed.set_footer(text='API currently down: ' + str(e))
-
-        welcome = await member.guild.get_channel(298816198349553665).send('{} <@&334250664870019073> <@277389105501831170>'.format(member.mention), embed=embed)
-        await welcome.edit(embed=embed, content='\u200b')
-
-    async def on_member_remove(self, member):
-        await member.guild.get_channel(298816198349553665).send('{} has left us :('.format(member.name))
-
-
 def setup(bot):
     bot.add_cog(Logging(bot))
