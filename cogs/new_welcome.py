@@ -53,7 +53,8 @@ class Welcome:
         return ctx.channel.id == self.welcome_channel
 
     async def on_member_join(self, member):
-        await self.bot.get_channel(self.welcome_channel).send(discord.Embed(description='\n'.join((
+        '''Welcome message'''
+        await self.bot.get_channel(self.welcome_channel).send(embed=discord.Embed(description='\n'.join((
             f"Hello there, {member.mention}! Welcome to the Stu's Army!\n",
             'If you are here to join us, please do the following commands:',
             '`>save YOUR_CR_TAG` (eg. `>save 2P0LYQ`)',
@@ -68,6 +69,7 @@ class Welcome:
         await self.bot.get_channel(self.welcome_channel).send('<@&334250664870019073>', delete_after=0.2)
 
     async def on_member_remove(self, member):
+        '''Leave message'''
         await self.bot.get_channel(self.welcome_channel).send('{} has left us :('.format(member.name))
 
     @commands.command(aliases=['rec'])
@@ -125,10 +127,8 @@ class Welcome:
 
     @commands.has_role('Welcome Assistant')
     @commands.command(name='waiting')
-    async def _waiting(self, ctx, clan, *, member:discord.Member = None):
+    async def _waiting(self, ctx, clan, *, member:discord.Member):
         '''Adds your name to the waiting list'''
-        member = member or ctx.author
-
         clan = clan.lower()
         if clan not in self.keys:
             return await ctx.send('Invalid clan.')
@@ -166,6 +166,7 @@ class Welcome:
 
     @commands.command()
     async def unwait(self, ctx, member:discord.Member = None):
+        '''Removes your name from the waiting list'''
         if member is None: member = ctx.author
 
         waiting_message = await ctx.guild.get_channel(431112508296790016).get_message(431113789161865241)
@@ -184,6 +185,7 @@ class Welcome:
 
     @commands.command()
     async def verify(self, ctx, member: discord.Member = None):
+        '''Gives users appropriate roles'''
         member = member or ctx.author
         tag = await ctx.bot.mongo.stusarmybot.player_tags.find_one({'user_id': member.id})
         if tag:
