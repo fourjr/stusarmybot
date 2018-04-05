@@ -11,4 +11,6 @@ pymysql
 pytz
 git+https://github.com/cgrok/cr-async
 bs4
-clashroyale 
+clashroyale
+motor
+dnspython
