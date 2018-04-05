@@ -33,7 +33,7 @@ class Stats:
 
         await ctx.send('Successfully saved tag.')
 
-    @commands.has_role('leaders')
+    @commands.has_any_role('leaders', 'Welcome Assistant')
     @commands.command()
     async def savefor(self, ctx, member: discord.Member, tag: TagCheck):
         '''Saves a tag for another user'''
