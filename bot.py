@@ -12,7 +12,8 @@ from contextlib import redirect_stdout
 import discord
 from discord.ext import commands
 from ext.formatter import EmbedHelp
-# from cogs.new_welcome import InvalidTag
+from cogs.new_welcome import InvalidTag
+from motor.motor_asyncio import AsyncIOMotorClient
 from cogs.claninfo import claninfo
 
 
@@ -90,6 +91,21 @@ def emoji(name: str, emojiresp=False):
         else:
             return name
 
+async def invoke(ctx):
+    '''Overwrites the default invoke for typing'''
+    if ctx.command is not None:
+        bot.dispatch('command', ctx)
+        async with ctx.typing():
+            try:
+                if (await bot.can_run(ctx, call_once=True)):
+                    await ctx.command.invoke(ctx)
+            except commands.CommandError as e:
+                await ctx.command.dispatch_error(ctx, e)
+            else:
+                bot.dispatch('command_completion', ctx)
+    elif ctx.invoked_with:
+        exc = CommandNotFound('Command "{}" is not found'.format(ctx.invoked_with))
+        bot.dispatch('command_error', ctx, exc)
 
 bot.emoji = emoji
 bot.getdata = getdata
@@ -100,9 +116,11 @@ bot.checksplit = checksplit
 bot.tempvar = ''
 bot.heroku = heroku
 bot.session = aiohttp.ClientSession()
+bot.invoke = invoke
+bot.mongo = AsyncIOMotorClient('mongodb+srv://fourjr:4SoWl2MNbWybV3xM@dbots-2-giqxl.mongodb.net/')
 bot.client = clashroyale.Client('9ba015601c85435aa0ac200afc07223e2b1a3190927c4bb19d89fe5f8295d60e', is_async=True, session=bot.session, timeout=5)
 
-_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod']  # , 'cogs.new_welcome']
+_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod', 'cogs.new_welcome', 'cogs.stats']
 
 
 @bot.event
@@ -125,15 +143,12 @@ async def ping(ctx):
     await (await bot.ws.ping())
     now = datetime.datetime.now()
     ping = now - msgtime
-    await bot.getdata2('.ping')
     msgtime = datetime.datetime.now()
-    await bot.wait_for('message', check=pingcheck)
     now = datetime.datetime.now()
     dblatency = now - msgtime
     pong = discord.Embed(title='Pong!', color=65535)
     pong.add_field(name='Message Latency', value=str("%.2f" % (ping.microseconds / 1000)) + 'ms')
     pong.add_field(name='Discord API Latency', value=str("%.2f" % (bot.latency * 1000)) + 'ms')
-    pong.add_field(name='Database Latency', value=str("%.2f" % (dblatency.microseconds / 1000)) + 'ms')
     await ctx.send(embed=pong)
 
 
