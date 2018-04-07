@@ -103,8 +103,7 @@ class Stats:
         async with self.bot.session.post('https://www.hastebin.com/documents', data=logs) as resp:
             data = await resp.json()
 
-        await ctx.send(f'{ctx.author.mention}, we have finished the checking process. Please head to \
-                         https://www.hastebin.com/{data["key"]} for the logs.')
+        await ctx.send(f'{ctx.author.mention}, we have finished the checking process. Please head to https://www.hastebin.com/{data["key"]} for the logs.')
 
     @commands.has_role('leaders')
     @commands.command()
