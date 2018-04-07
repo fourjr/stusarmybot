@@ -50,7 +50,7 @@ class Welcome:
         }
 
     def __local_check(self, ctx):
-        return ctx.channel.id == self.welcome_channel
+        return ctx.channel.id in (362172188301852672, self.welcome_channel)
 
     async def on_member_join(self, member):
         '''Welcome message'''
@@ -102,7 +102,7 @@ class Welcome:
         # sa[suggest - 1] is the highest clan they can go to
         waiting = []
         waitinglist = (await ctx.guild.get_channel(431112508296790016).get_message(431113789161865241)).embeds[0].fields
-        for item in waitinglist:
+        for item in reversed(waitinglist):
             val = int(item.value.splitlines()[0].strip('__').strip('Waiting: '))
             waiting.append(val)
         em = discord.Embed(title="Stu's Army!", description='We currently have 4 clans! These are the clans that you can go to. \nYour current trophies: ' + str(trophies), color=0xe67e22)
@@ -197,7 +197,7 @@ class Welcome:
 
         profile = await self.bot.client.get_player(tag)
 
-        member_role = discord.utils.get(ctx.guild.roles, name='Member')
+        member_role = discord.utils.get(ctx.guild.roles, name='member')
         try:
             role = discord.utils.get(ctx.guild.roles, id=self.roles[profile.clan.tag])
         except KeyError:

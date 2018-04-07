@@ -4,6 +4,7 @@ import copy
 import clashroyale
 import discord
 from discord.ext import commands
+from commands.cooldowns import BucketType
 
 from .new_welcome import InvalidTag
 
@@ -40,6 +41,7 @@ class Stats:
         ctx.author = member
         await ctx.invoke(self.save, tag=tag)
 
+    @commands.cooldown(1, 3600, BucketType.default)
     @commands.has_role('leaders')
     @commands.command()
     async def refresh(self, ctx):
@@ -66,6 +68,7 @@ class Stats:
 
             clan_role = [r for r in member.roles if r.id in role_ids]
 
+            member_role = discord.utils.get(ctx.guild.roles, name='member')
             try:
                 sa_role = discord.utils.get(ctx.guild.roles, id=roles[profile.clan.tag])
             except (KeyError, AttributeError):
@@ -74,13 +77,13 @@ class Stats:
                 logs += f'[INFO] {member}: User not in an SA Clan\n'
                 if clan_role:
                     # User has a SA Role
-                    await member.remove_roles(*clan_role)
+                    await member.remove_roles(*(clan_role + [member_role]))
                     logs += f'[REMOVE] {member} - {clan_role}: User not in an SA Clan\n'
             else:
                 # User is in SA Clan
                 logs += f'[INFO] {member}: User in SA Clan\n'
                 if sa_role not in clan_role:
-                    await member.add_roles(sa_role)
+                    await member.add_roles(sa_role, member_role)
                     logs += f"[ADD] {member} - [{sa_role}]: User's SA Clan role was not given to user\n"
 
                 if len(clan_role) > 1:
@@ -92,7 +95,6 @@ class Stats:
 
             logs += f'[INFO] {member}: User checked\n'
             await asyncio.sleep(0.4)
-            print(logs)
 
         async with self.bot.session.post('https://www.hastebin.com/documents', data=logs) as resp:
             data = await resp.json()
