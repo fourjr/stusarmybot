@@ -4,7 +4,7 @@ import copy
 import clashroyale
 import discord
 from discord.ext import commands
-from commands.cooldowns import BucketType
+from discord.ext.commands.cooldowns import BucketType
 
 from .new_welcome import InvalidTag
 
