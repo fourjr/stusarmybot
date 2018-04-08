@@ -159,18 +159,18 @@ async def help(ctx):
     await ctx.send("""
 This isn't kept up to date 100% because I'm lazy :)
 **Welcome Channel**
-`>sa1` to `>sa4` - Give appropriate roles
-`>visitor` - Give appropriate roles
+`>sa1` to `>sa4` - Give someone member role and clan role.
+`>visitor` - Give someone the visitor role
 
 **Non-Welcome Channel**
 `>help` - Shows this list of useful information.
 `>ping` - Pong!
 `>update` - Updates <#365870449915330560>
-`>invite` - Get the invite code for the server
 
 **All Channels**
-`>claninfo` - Sends you the data in <#365870449915330560>
 `>addrole` - Adds custom roles
+`>claninfo` - Sends you the data in <#365870449915330560>
+`>invite` - Get the invite code for the server
 
 **Mod Commands**
 `>kick` - Kick?
