@@ -29,5 +29,6 @@ class Logging():
         embed.add_field(name='Content', value=message.content, inline=False)
         await message.guild.get_channel(362175558043566080).send(embed=embed)
 
+
 def setup(bot):
     bot.add_cog(Logging(bot))

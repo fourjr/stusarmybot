@@ -86,10 +86,11 @@ def emoji(name: str, emojiresp=False):
         except:
             return name
     else:
-        if emoji != None:
+        if emoji is not None:
             return emoji
         else:
             return name
+
 
 async def invoke(ctx):
     '''Overwrites the default invoke for typing'''
@@ -158,13 +159,14 @@ async def help(ctx):
     await ctx.send("""
 This isn't kept up to date 100% because I'm lazy :)
 **Welcome Channel**
-`>sa1` to `>sa6` - Give appropriate roles
+`>sa1` to `>sa4` - Give appropriate roles
 `>visitor` - Give appropriate roles
 
 **Non-Welcome Channel**
 `>help` - Shows this list of useful information.
 `>ping` - Pong!
 `>update` - Updates <#365870449915330560>
+`>invite` - Get the invite code for the server
 
 **All Channels**
 `>claninfo` - Sends you the data in <#365870449915330560>
