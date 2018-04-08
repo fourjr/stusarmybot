@@ -121,9 +121,13 @@ class Commands():
                 except:
                     print(json.dumps(respj, indent=4))
 
-    @commands.command() 
+    @commands.command()
     async def claninfo(self, ctx):
         await ctx.send(embed=((await ctx.guild.get_channel(365870449915330560).get_message(371704816143040523)).embeds[0]))
+
+    @commands.command()
+    async def invite(self, ctx):
+        await ctx.send('https://discord.gg/hw9nmV2')
 
 
 def setup(bot):
