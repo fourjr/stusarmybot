@@ -193,6 +193,8 @@ async def on_command_error(ctx, error):
         await ctx.send(error.message)
     elif isinstance(error, commands.CommandOnCooldown):
         await ctx.send(f'This command is on cooldown. Please wait {error.retry_after:.3f}s')
+    elif isinstance(error, clashroyale.RequestError):
+        await ctx.send('RoyaleAPI is down at the moment. Please try again later.')
     elif isinstance(error, commands.CommandInvokeError):
         no_dms = 'Cannot send messages to this user'
         is_help_cmd = (ctx.command.qualified_name == 'help')

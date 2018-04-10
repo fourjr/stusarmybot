@@ -18,6 +18,24 @@ class TagCheck(commands.Converter):
             return argument
         raise InvalidTag
 
+class TagOrUser(commands.MemberConverter):
+
+    async def convert(self, ctx, argument):
+        try:
+            member = await super().convert(ctx, argument)
+        except commands.BadArgument:
+            return await TagCheck().convert(ctx, argument)
+        else:
+            tag = (await ctx.bot.mongo.stusarmybot.player_tags.find_one({'user_id': member.id}))['tag']
+            if tag is None:
+                raise InvalidTag
+            else:
+                return tag
+
+
+def e(name):
+    '''Converts anything to an emoji by it's name '''
+    return discord.utils.get(bot.emojis, name=name)
 
 class Stats:
     def __init__(self, bot):
@@ -127,6 +145,36 @@ class Stats:
             await ctx.send(p)
         await ctx.send("That's all!")
 
+    @commands.command()
+    async def profile(self, ctx, *, tag_or_user: TagOrUser = None):
+        '''Displays basic CR Stats'''
+        if tag_or_user is None:
+            tag_or_user = await TagOrUser().convert(ctx, ctx.author)
+
+        player = await self.bot.client.get_player(tag_or_user)
+
+        em = discord.Embed(timestamp=ctx.message.created_at)
+        try:
+            badge_image = player.clan.badge.image
+        except AttributeError:
+            badge_image = None
+        em.set_author(name=player.name, icon_url=badge_image)
+        em.add_field(name='Trophies', value=f'{player.trophies} {e("trophy")}')
+        em.add_field(name='Level', value=f'{player.stats.level} {e("experience")}')
+        if player.clan:
+            em.add_field(name='Clan Name', value=f'{player.clan.name} {e("clan")}')
+            em.add_field(name='Clan Tag', value=f'{player.clan.tag} {e("clan")}')
+            em.add_field(name='Clan Role', value=f'{player.clan.role} {e("clan")}')
+        else:
+            em.add_field(name='Clan', value=f'Player not in clan {e("clan")}')
+        em.add_field(name='Favourite Card', value=e(player.stats.favourite_card.name))
+
+        deck = ''
+
+        for c in player.current_deck:
+            deck += f'{e(c.name)} {c.level} '
+
+        em.add_field(name='Battle Deck', value=deck)
 
 def setup(bot):
     bot.add_cog(Stats(bot))
