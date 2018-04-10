@@ -46,8 +46,7 @@ class Bot(commands.Bot):
         except:
             return os.environ.get('TOKEN')
 
-
-    def get_prefix(self):
+    async def get_prefix(self, message):
         '''Returns your prefix wherever it is'''
         try:
             with open('data/config.json') as f:
@@ -55,7 +54,6 @@ class Bot(commands.Bot):
                 return 'b>'
         except:
             return '>'
-
 
     def heroku(self):
         '''Using Heroku?'''
