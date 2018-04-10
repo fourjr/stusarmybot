@@ -200,7 +200,7 @@ class Welcome:
         member_role = discord.utils.get(ctx.guild.roles, name='member')
         try:
             role = discord.utils.get(ctx.guild.roles, id=self.roles[profile.clan.tag])
-        except KeyError:
+        except (KeyError, AttributeError):
             await ctx.send('You are not in any of our clans. Please do `>rec` to find out which clan you should join')
         else:
             await member.add_roles(role, member_role)
