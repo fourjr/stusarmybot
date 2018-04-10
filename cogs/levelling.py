@@ -42,4 +42,5 @@ class Levelling():
         await ctx.send(embed=rankemb)
         
 def setup(bot):
+    raise NotImplementedError('Logging cog not ready')
     bot.add_cog(Levelling(bot))

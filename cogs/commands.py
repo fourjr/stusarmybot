@@ -29,4 +29,4 @@ class Misc:
 
 
 def setup(bot):
-    bot.add_cog(Commands(bot))
+    bot.add_cog(Misc(bot))

@@ -1,128 +1,105 @@
 import datetime
-import clashroyale
 import glob
 import inspect
 import io
+import json
 import os
 import textwrap
-import aiohttp
-import json
 import traceback
 from contextlib import redirect_stdout
+
+import aiohttp
+import clashroyale
 import discord
 from discord.ext import commands
-from ext.formatter import EmbedHelp
-from cogs.new_welcome import InvalidTag
 from motor.motor_asyncio import AsyncIOMotorClient
+
 from cogs.claninfo import claninfo
+from cogs.new_welcome import InvalidTag
+from ext.formatter import EmbedHelp
+
+class Bot(commands.Bot):
+    def __init__(self):
+        super().__init__(command_prefix=None, formatter=EmbedHelp())
+        self.remove_command('help')
+        self.session = aiohttp.ClientSession(loop=self.loop)
+        self.mongo = AsyncIOMotorClient('mongodb+srv://fourjr:4SoWl2MNbWybV3xM@dbots-2-giqxl.mongodb.net/')
+        self.client = clashroyale.Client('9ba015601c85435aa0ac200afc07223e2b1a3190927c4bb19d89fe5f8295d60e', is_async=True, session=self.session, timeout=5)
+
+        for i in os.listdir('cogs'):
+            if i.endswith('.py'):
+                cog_name = 'cogs.' + i.replace('.py', '')
+                try:
+                    self.load_extension(cog_name)
+                except Exception as e:
+                    print(e)
+                else:
+                    print(f'Loaded: {cog_name}')
 
 
-def token():
-    '''Returns your token wherever it is'''
-    try:
-        with open('./data/config.json') as f:
-            config = json.load(f)
-            return config.get('TOKEN').strip('\"')
-    except:
-        return os.environ.get('TOKEN')
-
-
-def prefix():
-    '''Returns your token wherever it is'''
-    try:
-        with open('data/config.json') as f:
-            config = json.load(f)
-            return 'b>'
-    except:
-        return '>'
-
-
-def heroku():
-    '''Using Heroku?'''
-    try:
-        with open('./data/config.json') as f:
-            config = json.load(f)
-            return False
-    except:
-        return True
-
-
-bot = commands.Bot(command_prefix=prefix(), formatter=EmbedHelp())
-bot.remove_command('help')
-
-
-async def getdata(message):
-    await discord.utils.get(discord.utils.get(bot.guilds, id=359577438101176320).channels, id=370240126795776000).send(message)
-
-
-async def getdata2(message):
-    await discord.utils.get(discord.utils.get(bot.guilds, id=359577438101176320).channels, id=371244319660834817).send(message)
-
-
-def check(msg):
-    return msg.author.id == 249891250117804032 and msg.channel.id == 370240126795776000
-
-
-def check2(msg):
-    return msg.author.id == 249891250117804032 and msg.channel.id == 371244319660834817
-
-
-def pingcheck(msg):
-    return msg.author.id == 249891250117804032 and msg.channel.id == 371244319660834817 and msg.content == 'pong'
-
-
-def checksplit(msg):
-    return msg.author.id == 249891250117804032 and msg.channel.id == 371244319660834817 and msg.content.split()[0] == str(bot.tempvar)
-
-
-def emoji(name: str, emojiresp=False):
-    if name == 'chestmagic':
-        name = 'chestmagical'
-    name = name.replace('.', '')
-    emoji = discord.utils.get(bot.emojis, name=name)
-    if not emojiresp:
+    def token(self):
+        '''Returns your token wherever it is'''
         try:
-            return str(f'<:{emoji.name}:{emoji.id}>')
+            with open('./data/config.json') as f:
+                config = json.load(f)
+                return config.get('TOKEN').strip('\"')
         except:
-            return name
-    else:
-        if emoji is not None:
-            return emoji
+            return os.environ.get('TOKEN')
+
+
+    def get_prefix(self):
+        '''Returns your prefix wherever it is'''
+        try:
+            with open('data/config.json') as f:
+                config = json.load(f)
+                return 'b>'
+        except:
+            return '>'
+
+
+    def heroku(self):
+        '''Using Heroku?'''
+        try:
+            with open('./data/config.json') as f:
+                config = json.load(f)
+                return False
+        except:
+            return True
+
+    def emoji(self, name: str, emojiresp=False):
+        if name == 'chestmagic':
+            name = 'chestmagical'
+        name = name.replace('.', '')
+        emoji = discord.utils.get(bot.emojis, name=name)
+        if not emojiresp:
+            try:
+                return str(f'<:{emoji.name}:{emoji.id}>')
+            except:
+                return name
         else:
-            return name
+            if emoji is not None:
+                return emoji
+            else:
+                return name
 
 
-async def invoke(ctx):
-    '''Overwrites the default invoke for typing'''
-    if ctx.command is not None:
-        bot.dispatch('command', ctx)
-        async with ctx.typing():
+    async def invoke(self, ctx):
+        '''Overwrites the default invoke for typing'''
+        if ctx.command is not None:
+            bot.dispatch('command', ctx)
             try:
                 if (await bot.can_run(ctx, call_once=True)):
-                    await ctx.command.invoke(ctx)
+                    async with ctx.typing():
+                        await ctx.command.invoke(ctx)
             except commands.CommandError as e:
                 await ctx.command.dispatch_error(ctx, e)
             else:
                 bot.dispatch('command_completion', ctx)
-    elif ctx.invoked_with:
-        exc = CommandNotFound('Command "{}" is not found'.format(ctx.invoked_with))
-        bot.dispatch('command_error', ctx, exc)
+        elif ctx.invoked_with:
+            exc = CommandNotFound('Command "{}" is not found'.format(ctx.invoked_with))
+            bot.dispatch('command_error', ctx, exc)
 
-bot.emoji = emoji
-bot.getdata = getdata
-bot.getdata2 = getdata2
-bot.check = check
-bot.check2 = check2
-bot.checksplit = checksplit
-bot.tempvar = ''
-bot.heroku = heroku
-bot.session = aiohttp.ClientSession()
-bot.invoke = invoke
-bot.mongo = AsyncIOMotorClient('mongodb+srv://fourjr:4SoWl2MNbWybV3xM@dbots-2-giqxl.mongodb.net/')
-bot.client = clashroyale.Client('9ba015601c85435aa0ac200afc07223e2b1a3190927c4bb19d89fe5f8295d60e', is_async=True, session=bot.session, timeout=5)
-
-_extensions = ['cogs.logging', 'cogs.commands', 'cogs.claninfo', 'cogs.mod', 'cogs.new_welcome', 'cogs.stats']
-
+bot = Bot()
 
 @bot.event
 async def on_ready():
@@ -134,7 +111,6 @@ Bot Ready!
 Username: {}
 User ID: {}
 ------------------------------------------'''.format(bot.user, bot.user.id))
-    await bot.change_presence(activity=discord.Game("for Stu's Army!"))
 
 
 @bot.command()
@@ -425,15 +401,7 @@ async def unload(ctx, *, module):
         except:
             pass
 
-for extension in _extensions:
-    try:
-        bot.load_extension(extension)
-        print('Loaded: {}'.format(extension))
-    except Exception as e:
-        exc = '{}: {}'.format(type(e).__name__, e)
-        print('Error on load: {}\n{}'.format(extension, exc))
-
-if not heroku():
+if not bot.heroku():
     # try:
     #     bot.load_extension('cogs.levelling')
     #     print('Loaded: {}'.format('cogs.levelling'))
@@ -447,6 +415,6 @@ if not heroku():
         pass
 
 try:
-    bot.run(token(), reconnect=True)
+    bot.run(bot.token(), reconnect=True, activity=discord.Game("for Stu's Army!"))
 except Exception as e:
     print(e)
