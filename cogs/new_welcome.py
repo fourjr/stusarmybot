@@ -207,5 +207,15 @@ class Welcome:
             await ctx.send(f'{role} added.')
             await self.bot.get_channel(298812318903566337).send(f'Welcome {member.mention} to {role}!')
 
+    @commands.command()
+    async def visitor(self, ctx, member: discord.Member=None):
+        '''Get the Visitor Role!'''
+        if member is None or ctx.author.top_role < discord.utils.get(ctx.guild.roles, id=334250664870019073):
+            # Only welcome assistants or higher can tag
+            member = ctx.author
+        await member.add_roles(discord.utils.get(ctx.guild.roles, id=298815975980138496))
+        await ctx.send('I have given {} the **Visitor** role!'.format(member.name))
+        await discord.utils.get(ctx.guild.channels, id=377204201408823296).send("Welcome {} to Stu's Army! He is a visitor!".format(member.mention))
+
 def setup(bot):
     bot.add_cog(Welcome(bot))
