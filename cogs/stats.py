@@ -1,5 +1,6 @@
 import asyncio
 import copy
+import random
 
 import clashroyale
 import discord
@@ -32,10 +33,12 @@ class TagOrUser(commands.MemberConverter):
             else:
                 return tag
 
-
-def e(name):
+def e(ctx, name):
     '''Converts anything to an emoji by it's name '''
-    return discord.utils.get(bot.emojis, name=name)
+    name = name.replace('.','').lower().replace(' ','').replace('_','').replace('-','')
+    if name == 'chestmagic':
+        name = 'chestmagical'
+    return discord.utils.get(ctx.bot.emojis, name=name)
 
 class Stats:
     def __init__(self, bot):
@@ -149,32 +152,36 @@ class Stats:
     async def profile(self, ctx, *, tag_or_user: TagOrUser = None):
         '''Displays basic CR Stats'''
         if tag_or_user is None:
-            tag_or_user = await TagOrUser().convert(ctx, ctx.author)
+            tag_or_user = await TagOrUser().convert(ctx, str(ctx.author.id))
 
         player = await self.bot.client.get_player(tag_or_user)
 
-        em = discord.Embed(timestamp=ctx.message.created_at)
+        em = discord.Embed(color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
         try:
             badge_image = player.clan.badge.image
         except AttributeError:
             badge_image = None
         em.set_author(name=player.name, icon_url=badge_image)
-        em.add_field(name='Trophies', value=f'{player.trophies} {e("trophy")}')
-        em.add_field(name='Level', value=f'{player.stats.level} {e("experience")}')
+        em.add_field(name='Trophies', value=f'{player.trophies} {e(ctx, "trophy")}')
+        em.add_field(name='Level', value=f'{player.stats.level} {e(ctx, "experience")}')
         if player.clan:
-            em.add_field(name='Clan Name', value=f'{player.clan.name} {e("clan")}')
-            em.add_field(name='Clan Tag', value=f'{player.clan.tag} {e("clan")}')
-            em.add_field(name='Clan Role', value=f'{player.clan.role} {e("clan")}')
+            em.add_field(name='Clan Name', value=f'{player.clan.name} {e(ctx, "clan")}')
+            em.add_field(name='Clan Tag', value=f'{player.clan.tag} {e(ctx, "clan")}')
+            em.add_field(name='Clan Role', value=f'{player.clan.role.title()} {e(ctx, "clan")}')
         else:
-            em.add_field(name='Clan', value=f'Player not in clan {e("clan")}')
-        em.add_field(name='Favourite Card', value=e(player.stats.favourite_card.name))
+            em.add_field(name='Clan', value=f'Player not in clan {e(ctx, "clan")}')
+        if player.stats.favorite_card:
+            em.add_field(name='Favourite Card', value=e(ctx, player.stats.favorite_card.name))
+        else:
+            em.add_field(name='Favourite Card', value=f'No favourite card {e(ctx, "soon")}')
 
         deck = ''
 
         for c in player.current_deck:
-            deck += f'{e(c.name)} {c.level} '
+            deck += f'{e(ctx, c.name)} {c.level} '
 
         em.add_field(name='Battle Deck', value=deck)
+        await ctx.send(embed=em)
 
 def setup(bot):
     bot.add_cog(Stats(bot))
