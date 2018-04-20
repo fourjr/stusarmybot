@@ -94,7 +94,7 @@ class Bot(commands.Bot):
             else:
                 bot.dispatch('command_completion', ctx)
         elif ctx.invoked_with:
-            exc = CommandNotFound('Command "{}" is not found'.format(ctx.invoked_with))
+            exc = commands.errors.CommandNotFound('Command "{}" is not found'.format(ctx.invoked_with))
             bot.dispatch('command_error', ctx, exc)
 
 bot = Bot()
@@ -203,6 +203,8 @@ async def on_command_error(ctx, error):
             msg = "I couldn't send the help message to you in DM. Either you blocked me or you disabled DMs in this server."
             await channel.send(msg)
             return
+    elif isinstance(error, clashroyale.errors.RequestError):
+        await ctx.send('API is down at the moment, please try again later.')
 
 
 @bot.command()
