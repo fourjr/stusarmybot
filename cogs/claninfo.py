@@ -67,9 +67,13 @@ class claninfo():
     async def on_raw_reaction_add(self, payload):
         if payload.message_id == 371704816143040523:
             member = self.bot.get_guild(298812318903566337).get_member(payload.user_id)
+
+            if member == self.bot.user:
+                return
+
             message = await self.bot.get_channel(365870449915330560).get_message(371704816143040523)
             await message.clear_reactions()
-            await message.add_reaction(payload.emoji)
+            await message.add_reaction(discord.utils.get(bot.emojis, name='league7'))
             if payload.emoji.name == 'league7':
                 await self.clanupdate()
 
