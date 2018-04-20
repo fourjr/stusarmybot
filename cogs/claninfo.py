@@ -73,7 +73,7 @@ class claninfo():
 
             message = await self.bot.get_channel(365870449915330560).get_message(371704816143040523)
             await message.clear_reactions()
-            await message.add_reaction(discord.utils.get(bot.emojis, name='league7'))
+            await message.add_reaction(discord.utils.get(self.bot.emojis, name='league7'))
             if payload.emoji.name == 'league7':
                 await self.clanupdate()
 
