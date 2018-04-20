@@ -64,15 +64,14 @@ class claninfo():
     async def on_ready(self):
         await self.clanupdate()
 
-    async def on_raw_reaction_add(self, emoji, message_id, channel_id, user_id):
-        if message_id == 371704816143040523:
-            member = self.bot.get_guild(298812318903566337).get_member(user_id)
+    async def on_raw_reaction_add(self, payload):
+        if payload.message_id == 371704816143040523:
+            member = self.bot.get_guild(298812318903566337).get_member(payload.user_id)
             message = await self.bot.get_channel(365870449915330560).get_message(371704816143040523)
-            if emoji.name != 'league7':
-                return await message.remove_reaction(emoji, member)
-            await self.clanupdate()
-            await message.remove_reaction(emoji, member)
-
+            await message.clear_reactions()
+            await message.add_reaction(payload.emoji)
+            if payload.emoji.name == 'league7':
+                await self.clanupdate()
 
 def setup(bot):
     bot.add_cog(claninfo(bot))
