@@ -1,46 +1,97 @@
+import asyncio
+import json
+import random
+import math
+
 import discord
 from discord.ext import commands
-import asyncio
-import aiohttp
-import random
-import json
+from pymongo import ReturnDocument
 
-class Levelling():
+
+class Levelling:
+    '''Cog for levelling up while chatting'''
     def __init__(self, bot):
         self.bot = bot
-        self.sessions = set()
+        self.level_rewards = json.load(open('data/level_rewards.json'))
+        self.level_ups = json.load(open('data/level_ups.json'))
+        self.cooldown = []
+        self.colors = self.colors = {'red':0xFF4500, 'green':0x00FF00, 'orange':0xFFC800, 'blue':0x5AADFF, 'pink':0xA4029B, 'light_red':0xFF1A1F}
 
-    async def on_message(self, message):
-        if message.author.bot == False and message.guild.id == 298812318903566337:
-            data = []
-            cooldown = False
-            with open('./data/cooldown.json') as f:
-                data = json.load(f)
-            for item in data:
-                if str(message.author.id) in item:
-                    cooldown = data[item]
-            if not cooldown and not message.author.bot:
-                data.update({message.author.id: 'true'})
-                with open('./data/cooldown.json', 'w') as f:
-                    json.dump(data, f, indent=4)
-                await self.bot.getdata2(f'xp {message.author.id}')
-                await asyncio.sleep(5)
-                del data[message.author.id]
-                with open('./data/cooldown.json', 'w') as f:
-                    json.dump(data, f, indent=4)
+    def calculate_level(self, xp):
+        '''Given an XP amount, return the level and the amount to get to the next level'''
+        level = 3912
+        count = math.inf
+        for n, i in enumerate(self.level_ups):
+            if i > xp:
+                level = n
+                count = i-xp
+                break
+        return (level, count)
+
+    async def on_message(self, msg):
+        '''Sets up the Levelling'''
+        # Levels can only be earnt in #general
+        if len(msg.content) > 5 and not msg.author.bot:
+            if msg.author.id not in self.cooldown:
+                self.cooldown.append(msg.author.id)
+                entry = await self.bot.mongo.stusarmybot.levelling.find_one_and_update({'user_id':msg.author.id}, {'$inc':{'xp':random.randint(1, 5)}}, upsert=True, return_document=ReturnDocument.AFTER)
+                amount = entry['xp']
+                level = self.calculate_level(amount)[0]
+                for i in self.level_rewards:
+                    if level >= int(i):
+                        role = discord.utils.get(msg.guild.roles, name=self.level_rewards[i])
+                        if role not in msg.author.roles:
+                            await msg.author.send(f'You just levelled up to level {level}!')
+                            await msg.author.add_roles(role)
+                await asyncio.sleep(random.randint(50, 150))
+                self.cooldown.remove(msg.author.id)
 
     @commands.command()
-    async def rank(self, ctx, member:discord.Member = None):
-        if member == None: member = ctx.author
-        self.bot.tempvar = random.randint(1, 1000)
-        await self.bot.getdata2(f'.xprank {ctx.author.id} | {self.bot.tempvar}')
-        rank = await self.bot.wait_for('message', check=self.bot.checksplit)
-        rankemb = discord.Embed(color=0x3498db)
-        rankemb.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-        rankemb.add_field(name='XP', value=f"{int(rank.content.split()[1])}/{int(rank.content.split()[2])}")
-        rankemb.add_field(name='Level', value=int(rank.content.split()[3]))
-        await ctx.send(embed=rankemb)
-        
+    async def rank(self, ctx, member: discord.Member=None):
+        '''Check your current level!'''
+        member = member or ctx.author
+        entry = await self.bot.mongo.stusarmybot.levelling.find_one({'user_id':member.id})
+        amount = 0 if entry is None else entry.get('xp')
+        level = self.calculate_level(amount)
+        em = discord.Embed(title='Rank!', color=self.colors['blue'])
+        em.set_author(name=member.name, icon_url=member.avatar_url)
+        em.add_field(name='XP', value=f'{amount}/{level[1]}')
+        em.add_field(name='Level', value=level[0])
+        await ctx.send(embed=em)
+ 
+    @commands.command(aliases=['levellb', 'llb'])
+    async def levels_leaderboard(self, ctx, page=1):
+        '''View how active you are compared to everyone else!'''
+        page -= 1
+        top = await self.bot.mongo.stusarmybot.levelling.find().sort('xp', -1).to_list(None)
+        sorted_top = sorted(top, key=lambda x: x.get('xp') or -9999999999, reverse=True)
+
+        maxlen = 0
+        for i in range(page*10, page*10 + 10):
+            try:
+                account = sorted_top[i]
+            except IndexError:
+                break
+            user_name = getattr(self.bot.get_user(account['user_id']), 'name', False) or 'Left server'
+
+            if len(f'{user_name}{account["xp"]}') > maxlen:
+                maxlen = len(f'{user_name}{account["xp"]}') + 2
+
+        fmt = ''
+
+        for i in range(page*10, page*10 + 10):
+            try:
+                account = sorted_top[i]
+            except IndexError:
+                break
+            user_name = getattr(self.bot.get_user(account['user_id']), 'name', False) or 'Left server'
+
+            space_amt = maxlen - len(f'{user_name}{account["xp"]}')
+            level = self.calculate_level(account['xp'])[0]
+            fmt += f'{i+1}. {user_name} {" "*space_amt}{account["xp"]} (Level {level})\n'
+
+        await ctx.send(f'```py\n{fmt}\n```')
+
+
 def setup(bot):
-    raise NotImplementedError('Logging cog not ready')
     bot.add_cog(Levelling(bot))

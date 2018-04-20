@@ -402,18 +402,14 @@ async def unload(ctx, *, module):
             pass
 
 if not bot.heroku():
-    # try:
-    #     bot.load_extension('cogs.levelling')
-    #     print('Loaded: {}'.format('cogs.levelling'))
-    # except Exception as e:
-    #     exc = '{}: {}'.format(type(e).__name__, e)
-    #     print('Error on load: {}\n{}'.format('cogs.levelling', exc))
     try:
         bot.unload_extension('cogs.logging')
-        print('Unloaded: {}'.format('cogs.logging'))
+        bot.unload_extension('cogs.levelling')
     except:
         pass
-
+    else:
+        print('Unloaded: {}'.format('cogs.logging'))
+        print('Unloaded: {}'.format('cogs.levelling'))
 try:
     bot.run(bot.token(), reconnect=True, activity=discord.Game("for Stu's Army!"))
 except Exception as e:
