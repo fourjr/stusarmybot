@@ -119,7 +119,6 @@ class Stats:
                 # User is in SA Clan
                 logs += f'[INFO] {member}: User in SA Clan\n'
                 nick_name = f''
-                if member.nick != 
                 if sa_role not in clan_role:
                     await member.add_roles(sa_role, member_role)
                     logs += f"[ADD] {member} - [{sa_role}]: User's SA Clan role was not given to user\n"
