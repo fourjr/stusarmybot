@@ -21,6 +21,9 @@ class TagCheck(commands.MemberConverter):
             tag = await ctx.bot.mongo.stusarmybot.player_tags.find_one({'user_id': member.id})
             if tag:
                 return (tag['tag'], True)
+            tag = await ctx.bot.statsy_mongo.player_tags.clashroyale.find_one({'user_id': member.id})
+            if tag:
+                return (tag['tag'], True)
 
         try:
             int(argument)

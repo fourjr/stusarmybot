@@ -6,6 +6,7 @@ import clashroyale
 import discord
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
+from motor.motor_asyncio import AsyncIOMotorClient
 
 from .new_welcome import InvalidTag
 
@@ -29,7 +30,11 @@ class TagOrUser(commands.MemberConverter):
         else:
             tag = (await ctx.bot.mongo.stusarmybot.player_tags.find_one({'user_id': member.id}))['tag']
             if tag is None:
-                raise InvalidTag
+                tag = (await ctx.bot.statsy_mongo.player_tags.clashroyale.find_one({'user_id': member.id}))['tag']
+                if tag is None:
+                    raise InvalidTag
+                else:
+                    return tag
             else:
                 return tag
 
