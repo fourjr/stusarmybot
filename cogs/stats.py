@@ -133,7 +133,7 @@ class Stats:
                 # Check for nick
                 if member.nick != f'{player.name} | {clan_key}':
                     await member.edit(nick=f'{player.name} | {clan_key}')
-                    logs += logs += f'[NICK_ADD] {member} - {clan_key}: User does not have nickname'
+                    logs += f'[NICK_ADD] {member} - {clan_key}: User does not have nickname'
 
             logs += f'[INFO] {member}: User checked\n'
             await asyncio.sleep(3)
