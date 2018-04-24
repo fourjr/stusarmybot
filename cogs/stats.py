@@ -28,15 +28,17 @@ class TagOrUser(commands.MemberConverter):
         except commands.BadArgument:
             return await TagCheck().convert(ctx, argument)
         else:
-            tag = (await ctx.bot.mongo.stusarmybot.player_tags.find_one({'user_id': member.id}))['tag']
+            tag = await ctx.bot.mongo.stusarmybot.player_tags.find_one({'user_id': member.id})
             if tag is None:
-                tag = (await ctx.bot.statsy_mongo.player_tags.clashroyale.find_one({'user_id': member.id}))['tag']
+                tag = await ctx.bot.statsy_mongo.player_tags.clashroyale.find_one({'user_id': member.id})
                 if tag is None:
                     raise InvalidTag
                 else:
-                    return tag
+                    del tag['_id']
+                    await ctx.bot.mongo.stusarmybot.player_tags.insert_one(tag)
+                    return tag['tag']
             else:
-                return tag
+                return tag['tag']
 
 def e(ctx, name):
     '''Converts anything to an emoji by it's name '''
