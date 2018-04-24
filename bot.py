@@ -164,12 +164,10 @@ async def send_cmd_help(ctx):
     if ctx.invoked_subcommand:
         pages = bot.formatter.format_help_for(ctx, ctx.invoked_subcommand)
         for page in pages:
-            print(page)
             await ctx.channel.send(embed=page)
     else:
         pages = bot.formatter.format_help_for(ctx, ctx.command)
         for page in pages:
-            print(page)
             await ctx.channel.send(embed=page)
 
 

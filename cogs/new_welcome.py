@@ -166,7 +166,7 @@ class Welcome:
         await ctx.send(f"{member.mention}, you are the number {waitno} in the queue.")
 
     @commands.command()
-    async def unwait(self, ctx, member:discord.Member = None):
+    async def unwait(self, ctx, *, member:discord.Member = None):
         '''Removes your name from the waiting list'''
         if member is None: member = ctx.author
 
@@ -185,7 +185,7 @@ class Welcome:
         await ctx.send(f'Cleared {ctx.author.name} from the waitlist.')
 
     @commands.command()
-    async def verify(self, ctx, member: discord.Member = None):
+    async def verify(self, ctx, *, member: discord.Member = None):
         '''Gives users appropriate roles'''
         member = member or ctx.author
         tag = await ctx.bot.mongo.stusarmybot.player_tags.find_one({'user_id': member.id})
@@ -200,11 +200,16 @@ class Welcome:
         member_role = discord.utils.get(ctx.guild.roles, name='member')
         try:
             role = discord.utils.get(ctx.guild.roles, id=self.roles[profile.clan.tag])
-        except (KeyError, AttributeError):
+            clan_key = next(x for x in self.keys if self.keys[x] == profile.clan.tag).upper()
+        except (KeyError, AttributeError, StopIteration):
+            # KeyError for role statement
+            # AttributeError in case `profile.clan` is a NoneType
+            # StopIteration for the next()
             await ctx.send('You are not in any of our clans. Please do `>rec` to find out which clan you should join')
         else:
             await member.add_roles(role, member_role)
             await ctx.send(f'{role} added.')
+            await member.edit(nick=f'{profile.name} | {clan_key}')
             await self.bot.get_channel(298812318903566337).send(f'Welcome {member.mention} to {role}!')
 
     @commands.command()

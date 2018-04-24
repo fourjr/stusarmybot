@@ -72,6 +72,7 @@ class Stats:
         '''Refreshes all roles and ensures everyone has the right roles.'''
         tags = await self.bot.mongo.stusarmybot.player_tags.find().to_list(None)
         roles = copy.copy(self.bot.get_cog('Welcome').roles)
+        keys = self.bot.get_cog('Welcome').keys
         del roles['visitor']
         role_ids = list(roles.values())
 
@@ -82,7 +83,7 @@ class Stats:
             try:
                 profile = await self.bot.client.get_player(t['tag'])
             except (clashroyale.RequestError, clashroyale.NotResponding):
-                logs += f'[API]: Paused for 2 seconds\n'
+                logs += f'[API]: Paused for 60 seconds\n'
                 await asyncio.sleep(60)
 
             member = ctx.guild.get_member(t['user_id'])
@@ -95,17 +96,30 @@ class Stats:
             member_role = discord.utils.get(ctx.guild.roles, name='member')
             try:
                 sa_role = discord.utils.get(ctx.guild.roles, id=roles[profile.clan.tag])
-            except (KeyError, AttributeError):
-                # AttributeError is in case the user is not in any clan.
-                # User is not in a SA Clan
+                clan_key = next(x for x in keys if self.keys[x] == profile.clan.tag).upper()
+            except (KeyError, AttributeError, StopIteration):
+                # KeyError for role statement
+                # AttributeError in case `profile.clan` is a NoneType
+                # StopIteration for the next()
                 logs += f'[INFO] {member}: User not in an SA Clan\n'
                 if clan_role:
                     # User has a SA Role
                     await member.remove_roles(*(clan_role + [member_role]))
                     logs += f'[REMOVE] {member} - {clan_role}: User not in an SA Clan\n'
+
+                    try:
+                        # Nick cleanup checking
+                        for k in keys:
+                            if member.nick == f'{profile.name} | {k.upper()}':
+                                raise StopIteration
+                    except StopIteration:
+                        await member.edit(nick=None)
+                        logs += f'[NICK_REMOVE] {member} - {k.upper()}: User not in SA Clan'
             else:
                 # User is in SA Clan
                 logs += f'[INFO] {member}: User in SA Clan\n'
+                nick_name = f''
+                if member.nick != 
                 if sa_role not in clan_role:
                     await member.add_roles(sa_role, member_role)
                     logs += f"[ADD] {member} - [{sa_role}]: User's SA Clan role was not given to user\n"
@@ -116,6 +130,11 @@ class Stats:
                     await asyncio.sleep(0.2)
                     await member.remove_roles(*clan_role)
                     logs += f"[REMOVE] {member} - {clan_role}: User has extra roles\n"
+                
+                # Check for nick
+                if member.nick != f'{player.name} | {clan_key}':
+                    await member.edit(nick=f'{player.name} | {clan_key}')
+                    logs += logs += f'[NICK_ADD] {member} - {clan_key}: User does not have nickname'
 
             logs += f'[INFO] {member}: User checked\n'
             await asyncio.sleep(3)
