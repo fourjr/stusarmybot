@@ -24,6 +24,7 @@ class TagCheck(commands.MemberConverter):
             tag = await ctx.bot.statsy_mongo.player_tags.clashroyale.find_one({'user_id': member.id})
             if tag:
                 del tag['_id']
+                tag['tag'] = tag['tag'][0]
                 await ctx.bot.mongo.stusarmybot.player_tags.insert_one(tag)
                 return (tag['tag'], True)
 

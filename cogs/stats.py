@@ -35,6 +35,7 @@ class TagOrUser(commands.MemberConverter):
                     raise InvalidTag
                 else:
                     del tag['_id']
+                    tag['tag'] = tag['tag'][0]
                     await ctx.bot.mongo.stusarmybot.player_tags.insert_one(tag)
                     return tag['tag']
             else:
