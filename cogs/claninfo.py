@@ -59,7 +59,7 @@ class claninfo():
         await self.bot.wait_until_ready()
         while not self.bot.is_closed:
             await self.clanupdate()
-            await asyncio.sleep(3600)
+            await asyncio.sleep(14400)
 
     async def on_ready(self):
         await self.clanupdate()

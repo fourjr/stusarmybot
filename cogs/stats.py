@@ -83,7 +83,7 @@ class Stats:
                 profile = await self.bot.client.get_player(t['tag'])
             except (clashroyale.RequestError, clashroyale.NotResponding):
                 logs += f'[API]: Paused for 2 seconds\n'
-                await asyncio.sleep(2)
+                await asyncio.sleep(60)
 
             member = ctx.guild.get_member(t['user_id'])
 
@@ -118,7 +118,7 @@ class Stats:
                     logs += f"[REMOVE] {member} - {clan_role}: User has extra roles\n"
 
             logs += f'[INFO] {member}: User checked\n'
-            await asyncio.sleep(0.4)
+            await asyncio.sleep(3)
 
         async with self.bot.session.post('https://www.hastebin.com/documents', data=logs) as resp:
             data = await resp.json()

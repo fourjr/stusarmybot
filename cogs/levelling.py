@@ -24,7 +24,7 @@ class Levelling:
         for n, i in enumerate(self.level_ups):
             if i > xp:
                 level = n
-                count = i-xp
+                count = i
                 break
         return (level, count)
 
@@ -91,6 +91,53 @@ class Levelling:
             fmt += f'{i+1}. {user_name} {" "*space_amt}{account["xp"]} (Level {level})\n'
 
         await ctx.send(f'```py\n{fmt}\n```')
+
+    @commands.command()
+    async def buy(self, ctx, item: str):
+        '''
+        {
+            "name": "a",
+            "price": 80,
+            "reward": {
+                "name": "idk",
+                "type": "role",
+                "id": [],
+                "id": 239294084378473
+            }
+        }
+        '''
+
+        with open('data/level_shop.json') as f:
+            shop_items = json.load(f)
+
+        try:
+            for i in shop_items:
+                if item == i['name']:
+                    wanted = i
+                    raise StopIteration
+            return await ctx.send('Invalid item.')
+
+        except StopIteration:
+            pass
+
+        account = await self.bot.mongo.stusarmybot.levelling.find_one({'user_id': ctx.author.id})
+
+        if account['xp'] < wanted['cost']:
+            return await ctx.send('Not enough money.')
+
+        if i['reward']['type'] == 'role':
+            role_id = i['reward']['id']
+            if isinstance(role_id, list):
+                roles = []
+                for r in role_id:
+                    roles.append(discord.utils.get(ctx.guild.roles, id=r))
+                await ctx.author.add_roles(*roles)
+
+            else:
+                await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=role_id))
+
+        await ctx.send('Role awarded.')            
+
 
 
 def setup(bot):
