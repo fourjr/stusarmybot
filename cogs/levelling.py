@@ -31,7 +31,7 @@ class Levelling:
     async def on_message(self, msg):
         '''Sets up the Levelling'''
         # Levels can only be earnt in #general
-        if len(msg.content) > 5 and not msg.author.bot:
+        if len(msg.content) > 5 and not msg.author.bot and msg.guild.id == 298812318903566337:
             if msg.author.id not in self.cooldown:
                 self.cooldown.append(msg.author.id)
                 entry = await self.bot.mongo.stusarmybot.levelling.find_one_and_update({'user_id':msg.author.id}, {'$inc':{'xp':random.randint(1, 5)}}, upsert=True, return_document=ReturnDocument.AFTER)
