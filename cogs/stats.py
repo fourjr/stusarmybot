@@ -104,7 +104,7 @@ class Stats:
             member_role = discord.utils.get(ctx.guild.roles, name='member')
             try:
                 sa_role = discord.utils.get(ctx.guild.roles, id=roles[profile.clan.tag])
-                clan_key = next(x for x in keys if self.keys[x] == profile.clan.tag).upper()
+                clan_key = next(x for x in keys if keys[x] == profile.clan.tag).upper()
             except (KeyError, AttributeError, StopIteration):
                 # KeyError for role statement
                 # AttributeError in case `profile.clan` is a NoneType
