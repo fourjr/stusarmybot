@@ -143,8 +143,13 @@ class Stats:
                 
                 # Check for nick
                 if member.nick != f'{profile.name} | {clan_key}':
-                    await member.edit(nick=f'{profile.name} | {clan_key}')
-                    logs += f'[NICK_ADD] {member} - {clan_key}: User does not have nickname'
+                    try:
+                        await member.edit(nick=f'{profile.name} | {clan_key}')
+                    except discord.Forbidden:
+                        logs += f'[NICK_FORBIDDEN]'
+                    else:
+                        logs += f'[NICK_ADD]'
+                    logs += {member} - {clan_key}: User does not have nickname\n'
 
             logs += f'[INFO] {member}: User checked\n'
             await asyncio.sleep(3)
