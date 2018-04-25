@@ -283,8 +283,6 @@ async def _eval(ctx, *, body: str):
         err = await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
     else:
         value = stdout.getvalue()
-        if token() in value:
-            value = value.replace(token(), "[EXPUNGED]")
         if ret is None:
             if value:
                 try:
