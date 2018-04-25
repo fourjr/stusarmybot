@@ -149,7 +149,7 @@ class Stats:
                         logs += f'[NICK_FORBIDDEN]'
                     else:
                         logs += f'[NICK_ADD]'
-                    logs += {member} - {clan_key}: User does not have nickname\n'
+                    logs += f'{member} - {clan_key}: User does not have nickname\n'
 
             logs += f'[INFO] {member}: User checked\n'
             await asyncio.sleep(3)
