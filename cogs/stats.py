@@ -142,8 +142,8 @@ class Stats:
                     logs += f"[REMOVE] {member} - {clan_role}: User has extra roles\n"
                 
                 # Check for nick
-                if member.nick != f'{player.name} | {clan_key}':
-                    await member.edit(nick=f'{player.name} | {clan_key}')
+                if member.nick != f'{profile.name} | {clan_key}':
+                    await member.edit(nick=f'{profile.name} | {clan_key}')
                     logs += f'[NICK_ADD] {member} - {clan_key}: User does not have nickname'
 
             logs += f'[INFO] {member}: User checked\n'
