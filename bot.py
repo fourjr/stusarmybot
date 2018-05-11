@@ -25,7 +25,7 @@ class Bot(commands.Bot):
         self.session = aiohttp.ClientSession(loop=self.loop)
         self.mongo = AsyncIOMotorClient('mongodb+srv://fourjr:4SoWl2MNbWybV3xM@dbots-2-giqxl.mongodb.net/')
         self.statsy_mongo = AsyncIOMotorClient('mongodb+srv://read:IFSDUgYdY64tn6Wu@statsy-lpu1v.mongodb.net/')
-        self.client = clashroyale.Client('9ba015601c85435aa0ac200afc07223e2b1a3190927c4bb19d89fe5f8295d60e', is_async=True, session=self.session, timeout=5)
+        self.client = clashroyale.Client(self.config['ROYALEAPI'], is_async=True, session=self.session, timeout=5)
 
         for i in os.listdir('cogs'):
             if i.endswith('.py'):
@@ -38,12 +38,15 @@ class Bot(commands.Bot):
                     print(f'Loaded: {cog_name}')
 
 
+    @property
+    def config(self):
+        with open('./data/config.json') as f:
+            return json.load(f)
+
     def token(self):
         '''Returns your token wherever it is'''
         try:
-            with open('./data/config.json') as f:
-                config = json.load(f)
-                return config.get('TOKEN').strip('\"')
+            return self.config['TOKEN']
         except:
             return os.environ.get('TOKEN')
 
