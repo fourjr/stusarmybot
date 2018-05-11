@@ -40,8 +40,11 @@ class Bot(commands.Bot):
 
     @property
     def config(self):
-        with open('./data/config.json') as f:
-            return json.load(f)
+        try:
+            with open('./data/config.json') as f:
+                return json.load(f)
+        except FileNotFound:
+            return os.environ
 
     def token(self):
         '''Returns your token wherever it is'''
