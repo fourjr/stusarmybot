@@ -43,7 +43,7 @@ class Bot(commands.Bot):
         try:
             with open('./data/config.json') as f:
                 return json.load(f)
-        except FileNotFound:
+        except FileNotFoundError
             return os.environ
 
     def token(self):
