@@ -88,11 +88,14 @@ class Stats:
         logs = ''
 
         for t in tags:
-            try:
-                profile = await self.bot.client.get_player(t['tag'])
-            except (clashroyale.RequestError, clashroyale.NotResponding):
-                logs += f'[API]: Paused for 60 seconds\n'
-                await asyncio.sleep(60)
+            while True:
+                try:
+                    profile = await self.bot.client.get_player(t['tag'])
+                except (clashroyale.RequestError, clashroyale.NotResponding):
+                    logs += f'[API]: Paused for 60 seconds\n'
+                    await asyncio.sleep(60)
+                else:
+                    break
 
             member = ctx.guild.get_member(t['user_id'])
 
@@ -104,7 +107,7 @@ class Stats:
             member_role = discord.utils.get(ctx.guild.roles, name='member')
             try:
                 sa_role = discord.utils.get(ctx.guild.roles, id=roles[profile.clan.tag])
-                clan_key = next(x for x in keys if self.keys[x] == profile.clan.tag).upper()
+                clan_key = next(x for x in keys if keys[x] == profile.clan.tag).upper()
             except (KeyError, AttributeError, StopIteration):
                 # KeyError for role statement
                 # AttributeError in case `profile.clan` is a NoneType
@@ -139,9 +142,14 @@ class Stats:
                     logs += f"[REMOVE] {member} - {clan_role}: User has extra roles\n"
                 
                 # Check for nick
-                if member.nick != f'{player.name} | {clan_key}':
-                    await member.edit(nick=f'{player.name} | {clan_key}')
-                    logs += f'[NICK_ADD] {member} - {clan_key}: User does not have nickname'
+                if member.nick != f'{profile.name} | {clan_key}':
+                    try:
+                        await member.edit(nick=f'{profile.name} | {clan_key}')
+                    except discord.Forbidden:
+                        logs += f'[NICK_FORBIDDEN]'
+                    else:
+                        logs += f'[NICK_ADD]'
+                    logs += f'{member} - {clan_key}: User does not have nickname\n'
 
             logs += f'[INFO] {member}: User checked\n'
             await asyncio.sleep(3)
