@@ -17,31 +17,28 @@ class claninfo():
         self.sa_clans = ['88PYQV', '29UQQ282', '28JU8P0Y', '8PUUGRYG']
         self.clan_update = self.bot.loop.create_task(self.clan_update_loop())
 
-    def info(self, clan):
-        # tier = 200
-        # tiers = [70, 160, 270, 400, 550, 720, 910, 1120, 1350, 1600]
-        # try:
-        #     tier = tiers.index(max([n for n in tiers if (clan.clan_chest.crowns > n)])) + 2
-        # except:
-        #     tier = 0
-        # if tier > 10: tier = 10
+    def info(self, clan, war):
+        return '\n'.join((f'<:clan:450920311832182786> {clan.member_count}/50',
+                          f'<:trophy:451597507076554754> {clan.score}',
+                          f'<:wartrophy:451595409295540226> {war.clan.war_trophies}',
+                          f':medal: {clan.required_score} required',
+                          f'<:cards:450917311692406784> {clan.donations}/week'
+                        ))
 
-        return f''':shield: {clan.member_count}/50
-:trophy: {clan.required_score}
-:medal: {clan.score}
-<:soon:337920093532979200> {clan.donations}/week'''
-# :globe_with_meridians: {clan.type_name}'
-# <:clanchest:366182009124421633> Tier {tier}
+    async def get_war(self, c):
+        data = await self.bot.client.get_clan_war(c)
+        await asyncio.sleep(0.5)
+        return data
 
     async def clanupdate(self, message=None):
         sa = await self.bot.client.get_clans(*self.sa_clans)
+        war = [await self.get_war(c) for c in self.sa_clans]
 
         embed = discord.Embed(title="Stu's Army!", color=0xf1c40f)
-        embed.add_field(name='SA1', value=self.info(sa[0]))
-        embed.add_field(name='SA2', value=self.info(sa[1]))
-        embed.add_field(name='SA3', value=self.info(sa[2]))
-        embed.add_field(name='SA4', value=self.info(sa[3]))
+        for i in range(4):
+            embed.add_field(name=f'SA{i+1}', value=self.info(sa[i], war[i]))
         total_members = sa[0].member_count + sa[1].member_count + sa[2].member_count + sa[3].member_count
+
         current_time = datetime.now(timezone('Europe/London')).strftime('%Y-%m-%d %H:%M:%S')
         embed.add_field(name='More Info', value=f":busts_in_silhouette: {total_members}/200 \n \nLast updated {current_time}", inline=False)
 

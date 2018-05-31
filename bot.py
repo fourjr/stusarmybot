@@ -18,14 +18,20 @@ from cogs.claninfo import claninfo
 from cogs.new_welcome import InvalidTag
 from ext.formatter import EmbedHelp
 
+try:
+    with open('data/config.json') as f:
+        os.environ = json.load(f)
+except FileNotFoundError:
+    pass
+
 class Bot(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix=None, formatter=EmbedHelp())
         self.remove_command('help')
         self.session = aiohttp.ClientSession(loop=self.loop)
-        self.mongo = AsyncIOMotorClient('mongodb+srv://fourjr:4SoWl2MNbWybV3xM@dbots-2-giqxl.mongodb.net/')
-        self.statsy_mongo = AsyncIOMotorClient('mongodb+srv://read:IFSDUgYdY64tn6Wu@statsy-lpu1v.mongodb.net/')
-        self.client = clashroyale.Client('9ba015601c85435aa0ac200afc07223e2b1a3190927c4bb19d89fe5f8295d60e', is_async=True, session=self.session, timeout=5)
+        self.mongo = AsyncIOMotorClient(os.environ.get('MONGO'))
+        self.statsy_mongo = AsyncIOMotorClient(os.environ.get('STATSYMONGO'))
+        self.client = clashroyale.Client(os.environ.get('ROYALEAPI'), is_async=True, session=self.session, timeout=5)
 
         for i in os.listdir('cogs'):
             if i.endswith('.py'):
