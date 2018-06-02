@@ -16,19 +16,16 @@ from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from cogs.welcome import InvalidTag
-from ext.formatter import EmbedHelp
-
 
 class Bot(commands.Bot):
     def __init__(self):
-        super().__init__(command_prefix=os.getenv('PREFIX', '>'), formatter=EmbedHelp())
-        self.remove_command('help')
+        super().__init__(command_prefix=os.getenv('PREFIX', '>'))
         self.session = aiohttp.ClientSession(loop=self.loop)
         self.mongo = AsyncIOMotorClient(os.getenv('MONGO'))
         self.statsy_mongo = AsyncIOMotorClient(os.getenv('STATSYMONGO'))
         self.client = clashroyale.Client(os.getenv('ROYALEAPI'), is_async=True, session=self.session, timeout=5)
 
-
+        self.remove_command('help')
         self.add_command(self.ping)
         self.add_command(self._eval)
 
