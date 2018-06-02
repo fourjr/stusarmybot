@@ -11,6 +11,7 @@ class InvalidTag(commands.BadArgument):
                 '**Letters:** P, Y, L, Q, G, R, J, C, U, V'
 
 class TagCheck(commands.MemberConverter):
+    """Code from Statsy"""
     check = 'PYLQGRJCUV0289'
     async def convert(self, ctx, argument):
         try:

@@ -10,6 +10,7 @@ sqlalchemy
 pymysql
 pytz
 bs4
-clashroyale>=3.4.1
+clashroyale
 motor
 dnspython
+python-dotenv

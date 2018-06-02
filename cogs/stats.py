@@ -41,13 +41,6 @@ class TagOrUser(commands.MemberConverter):
             else:
                 return tag['tag']
 
-def e(ctx, name):
-    '''Converts anything to an emoji by it's name '''
-    name = name.replace('.','').lower().replace(' ','').replace('_','').replace('-','')
-    if name == 'chestmagic':
-        name = 'chestmagical'
-    return discord.utils.get(ctx.bot.emojis, name=name)
-
 class Stats:
     def __init__(self, bot):
         self.bot = bot
@@ -195,27 +188,27 @@ class Stats:
         except AttributeError:
             badge_image = None
         em.set_author(name=player.name, icon_url=badge_image)
-        em.add_field(name='Trophies', value=f'{player.trophies} {e(ctx, "trophy")}')
-        em.add_field(name='Level', value=f'{player.stats.level} {e(ctx, "experience")}')
+        em.add_field(name='Trophies', value=f'{player.trophies} {self.bot.emoji("trophy")}')
+        em.add_field(name='Level', value=f'{player.stats.level} {self.bot.emoji("experience")}')
 
         if player.clan:
-            em.add_field(name='Clan Name', value=f'{player.clan.name} {e(ctx, "clan")}')
-            em.add_field(name='Clan Tag', value=f'{player.clan.tag} {e(ctx, "clan")}')
-            em.add_field(name='Clan Role', value=f'{player.clan.role.title()} {e(ctx, "clan")}')
+            em.add_field(name='Clan Name', value=f'{player.clan.name} {self.bot.emoji("clan")}')
+            em.add_field(name='Clan Tag', value=f'{player.clan.tag} {self.bot.emoji("clan")}')
+            em.add_field(name='Clan Role', value=f'{player.clan.role.title()} {self.bot.emoji("clan")}')
         else:
-            em.add_field(name='Clan', value=f'Player not in clan {e(ctx, "clan")}')
+            em.add_field(name='Clan', value=f'Player not in clan {self.bot.emoji("clan")}')
 
         if player.stats.favorite_card:
-            em.add_field(name='Favourite Card', value=e(ctx, player.stats.favorite_card.name))
+            em.add_field(name='Favourite Card', value=self.bot.emoji(player.stats.favorite_card.name))
         else:
-            em.add_field(name='Favourite Card', value=f'No favourite card {e(ctx, "soon")}')
+            em.add_field(name='Favourite Card', value=f'No favourite card {self.bot.emoji("soon")}')
 
-        em.add_field(name='Max Challenge Wins', value= f'{player.stats.challenge_max_wins} {e(ctx, "tournament")}')
+        em.add_field(name='Max Challenge Wins', value= f'{player.stats.challenge_max_wins} {self.bot.emoji("tournament")}')
 
         deck = ''
 
         for c in player.current_deck:
-            deck += f'{e(ctx, c.name)} {c.level} '
+            deck += f'{self.bot.emoji(c.name)} {c.level} '
 
         em.add_field(name='Battle Deck', value=deck, inline=False)
         await ctx.send(embed=em)
