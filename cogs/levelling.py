@@ -7,7 +7,6 @@ import discord
 from discord.ext import commands
 from pymongo import ReturnDocument
 
-
 class Levelling:
     """Cog for levelling up while chatting"""
     def __init__(self, bot):

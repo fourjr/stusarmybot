@@ -1,16 +1,6 @@
 git+https://github.com/Rapptz/discord.py@rewrite
-requests
-PythonGists
-bs4
-lxml
-Pillow
-mtranslate
-pyfiglet
-sqlalchemy
-pymysql
-pytz
-bs4
 clashroyale
 motor
 dnspython
 python-dotenv
+pytz

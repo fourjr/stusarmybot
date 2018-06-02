@@ -1,6 +1,6 @@
-import discord
 import random
 
+import discord
 
 class Logging:
 

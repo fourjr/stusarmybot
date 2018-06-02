@@ -1,9 +1,11 @@
-import discord
-import clashroyale
+import re
 import textwrap
 from collections import OrderedDict
+
+import clashroyale
+import discord
 from discord.ext import commands
-import re
+
 
 class InvalidTag(commands.BadArgument):
     message = 'Player tags should only contain these characters:\n' \

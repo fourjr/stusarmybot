@@ -7,7 +7,6 @@ import clashroyale
 import discord
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
-from PIL import Image
 from pytz import timezone
 
 class ClanStats:
