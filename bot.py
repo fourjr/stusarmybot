@@ -15,8 +15,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from cogs.claninfo import claninfo
-from cogs.new_welcome import InvalidTag
+from cogs.welcome import InvalidTag
 from ext.formatter import EmbedHelp
 
 
