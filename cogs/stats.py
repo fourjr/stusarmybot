@@ -8,7 +8,7 @@ from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from .new_welcome import InvalidTag
+from .welcome import InvalidTag
 
 
 class TagCheck(commands.Converter):

@@ -12,7 +12,7 @@ import aiohttp
 import clashroyale
 import discord
 from discord.ext import commands
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from cogs.welcome import InvalidTag
@@ -185,8 +185,8 @@ class Bot(commands.Bot):
             return f'```py\n{e.text}{"^":>{e.offset}}\n{e.__class__.__name__}: {e}```'
 
 if __name__ == '__main__':
-    load_dotenv(override=True)
-try:
-    Bot()
-except Exception as e:
-    print(e)
+    load_dotenv(find_dotenv())
+    try:
+        Bot()
+    except Exception as e:
+        print(e)

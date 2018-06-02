@@ -22,7 +22,7 @@ class Logging:
         if message.channel.id == 362172188301852672 or message.author == self.bot.user:
             return
         embed = discord.Embed(title='Message Deleted', color=0xff1a1f)
-        embed.add_field(name='User', value=f'{message.author} ({message.author.id})'
+        embed.add_field(name='User', value=f'{message.author} ({message.author.id})')
         embed.add_field(name='Message ID', value=message.id)
         embed.add_field(name='Channel', value='{} ({})'.format(message.channel, message.channel.id), inline=False)
         embed.add_field(name='Content', value=message.content, inline=False)
