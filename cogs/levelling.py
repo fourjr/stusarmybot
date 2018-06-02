@@ -9,7 +9,7 @@ from pymongo import ReturnDocument
 
 
 class Levelling:
-    '''Cog for levelling up while chatting'''
+    """Cog for levelling up while chatting"""
     def __init__(self, bot):
         self.bot = bot
         self.level_rewards = json.load(open('data/level_rewards.json'))
@@ -18,7 +18,7 @@ class Levelling:
         self.colors = self.colors = {'red':0xFF4500, 'green':0x00FF00, 'orange':0xFFC800, 'blue':0x5AADFF, 'pink':0xA4029B, 'light_red':0xFF1A1F}
 
     def calculate_level(self, xp):
-        '''Given an XP amount, return the level and the amount to get to the next level'''
+        """Given an XP amount, return the level and the amount to get to the next level"""
         level = 3912
         count = math.inf
         for n, i in enumerate(self.level_ups):
@@ -29,7 +29,7 @@ class Levelling:
         return (level, count)
 
     async def on_message(self, msg):
-        '''Sets up the Levelling'''
+        """Sets up the Levelling"""
         # Levels can only be earnt in #general
         if len(msg.content) > 5 and not msg.author.bot and msg.guild.id == 298812318903566337:
             if msg.author.id not in self.cooldown:
@@ -48,7 +48,7 @@ class Levelling:
 
     @commands.command()
     async def rank(self, ctx, member: discord.Member=None):
-        '''Check your current level!'''
+        """Check your current level!"""
         member = member or ctx.author
         entry = await self.bot.mongo.stusarmybot.levelling.find_one({'user_id':member.id})
         amount = 0 if entry is None else entry.get('xp')
@@ -61,7 +61,7 @@ class Levelling:
  
     @commands.command(aliases=['levellb', 'llb'])
     async def levels_leaderboard(self, ctx, page=1):
-        '''View how active you are compared to everyone else!'''
+        """View how active you are compared to everyone else"""
         page -= 1
         top = await self.bot.mongo.stusarmybot.levelling.find().sort('xp', -1).to_list(None)
         sorted_top = sorted(top, key=lambda x: x.get('xp') or -9999999999, reverse=True)
@@ -94,7 +94,7 @@ class Levelling:
 
     @commands.command()
     async def buy(self, ctx, item: str):
-        '''
+        """
         {
             "name": "a",
             "price": 80,
@@ -105,7 +105,7 @@ class Levelling:
                 "id": 239294084378473
             }
         }
-        '''
+        """
 
         with open('data/level_shop.json') as f:
             shop_items = json.load(f)

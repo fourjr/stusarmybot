@@ -2,7 +2,7 @@ import discord
 import random
 
 
-class Logging():
+class Logging:
 
     def __init__(self, bot):
         self.bot = bot

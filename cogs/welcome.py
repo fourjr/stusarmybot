@@ -40,6 +40,7 @@ class TagCheck(commands.MemberConverter):
 
 class Welcome:
     def __init__(self, bot):
+        """Handles #welcome"""
         self.bot = bot
         self.welcome_channel = 385704172567265280
         self.keys = {
@@ -60,7 +61,7 @@ class Welcome:
         return ctx.channel.id in (362172188301852672, self.welcome_channel)
 
     async def on_member_join(self, member):
-        '''Welcome message'''
+        """Welcome message"""
         if member.guild.id == 298812318903566337:
             await self.bot.get_channel(self.welcome_channel).send(content=member.mention,
                 embed=discord.Embed(description='\n'.join((
@@ -78,12 +79,12 @@ class Welcome:
             await self.bot.get_channel(self.welcome_channel).send('<@&334250664870019073>', delete_after=0.2)
 
     async def on_member_remove(self, member):
-        '''Leave message'''
+        """Leave message"""
         await self.bot.get_channel(self.welcome_channel).send('{} has left us :('.format(member.name))
 
     @commands.command(aliases=['rec'])
     async def recommend(self, ctx, tag: TagCheck = None):
-        '''Get clan recommendations!'''
+        """Get clan recommendations!"""
         if tag is None:
             tag = await ctx.bot.mongo.stusarmybot.player_tags.find_one({'user_id': ctx.author.id})
             if tag:
@@ -137,7 +138,7 @@ class Welcome:
     @commands.has_role('Welcome Assistant')
     @commands.command(name='waiting')
     async def _waiting(self, ctx, clan, *, member:discord.Member):
-        '''Adds your name to the waiting list'''
+        """Adds your name to the waiting list"""
         clan = clan.lower()
         if clan not in self.keys:
             return await ctx.send('Invalid clan.')
@@ -175,7 +176,7 @@ class Welcome:
 
     @commands.command()
     async def unwait(self, ctx, *, member:discord.Member = None):
-        '''Removes your name from the waiting list'''
+        """Removes your name from the waiting list"""
         if member is None: member = ctx.author
 
         waiting_message = await ctx.guild.get_channel(431112508296790016).get_message(431113789161865241)
@@ -194,7 +195,7 @@ class Welcome:
 
     @commands.command()
     async def verify(self, ctx, *, member: discord.Member = None):
-        '''Gives users appropriate roles'''
+        """Gives users appropriate roles"""
         member = member or ctx.author
         tag = await ctx.bot.mongo.stusarmybot.player_tags.find_one({'user_id': member.id})
         if tag:
@@ -222,13 +223,13 @@ class Welcome:
 
     @commands.command()
     async def visitor(self, ctx, member: discord.Member=None):
-        '''Get the Visitor Role!'''
+        """Get the Visitor Role!"""
         if member is None or ctx.author.top_role < discord.utils.get(ctx.guild.roles, id=334250664870019073):
             # Only welcome assistants or higher can tag
             member = ctx.author
         await member.add_roles(discord.utils.get(ctx.guild.roles, id=298815975980138496))
         await ctx.send('I have given {} the **Visitor** role!'.format(member.name))
-        await discord.utils.get(ctx.guild.channels, id=377204201408823296).send("Welcome {} to Stu's Army! He is a visitor!".format(member.mention))
+        await self.bot.get_channel(377204201408823296).send("Welcome {} to Stu's Army! He is a visitor!".format(member.mention))
 
 def setup(bot):
     bot.add_cog(Welcome(bot))

@@ -59,7 +59,7 @@ class Bot(commands.Bot):
         return emoji or name
 
     async def invoke(self, ctx):
-        '''Overwrites the default invoke for typing'''
+        """Overwrites the default invoke for typing"""
         if ctx.command is not None:
             self.dispatch('command', ctx)
             try:

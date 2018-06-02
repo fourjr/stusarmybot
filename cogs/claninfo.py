@@ -1,17 +1,17 @@
+import asyncio
+import io
+import os
+from datetime import datetime
+
+import clashroyale
 import discord
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 from PIL import Image
-import os
-import asyncio
-import io
-import clashroyale
-from datetime import datetime
 from pytz import timezone
 
-
-class claninfo():
-
+class ClanStats:
+    """This cog handles #clan-stats, automatic updating of clan statistics"""
     def __init__(self, bot):
         self.bot = bot
         self.sa_clans = ['88PYQV', '29UQQ282', '28JU8P0Y', '8PUUGRYG']
@@ -49,8 +49,8 @@ class claninfo():
     @commands.command()
     @commands.cooldown(1, 10, BucketType.default)
     async def update(self, ctx):
-        async with ctx.channel.typing():
-            await self.clanupdate(ctx.message)
+        """Updates #clan-stats"""
+        await self.clanupdate(ctx.message)
 
     async def clan_update_loop(self):
         await self.bot.wait_until_ready()
@@ -75,4 +75,4 @@ class claninfo():
             await message.add_reaction(discord.utils.get(self.bot.emojis, name='league7'))
 
 def setup(bot):
-    bot.add_cog(claninfo(bot))
+    bot.add_cog(ClanStats(bot))

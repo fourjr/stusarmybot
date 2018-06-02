@@ -11,13 +11,13 @@ class Mod:
 
     @commands.command()
     async def kick(self, ctx, member: discord.Member, reason=None):
-        '''Kicks a member from the server.'''
+        """Kicks a member from the server."""
         await member.kick(reason=reason)
         await ctx.send(f'{ctx.author.name} kicked {member.name}')
 
     @commands.command()
     async def ban(self, ctx, member: discord.Member, reason=None):
-        '''Use this on JJ :)'''
+        """BANHAMMER!"""
         await member.ban(reason=reason)
         await ctx.send(f'{ctx.author.name} banned {member.name}')
 
