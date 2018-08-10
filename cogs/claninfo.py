@@ -41,7 +41,7 @@ class ClanStats:
         current_time = datetime.now(timezone('Europe/London')).strftime('%Y-%m-%d %H:%M:%S')
         embed.add_field(name='More Info', value=f":busts_in_silhouette: {total_members}/200 \n \nLast updated {current_time}", inline=False)
 
-        await (await self.bot.get_channel(365870449915330560).get_message(371704816143040523)).edit(content='', embed=embed)
+        await (await self.bot.get_channel(365870449915330560).get_message(477478236603809803)).edit(content='', embed=embed)
         if message:
             await message.add_reaction(self.bot.emoji('league7', emojiresp=True))
 
@@ -61,13 +61,13 @@ class ClanStats:
         await self.clanupdate()
 
     async def on_raw_reaction_add(self, payload):
-        if payload.message_id == 371704816143040523:
+        if payload.message_id == 477478236603809803:
             member = self.bot.get_guild(298812318903566337).get_member(payload.user_id)
 
             if member == self.bot.user:
                 return
 
-            message = await self.bot.get_channel(365870449915330560).get_message(371704816143040523)
+            message = await self.bot.get_channel(365870449915330560).get_message(477478236603809803)
             if payload.emoji.name == 'league7':
                 await self.clanupdate()
             await message.clear_reactions()
