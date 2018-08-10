@@ -145,7 +145,7 @@ class Stats:
                     logs += f'{member} - {clan_key}: User does not have nickname\n'
 
             logs += f'[INFO] {member}: User checked\n'
-            await asyncio.sleep(3)
+            await asyncio.sleep(0.2)
 
         async with self.bot.session.post('https://www.hastebin.com/documents', data=logs) as resp:
             data = await resp.json()
