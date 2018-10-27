@@ -1,13 +1,11 @@
 import asyncio
-import io
-import os
 from datetime import datetime
 
-import clashroyale
 import discord
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 from pytz import timezone
+
 
 class ClanStats:
     """This cog handles #clan-stats, automatic updating of clan statistics"""
@@ -17,26 +15,34 @@ class ClanStats:
         self.clan_update = self.bot.loop.create_task(self.clan_update_loop())
 
     def info(self, clan, war):
-        return '\n'.join((f'<:clan:450920311832182786> {clan.member_count}/50',
-                          f'<:trophy:451597507076554754> {clan.score}',
-                          f'<:wartrophy:451595409295540226> {war.clan.war_trophies}',
-                          f':medal: {clan.required_score} required',
-                          f'<:cards:450917311692406784> {clan.donations}/week'
-                        ))
+        return '\n'.join(
+            (
+                f'<:clan:450920311832182786> {len(clan.member_list)}/50',
+                f'<:trophy:451597507076554754> {clan.clan_score}',
+                f"<:wartrophy:451595409295540226> {getattr(war.clan, 'clan_score', war.state)}",
+                f':medal: {clan.required_trophies} required',
+                f'<:cards:450917311692406784> {clan.donations_per_week}/week'
+            )
+        )
+
+    async def get_clan(self, c):
+        data = await self.bot.client.get_clan(c)
+        await asyncio.sleep(0.02)
+        return data
 
     async def get_war(self, c):
         data = await self.bot.client.get_clan_war(c)
-        await asyncio.sleep(0.5)
+        await asyncio.sleep(0.02)
         return data
 
     async def clanupdate(self, message=None):
-        sa = await self.bot.client.get_clans(*self.sa_clans)
+        sa = [await self.get_clan(c) for c in self.sa_clans]
         war = [await self.get_war(c) for c in self.sa_clans]
 
         embed = discord.Embed(title="Stu's Army!", color=0xf1c40f)
         for i in range(4):
             embed.add_field(name=f'SA{i+1}', value=self.info(sa[i], war[i]))
-        total_members = sa[0].member_count + sa[1].member_count + sa[2].member_count + sa[3].member_count
+        total_members = len(sa[0].member_list) + len(sa[1].member_list) + len(sa[2].member_list) + len(sa[3].member_list)
 
         current_time = datetime.now(timezone('Europe/London')).strftime('%Y-%m-%d %H:%M:%S')
         embed.add_field(name='More Info', value=f":busts_in_silhouette: {total_members}/200 \n \nLast updated {current_time}", inline=False)
@@ -46,7 +52,6 @@ class ClanStats:
             await message.add_reaction(self.bot.emoji('league7', emojiresp=True))
 
     @commands.command()
-    @commands.cooldown(1, 10, BucketType.default)
     async def update(self, ctx):
         """Updates #clan-stats"""
         await self.clanupdate(ctx.message)
@@ -72,6 +77,7 @@ class ClanStats:
                 await self.clanupdate()
             await message.clear_reactions()
             await message.add_reaction(discord.utils.get(self.bot.emojis, name='league7'))
+
 
 def setup(bot):
     bot.add_cog(ClanStats(bot))

@@ -1,8 +1,6 @@
 import datetime
-import glob
 import inspect
 import io
-import json
 import os
 import textwrap
 import traceback
@@ -17,13 +15,16 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 from cogs.welcome import InvalidTag
 
+
 class Bot(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix=os.getenv('PREFIX', '>'))
         self.session = aiohttp.ClientSession(loop=self.loop)
         self.mongo = AsyncIOMotorClient(os.getenv('MONGO'))
         self.statsy_mongo = AsyncIOMotorClient(os.getenv('STATSYMONGO'))
-        self.client = clashroyale.Client(os.getenv('ROYALEAPI'), is_async=True, session=self.session, timeout=5)
+        self.client = clashroyale.OfficialAPI(
+            os.getenv('CLASHROYALE'), is_async=True, session=self.session, timeout=10, url=os.getenv('SERVER')
+        )
 
         self.remove_command('help')
         self.add_command(self.ping)
@@ -33,13 +34,13 @@ class Bot(commands.Bot):
 
         for i in os.listdir('cogs'):
             if i.endswith('.py'):
-                cog_name = 'cogs.' + i.replace('.py', '')                
+                cog_name = 'cogs.' + i.replace('.py', '')
                 if os.name == 'nt' and cog_name in protected:
                     continue
                 try:
                     self.load_extension(cog_name)
                 except Exception as e:
-                    print(e)
+                    traceback.print_exc()
                 else:
                     print(f'Loaded: {cog_name}')
 
@@ -74,7 +75,6 @@ class Bot(commands.Bot):
         self.uptime = datetime.datetime.now()
         print('Ready')
 
-
     async def on_command_error(self, ctx, error):
         trace = ''.join(traceback.format_exception(type(error), error, error.__traceback__))
         erroremb = discord.Embed(description=f'```py\n{trace}\n```', color=discord.Color.red(), timestamp=ctx.message.created_at)
@@ -96,12 +96,11 @@ class Bot(commands.Bot):
     async def ping(self, ctx):
         """Pong!"""
         msgtime = ctx.message.created_at
-        await (await bot.ws.ping())
         now = datetime.datetime.now()
         ping = now - msgtime
         pong = discord.Embed(title='Pong!', color=65535)
         pong.add_field(name='Message Latency', value=str("%.2f" % (ping.microseconds / 1000)) + 'ms')
-        pong.add_field(name='Discord API Latency', value=str("%.2f" % (bot.latency * 1000)) + 'ms')
+        pong.add_field(name='Discord API Latency', value=str("%.2f" % (self.bot.latency * 1000)) + 'ms')
         await ctx.send(embed=pong)
 
     @commands.is_owner()
@@ -178,9 +177,10 @@ class Bot(commands.Bot):
         # remove `foo`
         return content.strip('` \n')
 
+
 if __name__ == '__main__':
     load_dotenv(find_dotenv())
     try:
         Bot()
     except Exception as e:
-        print(e)
+        traceback.print_exc()

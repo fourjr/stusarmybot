@@ -6,7 +6,6 @@ import clashroyale
 import discord
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
-from motor.motor_asyncio import AsyncIOMotorClient
 
 from .welcome import InvalidTag
 
@@ -19,6 +18,7 @@ class TagCheck(commands.Converter):
         if not any(i not in self.check for i in argument):
             return argument
         raise InvalidTag
+
 
 class TagOrUser(commands.MemberConverter):
 
@@ -40,6 +40,7 @@ class TagOrUser(commands.MemberConverter):
                     return tag['tag']
             else:
                 return tag['tag']
+
 
 class Stats:
     def __init__(self, bot):
@@ -122,7 +123,6 @@ class Stats:
             else:
                 # User is in SA Clan
                 logs += f'[INFO] {member}: User in SA Clan\n'
-                nick_name = f''
                 if sa_role not in clan_role:
                     await member.add_roles(sa_role, member_role)
                     logs += f"[ADD] {member} - [{sa_role}]: User's SA Clan role was not given to user\n"
@@ -133,7 +133,7 @@ class Stats:
                     await asyncio.sleep(0.2)
                     await member.remove_roles(*clan_role)
                     logs += f"[REMOVE] {member} - {clan_role}: User has extra roles\n"
-                
+
                 # Check for nick
                 if member.nick != f'{profile.name} | {clan_key}':
                     try:
@@ -183,27 +183,25 @@ class Stats:
         player = await self.bot.client.get_player(tag_or_user)
 
         em = discord.Embed(color=random.randint(0, 0xFFFFFF), timestamp=ctx.message.created_at)
-        try:
-            badge_image = player.clan.badge.image
-        except AttributeError:
-            badge_image = None
+
+        badge_image = self.bot.client.get_clan_image(player.clan)
         em.set_author(name=player.name, icon_url=badge_image)
         em.add_field(name='Trophies', value=f'{player.trophies} {self.bot.emoji("trophy")}')
-        em.add_field(name='Level', value=f'{player.stats.level} {self.bot.emoji("experience")}')
+        em.add_field(name='Level', value=f'{player.exp_level} {self.bot.emoji("experience")}')
 
         if player.clan:
             em.add_field(name='Clan Name', value=f'{player.clan.name} {self.bot.emoji("clan")}')
             em.add_field(name='Clan Tag', value=f'{player.clan.tag} {self.bot.emoji("clan")}')
-            em.add_field(name='Clan Role', value=f'{player.clan.role.title()} {self.bot.emoji("clan")}')
+            em.add_field(name='Clan Role', value=f'{player.role.title()} {self.bot.emoji("clan")}')
         else:
             em.add_field(name='Clan', value=f'Player not in clan {self.bot.emoji("clan")}')
 
         if player.stats.favorite_card:
-            em.add_field(name='Favourite Card', value=self.bot.emoji(player.stats.favorite_card.name))
+            em.add_field(name='Favourite Card', value=self.bot.emoji(player.favorite_card.name))
         else:
             em.add_field(name='Favourite Card', value=f'No favourite card {self.bot.emoji("soon")}')
 
-        em.add_field(name='Max Challenge Wins', value= f'{player.stats.challenge_max_wins} {self.bot.emoji("tournament")}')
+        em.add_field(name='Max Challenge Wins', value=f'{player.challenge_max_wins} {self.bot.emoji("tournament")}')
 
         deck = ''
 
@@ -212,6 +210,7 @@ class Stats:
 
         em.add_field(name='Battle Deck', value=deck, inline=False)
         await ctx.send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(Stats(bot))
