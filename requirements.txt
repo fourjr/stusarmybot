@@ -1,5 +1,5 @@
 git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py[voice]
-clashroyale==3.5.14
+clashroyale==3.5.16
 motor
 dnspython
 python-dotenv
