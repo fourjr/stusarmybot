@@ -77,13 +77,13 @@ class Bot(commands.Bot):
 
     async def on_command_error(self, ctx, error):
         trace = ''.join(traceback.format_exception(type(error), error, error.__traceback__))
+        print(trace)
         erroremb = discord.Embed(description=f'```py\n{trace}\n```', color=discord.Color.red(), timestamp=ctx.message.created_at)
         erroremb.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         erroremb.add_field(name='Message Content', value=ctx.message.content)
         erroremb.add_field(name='Location', value=f'#{ctx.channel.name} ({ctx.channel.id})')
 
         await self.get_channel(375113574038896640).send(embed=erroremb)
-        print(trace)
 
         if isinstance(error, InvalidTag):
             await ctx.send(error.message)
