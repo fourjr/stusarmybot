@@ -83,8 +83,11 @@ class Stats:
 
         for t in tags:
             while True:
+                print(t)
                 try:
                     profile = await self.bot.client.get_player(t['tag'])
+                except clashroyale.NotFoundError:
+                    break
                 except (clashroyale.RequestError, clashroyale.NotResponding):
                     logs += f'[API]: Paused for 60 seconds\n'
                     await asyncio.sleep(60)
