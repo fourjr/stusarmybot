@@ -121,8 +121,12 @@ class Stats:
                             if member.nick == f'{profile.name} | {k.upper()}':
                                 raise StopIteration
                     except StopIteration:
-                        await member.edit(nick=None)
-                        logs += f'[NICK_REMOVE] {member} - {k.upper()}: User not in SA Clan'
+                        try:
+                            await member.edit(nick=None)
+                        except discord.Forbidden:
+                            logs += f'[NICK_REMOVE] [FORBIDDEN] {member} - {k.upper()}: User not in SA Clan'
+                        else:
+                            logs += f'[NICK_REMOVE] {member} - {k.upper()}: User not in SA Clan'
             else:
                 # User is in SA Clan
                 logs += f'[INFO] {member}: User in SA Clan\n'
